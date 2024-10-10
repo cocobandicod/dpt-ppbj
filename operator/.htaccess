@@ -1,0 +1,80 @@
+ErrorDocument 404 https://dpt.ppbj.ung.ac.id/404
+ErrorDocument 403 https://dpt.ppbj.ung.ac.id/404
+
+RewriteEngine On
+Options All -Indexes
+
+#RewriteCond %{HTTPS} off
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+RewriteRule ^404$ 404.php [L]
+RewriteRule ^$ login.php [L]
+RewriteRule ^logout$ logout.php [L]
+RewriteRule ^cek/login$ proses/proses_login.php [L]
+RewriteRule ^beranda$ beranda.php?aktif1=active&judul=Beranda [L]
+RewriteRule ^user$ user.php?aktif2=active&judul=User-Management [L]
+RewriteRule ^penyedia$ penyedia.php?aktif3=active&judul=Penyedia [L]
+RewriteRule ^pengumuman$ pengumuman.php?aktif5=active&judul=Pengumuman [L]
+RewriteRule ^info/penting$ info_penting.php?aktif6=active&judul=Info-Penting [L]
+RewriteRule ^panduan$ panduan.php?aktif8=active&judul=Panduan [L]
+RewriteRule ^contact$ contact.php?aktif9=active&judul=Contact [L]
+RewriteRule ^cetak/lembar/verifikasi/([0-9]+)$ print_lembar_verifikasi.php?id=$1 [L]
+RewriteRule ^profil$ profil.php?judul=Profil&act=edit [L]
+RewriteRule ^ganti/password$ ganti_password.php?judul=Ganti-Password&act=edit [L]
+
+#----------------------------------------- FORM ----------------------------------------------------
+
+RewriteRule ^user/add$ form/form_user.php?aktif2=active&act=add&judul=Tambah-User [L]
+RewriteRule ^user/edit/([0-9]+)$ form/form_user.php?aktif2=active&act=edit&id=$1&judul=Edit-User [L]
+RewriteRule ^penyedia/detail/([0-9]+)$ form/form_detail_penyedia.php?aktif3=active&act=detail&id=$1&judul=Detail-Penyedia [L]
+RewriteRule ^penyedia/edit/([0-9]+)$ form/form_penyedia.php?aktif3=active&act=edit&id=$1&judul=Edit-Penyedia [L]
+RewriteRule ^pengumuman/add$ form/form_pengumuman.php?aktif5=active&act=add&judul=Tambah-Pengumuman [L]
+RewriteRule ^pengumuman/edit/([0-9]+)$ form/form_pengumuman.php?aktif5=active&act=edit&id=$1&judul=Edit-Pengumuman [L]
+RewriteRule ^info/penting/add$ form/form_info_penting.php?aktif6=active&act=add&judul=Tambah-Info-Penting [L]
+RewriteRule ^info/penting/edit/([0-9]+)$ form/form_info_penting.php?aktif6=active&act=edit&id=$1&judul=Edit-Info-Penting [L]
+RewriteRule ^panduan/add$ form/form_panduan.php?aktif8=active&act=add&judul=Tambah-Panduan [L]
+RewriteRule ^panduan/edit/([0-9]+)$ form/form_panduan.php?aktif8=active&act=edit&id=$1&judul=Edit-Panduan [L]
+
+#----------------------------------------- TABEL ---------------------------------------------------
+
+RewriteRule ^tabel/user$ tabel/tabel_user.php [L]
+RewriteRule ^tabel/penyedia$ tabel/tabel_penyedia.php [L]
+RewriteRule ^tabel/detail/penyedia$ tabel/tabel_detail_penyedia.php [L]
+RewriteRule ^tabel/pengumuman$ tabel/tabel_pengumuman.php [L]
+RewriteRule ^tabel/info/penting$ tabel/tabel_info_penting.php [L]
+RewriteRule ^tabel/panduan$ tabel/tabel_panduan.php [L]
+
+#----------------------------------------- PROSES --------------------------------------------------
+
+RewriteRule ^proses/user$ proses/proses_user.php [L]
+RewriteRule ^proses/penyedia$ proses/proses_penyedia.php [L]
+RewriteRule ^proses/verifikasi$ proses/proses_verifikasi.php [L]
+RewriteRule ^proses/edit/penyedia$ proses/proses_edit_penyedia.php [L]
+RewriteRule ^proses/lembar$ proses/proses_lembar.php [L]
+RewriteRule ^proses/pengumuman$ proses/proses_pengumuman.php [L]
+RewriteRule ^proses/info/penting$ proses/proses_info_penting.php [L]
+RewriteRule ^proses/panduan$ proses/proses_panduan.php [L]
+RewriteRule ^proses/contact$ proses/proses_contact.php [L]
+RewriteRule ^proses/profil$ proses/proses_profil.php [L]
+RewriteRule ^proses/ganti/password$ proses/proses_ganti_password.php [L]
+
+RewriteRule ^proses/daftar$ web/proses/proses_daftar.php [L]
+RewriteRule ^proses/login$ web/proses/proses_login.php [L]
+RewriteRule ^proses/izin/usaha$ web/proses/proses_izin_usaha.php [L]
+RewriteRule ^proses/npwp$ web/proses/proses_npwp.php [L]
+RewriteRule ^proses/domisili$ web/proses/proses_domisili.php [L]
+RewriteRule ^proses/tdp$ web/proses/proses_tdp.php [L]
+RewriteRule ^proses/akta$ web/proses/proses_akta.php [L]
+RewriteRule ^proses/pengurus$ web/proses/proses_pengurus.php [L]
+RewriteRule ^proses/pemilik/saham$ web/proses/proses_pemilik_saham.php [L]
+RewriteRule ^proses/pajak$ web/proses/proses_pajak.php [L]
+RewriteRule ^proses/tenaga/ahli$ web/proses/proses_tenaga_ahli.php [L]
+RewriteRule ^proses/peralatan$ web/proses/proses_peralatan.php [L]
+RewriteRule ^proses/pengalaman$ web/proses/proses_pengalaman.php [L]
+RewriteRule ^proses/company/profile$ web/proses/proses_company_profile.php [L]
+RewriteRule ^proses/email$ web/proses/proses_email.php [L]
+RewriteRule ^proses/aktivasi$ web/proses/proses_aktivasi.php [L]
+
+RewriteRule ^proses/ganti/password$ web/proses/proses_ganti_password.php [L]
+RewriteRule ^setting/proses/setting$ web/proses/proses.php [L]
+RewriteRule ^proses/pengguna$ web/proses/proses.php [L]
