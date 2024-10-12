@@ -6,12 +6,16 @@ require_once('../../config/cek_ajax.php');
 if (!empty($_FILES['fupload1']['tmp_name'])) {
     $path1 = $_FILES['fupload1']['name'];
     $ext1 = pathinfo($path1, PATHINFO_EXTENSION);
-    $ekstensi_file  = array('jpg', 'jpeg', 'pdf');
+    $ekstensi_file  = array('pdf');
     $ekstensi_ok1    = in_array($ext1, $ekstensi_file);
     if (!($ekstensi_ok1)) {
         echo 'gagal';
         exit();
     } else {
+        $file = $proses->cek_fetch('dokumen_penawaran_biaya', 'id_profil = "' . $_SESSION['kode_profil'] . '"');
+        if (!empty($file['file_penawaran_biaya'])) {
+            unlink('../../berkas/' . $file['file_penawaran_biaya']);
+        }
 
         // Pemeriksaan tipe MIME
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -21,7 +25,6 @@ if (!empty($_FILES['fupload1']['tmp_name'])) {
         // Daftar tipe MIME yang diperbolehkan
         $allowedMimeTypes = array(
             "application/pdf",
-            "image/jpeg",
         );
 
         // Pemeriksaan tipe MIME file
@@ -30,18 +33,15 @@ if (!empty($_FILES['fupload1']['tmp_name'])) {
             exit();
         }
 
-        $file = $proses->cek_fetch('dokumen_verifikasi', 'id_profil = "' . $_SESSION['kode_profil'] . '"');
-        if (!empty($file['file_keikutsertaan'])) {
-            unlink('../../berkas/' . $file['file_keikutsertaan']);
-        }
+
         define("UPLOAD_DIR1", "../../berkas/"); // LOKASI FILE
         $myFile1 = $_FILES['fupload1'];
         $name1 = uniqid() . "." . $ext1;
         move_uploaded_file($myFile1['tmp_name'], UPLOAD_DIR1 . $name1);
         $data = array(
-            'file_keikutsertaan'  => $name1
+            'file_penawaran_biaya'  => $name1
         );
-        $result = $proses->edit_data('dokumen_verifikasi', $data, 'id_profil', $_SESSION['kode_profil']); // SIMPAN KE DATABASE
+        $result = $proses->edit_data('dokumen_penawaran_biaya', $data, 'id_profil', $_SESSION['kode_profil']); // SIMPAN KE DATABASE
     }
 }
 
@@ -52,7 +52,12 @@ if (!empty($_FILES['fupload2']['tmp_name'])) {
     $ekstensi_ok1    = in_array($ext1, $ekstensi_file);
     if (!($ekstensi_ok1)) {
         echo 'gagal';
+        exit();
     } else {
+        $file = $proses->cek_fetch('dokumen_penawaran_biaya', 'id_profil = "' . $_SESSION['kode_profil'] . '"');
+        if (!empty($file['file_rekapitulasi'])) {
+            unlink('../../berkas/' . $file['file_rekapitulasi']);
+        }
 
         // Pemeriksaan tipe MIME
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -62,7 +67,6 @@ if (!empty($_FILES['fupload2']['tmp_name'])) {
         // Daftar tipe MIME yang diperbolehkan
         $allowedMimeTypes = array(
             "application/pdf",
-            "image/jpeg",
         );
 
         // Pemeriksaan tipe MIME file
@@ -71,18 +75,14 @@ if (!empty($_FILES['fupload2']['tmp_name'])) {
             exit();
         }
 
-        $file = $proses->cek_fetch('dokumen_verifikasi', 'id_profil = "' . $_SESSION['kode_profil'] . '"');
-        if (!empty($file['file_surat_kuasa'])) {
-            unlink('../../berkas/' . $file['file_surat_kuasa']);
-        }
         define("UPLOAD_DIR2", "../../berkas/"); // LOKASI FILE
         $myFile1 = $_FILES['fupload2'];
         $name1 = uniqid() . "." . $ext1;
         move_uploaded_file($myFile1['tmp_name'], UPLOAD_DIR2 . $name1);
         $data = array(
-            'file_surat_kuasa'  => $name1
+            'file_rekapitulasi'  => $name1
         );
-        $result = $proses->edit_data('dokumen_verifikasi', $data, 'id_profil', $_SESSION['kode_profil']); // SIMPAN KE DATABASE
+        $result = $proses->edit_data('dokumen_penawaran_biaya', $data, 'id_profil', $_SESSION['kode_profil']); // SIMPAN KE DATABASE
     }
 }
 
@@ -93,7 +93,12 @@ if (!empty($_FILES['fupload3']['tmp_name'])) {
     $ekstensi_ok1    = in_array($ext1, $ekstensi_file);
     if (!($ekstensi_ok1)) {
         echo 'gagal';
+        exit();
     } else {
+        $file = $proses->cek_fetch('dokumen_penawaran_biaya', 'id_profil = "' . $_SESSION['kode_profil'] . '"');
+        if (!empty($file['file_rincian_komponen'])) {
+            unlink('../../berkas/' . $file['file_rincian_komponen']);
+        }
 
         // Pemeriksaan tipe MIME
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -103,7 +108,6 @@ if (!empty($_FILES['fupload3']['tmp_name'])) {
         // Daftar tipe MIME yang diperbolehkan
         $allowedMimeTypes = array(
             "application/pdf",
-            "image/jpeg",
         );
 
         // Pemeriksaan tipe MIME file
@@ -112,18 +116,14 @@ if (!empty($_FILES['fupload3']['tmp_name'])) {
             exit();
         }
 
-        $file = $proses->cek_fetch('dokumen_verifikasi', 'id_profil = "' . $_SESSION['kode_profil'] . '"');
-        if (!empty($file['file_penunjukan_admin'])) {
-            unlink('../../berkas/' . $file['file_penunjukan_admin']);
-        }
         define("UPLOAD_DIR3", "../../berkas/"); // LOKASI FILE
         $myFile1 = $_FILES['fupload3'];
         $name1 = uniqid() . "." . $ext1;
         move_uploaded_file($myFile1['tmp_name'], UPLOAD_DIR3 . $name1);
         $data = array(
-            'file_penunjukan_admin'  => $name1
+            'file_rincian_komponen'  => $name1
         );
-        $result = $proses->edit_data('dokumen_verifikasi', $data, 'id_profil', $_SESSION['kode_profil']); // SIMPAN KE DATABASE
+        $result = $proses->edit_data('dokumen_penawaran_biaya', $data, 'id_profil', $_SESSION['kode_profil']); // SIMPAN KE DATABASE
     }
 }
 
@@ -131,7 +131,7 @@ if (!empty($_FILES['fupload3']['tmp_name'])) {
 if (@$_POST['act'] == 'del') {
 
     $id = $_POST['id'];
-    $file = $proses->cek_fetch('dokumen_verifikasi', 'id_profil = "' . $_SESSION['kode_profil'] . '"');
+    $file = $proses->cek_fetch('dokumen_penawaran_biaya', 'id_profil = "' . $_SESSION['kode_profil'] . '"');
     if (!empty($file[$id])) {
         unlink('../../berkas/' . $file[$id]);
     }
@@ -140,6 +140,6 @@ if (@$_POST['act'] == 'del') {
         $id  => ''
     );
 
-    $result = $proses->edit_data('dokumen_verifikasi', $data, 'id_profil', $_SESSION['kode_profil']); // SIMPAN KE DATABASE
+    $result = $proses->edit_data('dokumen_penawaran_biaya', $data, 'id_profil', $_SESSION['kode_profil']); // SIMPAN KE DATABASE
     exit();
 }

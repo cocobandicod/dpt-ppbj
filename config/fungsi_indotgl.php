@@ -243,13 +243,16 @@ function izin_usaha($var, $terpilih)
 {
 	$jk = array(1 => 'Surat-Ijin-Usaha-Perdagangan-(SIUP)', 'Sertifikat-Badan-Usaha-(SBU)', 'Surat-Izin-Usaha-Jasa-Konstruksi-(SIUJK)', 'Tanda-Daftar-Usaha-Pariwisata-(TDUP)', 'Surat-Izin-Tempat-Usaha-(SITU)', 'Izin-Kantor-Akuntan-Publik-(KAP)', 'Nomor-Induk-Berusaha-(NIB)', 'Izin-Akuntan-Publik', 'Kantor-Jasa-Surveyor-Kadaster-Berlisensi-(KJSKB)', 'Izin-Usaha-Farmasi', 'Izin-Usaha-Perfilman', 'Izin-Usaha-Lainnya');
 	echo "<select name='$var' id='$var' class='form-select' required>";
-	echo '<option value="" selected>Pilih --</option>';
+	//echo '<option value="" selected>Pilih --</option>';
 	for ($i = 1; $i <= 12; $i++) {
 		if ($jk[$i] == $terpilih) {
 			echo '<option value="' . $jk[$i] . '" selected>' . str_replace('-', ' ', $jk[$i]) . '</option>';
-		} else {
+		}
+		/*
+		else {
 			echo '<option value="' . $jk[$i] . '">' . str_replace('-', ' ', $jk[$i]) . '</option>';
 		}
+			*/
 	}
 	echo "</select> ";
 }
@@ -294,9 +297,18 @@ function seo($s)
 function combonamabln($awal, $akhir, $var, $terpilih)
 {
 	$nama_bln = array(
-		1 => "Januari", "Februari", "Maret", "April", "Mei",
-		"Juni", "Juli", "Agustus", "September",
-		"Oktober", "November", "Desember"
+		1 => "Januari",
+		"Februari",
+		"Maret",
+		"April",
+		"Mei",
+		"Juni",
+		"Juli",
+		"Agustus",
+		"September",
+		"Oktober",
+		"November",
+		"Desember"
 	);
 	echo "<select name='$var' id='$var' class='form-control form-control-uniform' required>";
 	for ($bln = $awal; $bln <= $akhir; $bln++) {

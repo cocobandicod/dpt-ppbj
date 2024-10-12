@@ -138,6 +138,7 @@ function kiri($url, $proses)
                 </a>
                 <div class="collapse buka1" id="collapseExample1">
                     <ul class="sub-menu list-unstyled">
+                        <!--
                         <li class="pt-2">
                             <a href="<?= $url; ?>syarat/izin/usaha" class="<?= @$_GET['aktif21']; ?>">Copy Surat Izin Usaha</a>
                         </li>
@@ -161,6 +162,16 @@ function kiri($url, $proses)
                         </li>
                         <li>
                             <a href="<?= $url; ?>syarat/pajak" class="<?= @$_GET['aktif28']; ?>">Copy Pajak</a>
+                        </li>
+                        -->
+                        <li class="pt-2">
+                            <a href="<?= $url; ?>syarat/nib" class="<?= @$_GET['aktif21']; ?>">Nomor Induk Berusaha (NIB)</a>
+                        </li>
+                        <li>
+                            <a href="<?= $url; ?>syarat/sbu" class="<?= @$_GET['aktif29']; ?>">Sertifikat Badan Usaha (SBU)</a>
+                        </li>
+                        <li>
+                            <a href="<?= $url; ?>syarat/kswp" class="<?= @$_GET['aktif210']; ?>">KSWP</a>
                         </li>
                     </ul>
                 </div>
@@ -191,6 +202,19 @@ function kiri($url, $proses)
                     <?= $notif; ?>
                 </a>
             </li>
+            <?php
+            if ($notif3) {
+            ?>
+                <li>
+                    <a href="<?= $url; ?>dokumen/penawaran/teknis" class="<?= @$_GET['aktif7']; ?>"><i class="ri-file-list-2-line align-bottom me-2"></i> <span class="file-list-link">Dokumen Penawaran Teknis</span></a>
+                </li>
+                <li>
+                    <a href="<?= $url; ?>dokumen/penawaran/biaya" class="<?= @$_GET['aktif8']; ?>"><i class="ri-file-list-2-line align-bottom me-2"></i> <span class="file-list-link">Dokumen Penawaran Biaya</span></a>
+                </li>
+            <?php
+            } else {
+            }
+            ?>
         </ul>
     </div>
 <?php }

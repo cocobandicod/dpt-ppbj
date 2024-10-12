@@ -89,6 +89,12 @@ if ($_SESSION['CAPTCHA_CODE'] != $captchaUser) {
 
     $result = $proses->tambah_data('dokumen_verifikasi', $data3);
 
+    $data4[] = array(
+        'id_profil'         => $lastid
+    );
+
+    $result = $proses->tambah_data('dokumen_penawaran_biaya', $data3);
+
     $subdata['username'] = $username;
     $subdata['email'] = $email;
     $subdata['token'] = $pass;

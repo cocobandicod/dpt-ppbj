@@ -4,8 +4,8 @@ ErrorDocument 403 https://dpt.ppbj.ung.ac.id/404
 RewriteEngine On
 Options All -Indexes
 
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+#RewriteCond %{HTTPS} off
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 RewriteRule ^404$ web/404.php [L]
 RewriteRule ^$ web/index.php?aktif1=active&hal=1 [L]
@@ -21,15 +21,30 @@ RewriteRule ^contact$ web/contact.php?judul=Contact&aktif_6=active [L]
 
 RewriteRule ^ubah/profil$ web/profil.php?aktif1=active&judul=Ubah-Profil [L]
 RewriteRule ^dokumen/verifikasi$ web/form/form_dokumen_verifikasi.php?aktif6=active&judul=Dokumen-Verifikasi [L]
+RewriteRule ^dokumen/penawaran/biaya$ web/form/form_dokumen_penawaran_biaya.php?aktif8=active&judul=Dokumen-Penawaran-Biaya [L]
 
 RewriteRule ^sertifikat/verifikasi/([0-9]+)$ web/sertifikat.php?id=$1 [L]
+
+RewriteRule ^syarat/nib$ web/nib.php?aktif2=active&aktif21=active&judul=Nomor-Induk-Berusaha-(NIB) [L]
+RewriteRule ^syarat/nib/add$ web/form/form_nib.php?aktif2=active&aktif21=active&act=add&judul=Tambah-NIB [L]
+RewriteRule ^syarat/nib/edit/([0-9]+)$ web/form/form_nib.php?aktif2=active&aktif21=active&act=edit&id=$1&judul=Edit-NIB [L]
+
+RewriteRule ^syarat/sbu$ web/sbu.php?aktif2=active&aktif29=active&judul=Sertifikat-Badan-Usaha-(SBU) [L]
+RewriteRule ^syarat/sbu/add$ web/form/form_sbu.php?aktif2=active&aktif29=active&act=add&judul=Tambah-SBU [L]
+RewriteRule ^syarat/sbu/edit/([0-9]+)$ web/form/form_sbu.php?aktif2=active&aktif29=active&act=edit&id=$1&judul=Edit-SBU [L]
 
 RewriteRule ^syarat/izin/usaha$ web/izin_usaha.php?aktif2=active&aktif21=active&judul=Izin-Usaha [L]
 RewriteRule ^syarat/izin/usaha/add$ web/form/form_izin_usaha.php?aktif2=active&aktif21=active&act=add&judul=Tambah-Izin-Usaha [L]
 RewriteRule ^syarat/izin/usaha/edit/([0-9]+)$ web/form/form_izin_usaha.php?aktif2=active&aktif21=active&act=edit&id=$1&judul=Edit-Izin-Usaha [L]
+
 RewriteRule ^syarat/npwp$ web/npwp.php?aktif2=active&aktif22=active&judul=NPWP [L]
 RewriteRule ^syarat/npwp/add$ web/form/form_npwp.php?aktif2=active&aktif22=active&act=add&judul=Tambah-NPWP [L]
 RewriteRule ^syarat/npwp/edit/([0-9]+)$ web/form/form_npwp.php?aktif2=active&aktif22=active&act=edit&id=$1&judul=Edit-NPWP [L]
+
+RewriteRule ^syarat/kswp$ web/kswp.php?aktif2=active&aktif210=active&judul=KSWP [L]
+RewriteRule ^syarat/kswp/add$ web/form/form_kswp.php?aktif2=active&aktif210=active&act=add&judul=Tambah-KSWP [L]
+RewriteRule ^syarat/kswp/edit/([0-9]+)$ web/form/form_kswp.php?aktif2=active&aktif210=active&act=edit&id=$1&judul=Edit-KSWP [L]
+
 RewriteRule ^syarat/domisili$ web/domisili.php?aktif2=active&aktif23=active&judul=Syarat-Domisili [L]
 RewriteRule ^syarat/domisili/add$ web/form/form_domisili.php?aktif2=active&aktif23=active&act=add&judul=Tambah-Syarat-Domisili [L]
 RewriteRule ^syarat/domisili/edit/([0-9]+)$ web/form/form_domisili.php?aktif2=active&aktif23=active&act=edit&id=$1&judul=Edit-Syarat-Domisili [L]
@@ -61,10 +76,18 @@ RewriteRule ^status/verifikasi$ web/status_verifikasi.php?aktif5=active&judul=St
 RewriteRule ^company/profile$ web/company_profile.php?aktif4=active&judul=Company-Profile [L]
 RewriteRule ^company/profile/edit/([0-9]+)$ web/form/form_company_profile.php?aktif4=active&act=edit&id=$1&judul=Edit-Company-Profile [L]
 RewriteRule ^company/profile/add$ web/form/form_company_profile.php?aktif4=active&act=add&judul=Tambah-Company-Profile [L]
+
+RewriteRule ^dokumen/penawaran/teknis$ web/dokumen_penawaran_teknis.php?aktif7=active&judul=Dokumen-Penawaran-Teknis [L]
+RewriteRule ^dokumen/penawaran/teknis/edit/([0-9]+)$ web/form/form_dokumen_penawaran_teknis.php?aktif7=active&act=edit&id=$1&judul=Edit-Dokumen-Penawaran-Teknis [L]
+RewriteRule ^dokumen/penawaran/teknis/add$ web/form/form_dokumen_penawaran_teknis.php?aktif7=active&act=add&judul=Tambah-Dokumen-Penawaran-Teknis [L]
+
 #----------------------------------------- TABEL ---------------------------------------------------
 
 RewriteRule ^tabel/izin/usaha$ web/tabel/tabel_izin_usaha.php [L]
+RewriteRule ^tabel/nib$ web/tabel/tabel_nib.php [L]
+RewriteRule ^tabel/sbu$ web/tabel/tabel_sbu.php [L]
 RewriteRule ^tabel/npwp$ web/tabel/tabel_npwp.php [L]
+RewriteRule ^tabel/kswp$ web/tabel/tabel_kswp.php [L]
 RewriteRule ^tabel/domisili$ web/tabel/tabel_domisili.php [L]
 RewriteRule ^tabel/tdp$ web/tabel/tabel_tdp.php [L]
 RewriteRule ^tabel/akta$ web/tabel/tabel_akta.php [L]
@@ -76,15 +99,22 @@ RewriteRule ^tabel/peralatan$ web/tabel/tabel_peralatan.php [L]
 RewriteRule ^tabel/pengalaman$ web/tabel/tabel_pengalaman.php [L]
 RewriteRule ^tabel/company/profile$ web/tabel/tabel_company_profile.php [L]
 RewriteRule ^tabel/detail/pengumuman$ web/tabel/tabel_detail_pengumuman.php [L]
+RewriteRule ^tabel/dokumen/penawaran/teknis$ web/tabel/tabel_dokumen_penawaran_teknis.php [L]
 
 #----------------------------------------- PROSES -------------------------------------------------
 
 RewriteRule ^proses/dokumen/verifikasi$ web/proses/proses_dokumen_verifikasi.php [L]
+RewriteRule ^proses/dokumen/penawaran/teknis$ web/proses/proses_dokumen_penawaran_teknis.php [L]
+RewriteRule ^proses/dokumen/penawaran/biaya$ web/proses/proses_dokumen_penawaran_biaya.php [L]
+
 RewriteRule ^proses/profil$ web/proses/proses_profil.php [L]
 RewriteRule ^proses/daftar$ web/proses/proses_daftar.php [L]
 RewriteRule ^proses/login$ web/proses/proses_login.php [L]
 RewriteRule ^proses/izin/usaha$ web/proses/proses_izin_usaha.php [L]
+RewriteRule ^proses/nib$ web/proses/proses_nib.php [L]
+RewriteRule ^proses/sbu$ web/proses/proses_sbu.php [L]
 RewriteRule ^proses/npwp$ web/proses/proses_npwp.php [L]
+RewriteRule ^proses/kswp$ web/proses/proses_kswp.php [L]
 RewriteRule ^proses/domisili$ web/proses/proses_domisili.php [L]
 RewriteRule ^proses/tdp$ web/proses/proses_tdp.php [L]
 RewriteRule ^proses/akta$ web/proses/proses_akta.php [L]

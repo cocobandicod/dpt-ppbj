@@ -4,9 +4,9 @@ class Koneksi
     public function DBConnect()
     {
         $dbhost = 'localhost'; // set the hostname
-        $dbname = 'dpt_simpan'; // set the database name
-        $dbuser = 'dpt_root'; // set the mysql username
-        $dbpass = 'g0r0nt4l0';  // set the mysql password
+        $dbname = 'dpt-ppbj'; // set the database name
+        $dbuser = 'root'; // set the mysql username
+        $dbpass = '';  // set the mysql password
 
         try {
             $dbConnection = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
