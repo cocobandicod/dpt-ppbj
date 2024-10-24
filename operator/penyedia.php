@@ -75,6 +75,7 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                                             <thead class="table-light">
                                                 <tr>
                                                     <th>No</th>
+                                                    <th>Tgl. Daftar</th>
                                                     <th>Nama Perusahaan</th>
                                                     <th>Badan Usaha</th>
                                                     <th>Email</th>
@@ -161,17 +162,17 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                 responsive: true,
                 columnDefs: [{
                         className: 'text-center p-2',
-                        width: '5%',
+                        width: '3%',
                         targets: [0]
                     },
                     {
                         className: 'text-center p-2',
                         width: '3%',
-                        targets: [8]
+                        targets: [9]
                     },
                     {
                         className: 'p-2',
-                        targets: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                        targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                     },
                 ],
                 "ajax": {

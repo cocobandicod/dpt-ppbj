@@ -69,7 +69,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                             <div class="col-lg-3 mt-3">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-1 mt-1 flex-grow-1">Menu</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Menu</h4>
                                     </div><!-- end card header -->
                                     <div class="card-body small">
                                         <?= kiri($url, $proses); ?>
@@ -83,21 +83,23 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                                         <a href="<?= $url; ?>syarat/tenaga/ahli/add" class="btn btn-primary btn-sm"><i class="ri-add-line align-bottom me-1"></i> Data</a>
                                     </div><!-- end card header -->
                                     <div class="card-body small">
-                                        <table id="DTable" class="table table-bordered dt-responsive table-striped align-middle fs-12" style="width:100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Nama</th>
-                                                    <th>Tanggal Lahir</th>
-                                                    <th>Pendidikan</th>
-                                                    <th>jabatan</th>
-                                                    <th>Pengalaman</th>
-                                                    <th>Keahlian</th>
-                                                    <th>Tahun Ijazah / Serifikat</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
+                                        <div class="table-responsive">
+                                            <table id="DTable" class="table table-bordered dt-responsive table-striped align-middle fs-12" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Nama</th>
+                                                        <th>Tanggal Lahir</th>
+                                                        <th>Pendidikan</th>
+                                                        <th>jabatan</th>
+                                                        <th>Pengalaman</th>
+                                                        <th>Keahlian</th>
+                                                        <th>Tahun Ijazah / Serifikat</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

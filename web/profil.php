@@ -60,7 +60,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                             <div class="col-lg-3 mt-3">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-1 mt-1 flex-grow-1">Menu</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Menu</h4>
                                     </div><!-- end card header -->
                                     <div class="card-body small">
                                         <?= kiri($url, $proses); ?>
@@ -70,12 +70,13 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                             <div class="col-lg-9 mt-3">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-1 mt-1 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
+                                        <h4 class="card-title mb-0 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
                                     </div><!-- end card header -->
                                     <div class="card-body small">
                                         <form id="form">
                                             <?php
                                             $row = $proses->tampil_data_saja('*', 'profil_badan_usaha', 'id_profil = "' . $_SESSION['kode_profil'] . '"');
+                                            $p = $proses->tampil_data_saja('email', 'akun_penyedia', 'id_akun = "' . $_SESSION['kode_profil'] . '"');
                                             ?>
                                             <div class="row pt-2">
                                                 <div class="col-xl-6">
@@ -111,11 +112,15 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                                                 </div>
                                                 <div class="col-xl-6">
                                                     <div class="col-xxl-12 col-md-12 pt-2">
+                                                        <label for="basiInput" class="form-label">Email</label>
+                                                        <input type="email" name="kode_pos" value="<?= $p['email']; ?>" class="form-control" disabled>
+                                                    </div>
+                                                    <div class="col-xxl-12 col-md-12 pt-2">
                                                         <label for="basiInput" class="form-label">Kode Pos *</label>
                                                         <input type="number" name="kode_pos" value="<?= $row['kode_pos']; ?>" class="form-control" required>
                                                     </div>
                                                     <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Telepon / HP *</label>
+                                                        <label for="basiInput" class="form-label">Telepon / HP / Whatsapp *</label>
                                                         <input type="number" name="telepon" value="<?= $row['telepon']; ?>" class="form-control" required>
                                                     </div>
                                                     <div class="col-xxl-12 col-md-12 pt-2">
@@ -131,7 +136,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                                                         <input type="text" name="contact_person" value="<?= $row['contact_person']; ?>" class="form-control">
                                                     </div>
                                                     <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Telepon / HP CP</label>
+                                                        <label for="basiInput" class="form-label">Telepon / HP CP / Whatsapp</label>
                                                         <input type="number" name="telepon_cp" value="<?= $row['telepon_cp']; ?>" class="form-control">
                                                     </div>
                                                 </div>

@@ -14,10 +14,18 @@ RewriteRule ^cek/login$ proses/proses_login.php [L]
 RewriteRule ^beranda$ beranda.php?aktif1=active&judul=Beranda [L]
 RewriteRule ^user$ user.php?aktif2=active&judul=User-Management [L]
 RewriteRule ^penyedia$ penyedia.php?aktif3=active&judul=Penyedia [L]
-RewriteRule ^pengumuman$ pengumuman.php?aktif5=active&judul=Pengumuman [L]
-RewriteRule ^info/penting$ info_penting.php?aktif6=active&judul=Info-Penting [L]
-RewriteRule ^panduan$ panduan.php?aktif8=active&judul=Panduan [L]
-RewriteRule ^contact$ contact.php?aktif9=active&judul=Contact [L]
+RewriteRule ^evaluasi$ evaluasi.php?aktif11=active&judul=Evaluasi [L]
+RewriteRule ^paket-pekerjaan$ paket_pekerjaan.php?aktif10=active&judul=Paket-Pekerjaan&aktif_1=active&show1=show [L]
+RewriteRule ^jadwal-pekerjaan/([0-9]+)$ jadwal.php?aktif10=active&judul=Jadwal&id=$1&aktif_1=active&show1=show [L]
+
+RewriteRule ^dpt$ dpt.php?aktif5=active&judul=Daftar-Peyedia-Terpilih&aktif_1=active&show1=show [L]
+RewriteRule ^dpt/([0-9]+)$ detail_dpt.php?aktif5=active&judul=Daftar-Peyedia-Terpilih&id=$1&aktif_1=active&show1=show [L]
+
+RewriteRule ^pengumuman$ pengumuman.php?aktif5=active&judul=Pengumuman&aktif_2=active&show2=show [L]
+RewriteRule ^info/penting$ info_penting.php?aktif6=active&judul=Info-Penting&aktif_2=active&show2=show [L]
+RewriteRule ^panduan$ panduan.php?aktif8=active&judul=Panduan&aktif_2=active&show2=show  [L]
+RewriteRule ^contact$ contact.php?aktif9=active&judul=Contact&aktif_2=active&show2=show  [L]
+
 RewriteRule ^cetak/lembar/verifikasi/([0-9]+)$ print_lembar_verifikasi.php?id=$1 [L]
 RewriteRule ^profil$ profil.php?judul=Profil&act=edit [L]
 RewriteRule ^ganti/password$ ganti_password.php?judul=Ganti-Password&act=edit [L]
@@ -30,10 +38,23 @@ RewriteRule ^penyedia/detail/([0-9]+)$ form/form_detail_penyedia.php?aktif3=acti
 RewriteRule ^penyedia/edit/([0-9]+)$ form/form_penyedia.php?aktif3=active&act=edit&id=$1&judul=Edit-Penyedia [L]
 RewriteRule ^pengumuman/add$ form/form_pengumuman.php?aktif5=active&act=add&judul=Tambah-Pengumuman [L]
 RewriteRule ^pengumuman/edit/([0-9]+)$ form/form_pengumuman.php?aktif5=active&act=edit&id=$1&judul=Edit-Pengumuman [L]
-RewriteRule ^info/penting/add$ form/form_info_penting.php?aktif6=active&act=add&judul=Tambah-Info-Penting [L]
-RewriteRule ^info/penting/edit/([0-9]+)$ form/form_info_penting.php?aktif6=active&act=edit&id=$1&judul=Edit-Info-Penting [L]
-RewriteRule ^panduan/add$ form/form_panduan.php?aktif8=active&act=add&judul=Tambah-Panduan [L]
-RewriteRule ^panduan/edit/([0-9]+)$ form/form_panduan.php?aktif8=active&act=edit&id=$1&judul=Edit-Panduan [L]
+
+RewriteRule ^paket-pekerjaan/add$ form/form_paket_pekerjaan.php?aktif10=active&act=add&judul=Tambah-Paket-Pekerjaan&aktif_1=active&show1=show [L]
+RewriteRule ^paket-pekerjaan/edit/([0-9]+)$ form/form_paket_pekerjaan.php?aktif10=active&act=edit&id=$1&judul=Edit-Paket-Pekerjaan&aktif_1=active&show1=show [L]
+
+RewriteRule ^jadwal-pekerjaan/add$ form/form_jadwal_pekerjaan.php?aktif10=active&act=add&judul=Tambah-Jadwal-Pekerjaan&aktif_1=active&show1=show [L]
+RewriteRule ^jadwal-pekerjaan/edit/([0-9]+)$ form/form_jadwal_pekerjaan.php?aktif10=active&act=edit&id=$1&judul=Edit-Jadwal-Pekerjaan&aktif_1=active&show1=show [L]
+
+RewriteRule ^syarat-kualifikasi/add$ form/form_syarat_kualifikasi.php?aktif10=active&act=add&judul=Tambah-Syarat-Kualifikasi [L]
+RewriteRule ^syarat-kualifikasi/edit/([0-9]+)$ form/form_syarat_kualifikasi.php?aktif10=active&act=edit&id=$1&judul=Edit-Syarat-Kualifikasi [L]
+
+RewriteRule ^info/penting/add$ form/form_info_penting.php?aktif6=active&act=add&judul=Tambah-Info-Penting&aktif_2=active&show2=show  [L]
+RewriteRule ^info/penting/edit/([0-9]+)$ form/form_info_penting.php?aktif6=active&act=edit&id=$1&judul=Edit-Info-Penting&aktif_2=active&show2=show  [L]
+RewriteRule ^panduan/add$ form/form_panduan.php?aktif8=active&act=add&judul=Tambah-Panduan&aktif_2=active&show2=show  [L]
+RewriteRule ^panduan/edit/([0-9]+)$ form/form_panduan.php?aktif8=active&act=edit&id=$1&judul=Edit-Panduan&aktif_2=active&show2=show  [L]
+
+RewriteRule ^form/jadwal$ form/form_jadwal.php [L]
+RewriteRule ^form/dpt$ form/form_dpt.php [L]
 
 #----------------------------------------- TABEL ---------------------------------------------------
 
@@ -41,6 +62,11 @@ RewriteRule ^tabel/user$ tabel/tabel_user.php [L]
 RewriteRule ^tabel/penyedia$ tabel/tabel_penyedia.php [L]
 RewriteRule ^tabel/detail/penyedia$ tabel/tabel_detail_penyedia.php [L]
 RewriteRule ^tabel/pengumuman$ tabel/tabel_pengumuman.php [L]
+RewriteRule ^tabel/jadwal$ tabel/tabel_jadwal.php [L]
+RewriteRule ^tabel/dpt$ tabel/tabel_dpt.php [L]
+RewriteRule ^tabel/detail/dpt$ tabel/tabel_detail_dpt.php [L]
+
+RewriteRule ^tabel/paket/pekerjaan$ tabel/tabel_paket_pekerjaan.php [L]
 RewriteRule ^tabel/info/penting$ tabel/tabel_info_penting.php [L]
 RewriteRule ^tabel/panduan$ tabel/tabel_panduan.php [L]
 
@@ -51,7 +77,10 @@ RewriteRule ^proses/penyedia$ proses/proses_penyedia.php [L]
 RewriteRule ^proses/verifikasi$ proses/proses_verifikasi.php [L]
 RewriteRule ^proses/edit/penyedia$ proses/proses_edit_penyedia.php [L]
 RewriteRule ^proses/lembar$ proses/proses_lembar.php [L]
+RewriteRule ^proses/paket/pekerjaan$ proses/proses_paket_pekerjaan.php [L]
 RewriteRule ^proses/pengumuman$ proses/proses_pengumuman.php [L]
+RewriteRule ^proses/jadwal$ proses/proses_jadwal.php [L]
+RewriteRule ^proses/dpt$ proses/proses_dpt.php [L]
 RewriteRule ^proses/info/penting$ proses/proses_info_penting.php [L]
 RewriteRule ^proses/panduan$ proses/proses_panduan.php [L]
 RewriteRule ^proses/contact$ proses/proses_contact.php [L]

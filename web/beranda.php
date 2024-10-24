@@ -87,7 +87,6 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                                             <li>Surat Keterangan Domisili</li>
                                             <li>Surat Pemberitahuan Tahunan Pajak Penghasilan (SPT PPh) tahun terakhir atau Surat Keterangan Fiskal tahun terakhir</li>
                                         </ul>
-                                        <p>Semua asli dokumen tersebut harus Anda tunjukkan saat verifikasi. Setelah proses verifikasi/pencocokan data selesai, dokumen tersebut akan dikembalikan lagi.</p>
                                     </div>
                                 </div>
                             </div>

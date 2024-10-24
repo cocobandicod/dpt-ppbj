@@ -3,7 +3,7 @@ session_start();
 require_once('../../config/koneksi.php');
 require_once('../../config/cek_ajax.php');
 
-$sql = $proses->tampil_data_select('a.*,b.email,c.nama', 'profil_badan_usaha a LEFT JOIN akun_penyedia b ON a.id_akun = b.id_akun LEFT JOIN operator c ON a.verifikasi_oleh = c.id_operator', '1=1');
+$sql = $proses->tampil_data_select('a.*,b.email,c.nama', 'profil_badan_usaha a LEFT JOIN akun_penyedia b ON a.id_akun = b.id_akun LEFT JOIN operator c ON a.verifikasi_oleh = c.id_operator', '1=1 ORDER BY a.registrasi DESC');
 
 $data = array();
 $no = 1;
@@ -15,6 +15,7 @@ foreach ($sql as $row) {
     }
     $subdata = array();
     $subdata[] = $no;
+    $subdata[] = $row['registrasi'];
     $subdata[] = $row['nama_perusahaan'];
     $subdata[] = $row['badan_usaha'];
     $subdata[] = $row['email'];

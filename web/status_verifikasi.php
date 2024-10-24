@@ -60,7 +60,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                             <div class="col-lg-3 mt-3">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-1 mt-1 flex-grow-1">Menu</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Menu</h4>
                                     </div><!-- end card header -->
                                     <div class="card-body small">
                                         <?= kiri($url, $proses); ?>
@@ -70,12 +70,10 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                             <div class="col-lg-9 mt-3">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-1 mt-1 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
+                                        <h4 class="card-title mb-0 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
                                     </div><!-- end card header -->
                                     <div class="card-body small pb-4">
                                         <?php
-                                        $cek1 = $proses->cek_row('catatan', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND status = "Waiting"');
-                                        $cek2 = $proses->cek_row('catatan', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND status = "Verified"');
                                         $cek3 = $proses->cek_row('profil_badan_usaha', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND status = "Terverifikasi"');
                                         if ($cek3) {
                                         ?>
@@ -83,7 +81,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                                                 <lord-icon src="https://cdn.lordicon.com/tqywkdcz.json" trigger="hover" style="width:120px;height:120px">
                                                 </lord-icon>
                                                 <h2 class="text-center">Terverifikasi</h2>
-                                                <p class="text-center">Selamat! status anda terverifikasi, anda dapat mengikuti prosedur pengelola pengadaan barang dan jasa<br>di lingkungan Universitas Negeri Gorontalo, hanya dengan menunjukan sertifikat verifikasi dibawah ini</p>
+                                                <p class="text-center">Selamat! status anda terverifikasi, anda dapat mengikuti prosedur pengelola pengadaan barang dan jasa<br>di lingkungan Universitas Negeri Gorontalo</p>
                                                 <a href="<?= $url; ?>sertifikat/verifikasi/<?= $_SESSION['kode_profil']; ?>" target="_blank" class="btn btn-success mb-2"><i class=" ri-download-cloud-fill"></i> Unduh Sertifikat</a>
                                             </center>
                                         <?php
@@ -96,25 +94,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                                             </p>
                                         <?php
                                         }
-                                        if ($cek1 && $cek2) {
                                         ?>
-                                            <hr>
-                                            <h4 class="pt-2 text-center"><i class="ri-close-circle-fill text-danger"></i> Catatan Verifikator</h4>
-                                            <p class="pt-2">Anda mendapat beberapa catatan dari verifikator yang harus segera di perbaiki</p>
-                                            <?php
-                                            $sql = $proses->tampil_data_select('*', 'catatan', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND status = "Waiting"');
-                                            foreach ($sql as $row) {
-                                            ?>
-                                                <div class="d-flex">
-                                                    <div class="flex-shrink-0">
-                                                        <i class="ri-close-circle-fill text-danger"></i>
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-2">
-                                                        <?= str_replace('_', ' ', $row['menu']) . ' ' . $row['catatan']; ?>
-                                                    </div>
-                                                </div>
-                                        <?php }
-                                        } ?>
                                     </div>
                                 </div>
                             </div>

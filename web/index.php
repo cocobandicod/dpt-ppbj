@@ -84,32 +84,121 @@ if (empty($_SESSION['csrf_token'])) {
         <section class="section" id="pengumuman">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-lg-10">
+                    <div class="col-lg-12">
                         <div class="mb-5">
-                            <h2 class="mb-3 fw-bold lh-base text-center">Pengumuman</h2>
-                            <p class="text-muted text-center">Penyedia Pengadaan Langsung</p>
-                            <table id="example" class="table table-bordered dt-responsive table-striped align-middle fs-12" style="width:100%">
+                            <h2 class="mb-3 fw-bold lh-base text-center">Pengumuman Pengadaan</h2>
+                            <p class="text-muted text-center">Paket Pekerjaan Pengadaan Barang dan Jasa</p>
+                            <table id="example" class="table table-bordered dt-responsive table-striped align-middle fs-14" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">No</th>
+                                        <th class="text-center" style="width: 3%;">No</th>
                                         <th>Nama Pekerjaan</th>
-                                        <th>Nama Perusahaan</th>
-                                        <th class="text-center">Nilai (Rp)</th>
-                                        <th class="text-center">Tahun Anggaran</th>
+                                        <th>Sumber Dana</th>
+                                        <th class="text-center">Nilai HPS (Rp)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $sql = $proses->tampil_data_select('*', 'pengumuman', '1=1');
+                                    $today = date('Y-m-d');
+                                    $sql = $proses->tampil_data_select('*', 'paket_pekerjaan', '1=1 ORDER BY id_paket DESC');
+                                    $no = 1;
+                                    foreach ($sql as $row) {
+                                        //$p = $proses->tampil_data_saja('GROUP_CONCAT(CONCAT("<span class=\"badge bg-success fs-10 mb-1\">", tahap, "</span>") SEPARATOR " ") as pengumuman', 'jadwal_paket', '1=1 AND id_paket = "' . $row['id_paket'] . '" AND "' . $today . '" BETWEEN DATE(tgl_mulai) AND DATE(tgl_selesai)');
+                                    ?>
+                                        <tr>
+                                            <td class="text-center"><?= $no; ?></td>
+                                            <td><span class="cursor-pointer text-primary" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= @$row['id_paket']; ?>" data-act="pengumuman"><?= @$row['nama_pekerjaan']; ?></span></td>
+                                            <td><?= $row['sumber_dana']; ?></td>
+                                            <td class="text-end"><?= number_format(@$row['nilai_hps']); ?></td>
+                                            <!--
+                                            <td class="text-center"><span class="cursor-pointer text-primary" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= @$row['id_paket']; ?>" data-act="jadwal"><?= @$p['pengumuman']; ?></span></td>
+                                            -->
+                                        </tr>
+                                    <?php $no++;
+                                    } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+
+                <div class="row g-4">
+
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </section><!-- end wallet -->
+
+        <!-- start wallet -->
+        <section class="section" id="dpt">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="mb-5">
+                            <h2 class="mb-3 fw-bold lh-base text-center">Daftar Penyedia Terpilih</h2>
+                            <p class="text-muted text-center">Paket Pekerjaan Pengadaan Barang dan Jasa</p>
+                            <table id="example2" class="table table-bordered dt-responsive table-striped align-middle fs-14" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width: 3%;">No</th>
+                                        <th>Nama Pekerjaan</th>
+                                        <th class="text-center" style="width: 10%;">Penyedia</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $sql = $proses->tampil_data_select(
+                                        'a.id_daftar,b.id_paket,b.nama_pekerjaan,COUNT(a.id_daftar) AS jum',
+                                        'daftar_penyedia_terpilih a
+                                        LEFT JOIN paket_pekerjaan b
+                                        ON a.id_paket = b.id_paket',
+                                        '1=1 GROUP BY a.id_paket'
+                                    );
                                     $no = 1;
                                     foreach ($sql as $row) {
                                     ?>
                                         <tr>
                                             <td class="text-center"><?= $no; ?></td>
-                                            <td><?= $row['pekerjaan']; ?></td>
-                                            <td><?= $row['nama_perusahaan']; ?></td>
-                                            <td class="text-end"><?= number_format($row['nilai']); ?></td>
-                                            <td class="text-center"><?= $row['tahun_anggaran']; ?></td>
+                                            <td><span class="cursor-pointer text-primary" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= @$row['id_paket']; ?>" data-act="penyedia"><?= $row['nama_pekerjaan']; ?></span></td>
+                                            <td class="text-center"><?= $row['jum']; ?></td>
+                                        </tr>
+                                    <?php $no++;
+                                    } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+
+                <div class="row g-4">
+
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </section><!-- end wallet -->
+
+        <!-- start wallet -->
+        <section class="section" id="hasil">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="mb-5">
+                            <h2 class="mb-3 fw-bold lh-base text-center">Hasil Pengadaan</h2>
+                            <p class="text-muted text-center">Paket Pekerjaan Pengadaan Barang dan Jasa</p>
+                            <table id="example2" class="table table-bordered dt-responsive table-striped align-middle fs-14" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width: 3%;">No</th>
+                                        <th>Nama Pekerjaan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $sql = $proses->tampil_data_select('*', 'paket_pekerjaan', '1=1 ORDER BY id_paket DESC');
+                                    $no = 1;
+                                    foreach ($sql as $row) {
+                                    ?>
+                                        <tr>
+                                            <td class="text-center"><?= $no; ?></td>
+                                            <td><span class="cursor-pointer text-primary" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= @$row['id_paket']; ?>" data-act="evaluasi"><?= $row['nama_pekerjaan']; ?></span></td>
                                         </tr>
                                     <?php $no++;
                                     } ?>
@@ -128,7 +217,7 @@ if (empty($_SESSION['csrf_token'])) {
         <section class="section bg-light" id="infopenting">
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-lg-10">
+                    <div class="col-lg-12">
                         <div class="text-center mb-5">
                             <h2 class="mb-3 fw-bold lh-base">Info Penting</h2>
                         </div>
@@ -270,10 +359,16 @@ if (empty($_SESSION['csrf_token'])) {
                                     <div class="col-xxl-12 col-md-12 pt-2">
                                         <label for="basiInput" class="form-label">Username <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="username" required>
+                                        <div id="passwordHelpBlock" class="form-text">
+                                            Username tanpa menggunakan spasi
+                                        </div>
                                     </div>
                                     <div class="col-xxl-12 col-md-12 pt-2">
                                         <label for="basiInput" class="form-label">Email <span class="text-danger">*</span></label>
                                         <input type="email" class="form-control" name="email" placeholder="example@gmail.com" required>
+                                        <div id="passwordHelpBlock" class="form-text">
+                                            Masukan email aktif, konfirmasi pendaftaran akan dikirim melalui email
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -322,7 +417,7 @@ if (empty($_SESSION['csrf_token'])) {
                                                 <input type="number" name="kode_pos" class="form-control" required>
                                             </div>
                                             <div class="col-xxl-6 col-md-6 pt-2">
-                                                <label for="basiInput" class="form-label">Telepon / HP <span class="text-danger">*</span></label>
+                                                <label for="basiInput" class="form-label">Telepon / HP / Whatsapp<span class="text-danger">*</span></label>
                                                 <input type="number" name="telepon" class="form-control" required>
                                             </div>
                                             <div class="col-xxl-6 col-md-6 pt-2">
@@ -338,7 +433,7 @@ if (empty($_SESSION['csrf_token'])) {
                                                 <input type="text" name="contact_person" class="form-control">
                                             </div>
                                             <div class="col-xxl-6 col-md-6 pt-2">
-                                                <label for="basiInput" class="form-label">Telepon / HP CP</label>
+                                                <label for="basiInput" class="form-label">Telepon / HP CP / Whatsapp</label>
                                                 <input type="number" name="telepon_cp" class="form-control">
                                             </div>
                                         </div>
@@ -358,7 +453,7 @@ if (empty($_SESSION['csrf_token'])) {
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="javascript:void(0);" class="btn btn-link link-success fw-medium" data-bs-dismiss="modal">Batal</a>
+                        <a href="javascript:void(0);" class="btn btn-light fw-medium" data-bs-dismiss="modal">Batal</a>
                         <button type="submit" id="tbldaftar" class="btn btn-success"><i class="ri-save-2-fill me-1 align-middle"></i> Ajukan Pendaftaran</button>
                     </div>
                 </form>
@@ -369,7 +464,7 @@ if (empty($_SESSION['csrf_token'])) {
     <div id="loginModals" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 overflow-hidden">
-                <div class="modal-body p-5">
+                <div class="modal-body p-5 pb-3">
                     <h5 class="mb-3">Login Penyedia</h5>
                     <div class="alert alert-success login-success" role="alert" style="display:none;"></div>
                     <div class="alert alert-danger login-danger" role="alert" style="display:none;"></div>
@@ -381,6 +476,7 @@ if (empty($_SESSION['csrf_token'])) {
                             <input type="password" class="form-control" name="password" id="password" placeholder="Masukan password" required>
                         </div>
                         <button type="submit" class="btn btn-success w-100" id="tblmasuk">Masuk</button>
+                        <p class="text-center mt-2 mb-0"><a href="#" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#resetModals">Lupa Password</a></p>
                     </form>
                 </div>
                 <div class="modal-footer bg-light p-3 justify-content-center">
@@ -389,6 +485,37 @@ if (empty($_SESSION['csrf_token'])) {
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <div id="resetModals" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 overflow-hidden">
+                <div class="modal-body p-5 pb-3">
+                    <h5 class="mb-3">Reset Password Penyedia</h5>
+                    <div class="alert alert-success reset-success" role="alert" style="display:none;"></div>
+                    <div class="alert alert-danger reset-danger" role="alert" style="display:none;"></div>
+                    <form id="reset">
+                        <div class="mb-2">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Masukan email pendaftaran" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100" id="tblreset">Reset Password</button>
+                    </form>
+                </div>
+                <div class="modal-footer bg-light p-3 justify-content-center">
+                    <p class="mb-0 text-muted">Universitas Negeri Gorontalo</p>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Basic modal -->
+    <div id="DetailModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="fetched-data"></div>
+            </div>
+        </div>
+    </div>
+    <!-- /basic modal -->
 
 
     <!-- JAVASCRIPT -->
@@ -417,12 +544,36 @@ if (empty($_SESSION['csrf_token'])) {
     <script src="<?= $url; ?>assets/js/index.js"></script>
     <script>
         $(document).ready(function() {
-            dataTable = $('#example').DataTable({
+            dataTable = $('#example,#example2').DataTable({
                 stateSave: true,
                 autoWidth: false,
                 processing: true,
                 ordering: false,
                 responsive: true
+            });
+        });
+
+        $('#DetailModal').on('show.bs.modal', function(e) {
+            var act = $(e.relatedTarget).data('act');
+            var id = $(e.relatedTarget).data('id');
+            $.ajax({
+                type: 'post',
+                url: '<?= $url; ?>detail/modal/pengumuman',
+                data: {
+                    act: act,
+                    id: id
+                },
+                beforeSend: function(data) {
+                    // Show image container
+                    $("#wait").show();
+                },
+                success: function(data) {
+                    $('.fetched-data').html(data); //menampilkan data ke dalam modal
+                },
+                complete: function(data) {
+                    // Hide image container
+                    $("#wait").hide();
+                }
             });
         });
     </script>

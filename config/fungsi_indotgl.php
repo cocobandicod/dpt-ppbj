@@ -247,12 +247,9 @@ function izin_usaha($var, $terpilih)
 	for ($i = 1; $i <= 12; $i++) {
 		if ($jk[$i] == $terpilih) {
 			echo '<option value="' . $jk[$i] . '" selected>' . str_replace('-', ' ', $jk[$i]) . '</option>';
-		}
-		/*
-		else {
+		} else {
 			echo '<option value="' . $jk[$i] . '">' . str_replace('-', ' ', $jk[$i]) . '</option>';
 		}
-			*/
 	}
 	echo "</select> ";
 }
@@ -263,6 +260,21 @@ function grade($var, $terpilih)
 	echo "<select name='$var' id='$var' class='form-select' required>";
 	echo '<option value="" selected>Pilih --</option>';
 	for ($i = 1; $i <= 5; $i++) {
+		if ($jk[$i] == $terpilih) {
+			echo '<option value="' . $jk[$i] . '" selected>' . str_replace('-', ' ', $jk[$i]) . '</option>';
+		} else {
+			echo '<option value="' . $jk[$i] . '">' . str_replace('-', ' ', $jk[$i]) . '</option>';
+		}
+	}
+	echo "</select> ";
+}
+
+function kualifikasi_usaha($var, $terpilih)
+{
+	$jk = array(1 => 'Kecil', 'Menengah', 'Besar');
+	echo "<select name='$var' id='$var' class='form-select' required>";
+	echo '<option value="" selected>Pilih --</option>';
+	for ($i = 1; $i <= 3; $i++) {
 		if ($jk[$i] == $terpilih) {
 			echo '<option value="' . $jk[$i] . '" selected>' . str_replace('-', ' ', $jk[$i]) . '</option>';
 		} else {
@@ -292,6 +304,43 @@ function seo($s)
 	$c = array(' ');
 	$s = strtolower(str_replace($c, '', $s)); // Ganti spasi dengan tanda - dan ubah hurufnya menjadi kecil semua
 	return $s;
+}
+
+function tahap($var, $terpilih)
+{
+	$tahap = array(
+		1 => "Pengumuman-Prakualifikasi",
+		"Download-Dokumen-Kualifikasi",
+		"Penjelasan-Dokumen-Prakualifikasi",
+		"Kirim-Persyaratan-Kualifikasi",
+		"Evaluasi-Dokumen-Kualifikasi",
+		"Pembuktian-Kualifikasi",
+		"Penetapan-Hasil-Kualifikasi",
+		"Pengumuman-Hasil-Prakualifikasi",
+		"Masa-Sanggah-Prakualifikasi",
+		"Download-Dokumen-Pemilihan",
+		"Pemberian-Penjelasan",
+		"Upload-Dokumen-Penawaran",
+		"Pembukaan-dan-Evaluasi-Penawaran-File-I:-Administrasi-dan-Teknis",
+		"Pengumuman-Hasil-Evaluasi-Administrasi-dan-Teknis",
+		"Pembukaan-dan-Evaluasi-Penawaran-File-II:-Harga",
+		"Penetapan-Pemenang",
+		"Pengumuman-Pemenang",
+		"Masa-Sanggah",
+		"Klarifikasi-dan-Negosiasi-Teknis-dan-Biaya",
+		"Surat-Penunjukan-Penyedia-Barang/Jasa",
+		"Penandatanganan-Kontrak"
+	);
+	echo "<select name='$var' id='$var' class='form-select' required>";
+	echo '<option value="" selected>Pilih --</option>';
+	for ($a = 1; $a <= 21; $a++) {
+		if ($tahap[$a] == $terpilih) {
+			echo '<option value="' . $tahap[$a] . '" selected>' . str_replace('-', ' ', $tahap[$a]) . '</option>';
+		} else {
+			echo '<option value="' . $tahap[$a] . '">' . str_replace('-', ' ', $tahap[$a]) . '</option>';
+		}
+	}
+	echo "</select> ";
 }
 
 function combonamabln($awal, $akhir, $var, $terpilih)
@@ -396,6 +445,17 @@ function ubah_tgl_edit2($tgl)
 	$bulan = substr($tgl, 5, 2);
 	$tahun = substr($tgl, 0, 4);
 	return $tahun . '-' . $bulan . '-' . $tanggal;
+}
+
+function ubah_jam_edit($tgl)
+{
+	// Cek apakah $tgl tidak kosong dan memiliki format yang diharapkan
+	if (!empty($tgl) && strlen($tgl) >= 16) {
+		$jam = substr($tgl, 11, 2);  // Mengambil jam dari string
+		$menit = substr($tgl, 14, 2); // Mengambil menit dari string
+		return $jam . ':' . $menit;  // Mengembalikan format HH:MM
+	}
+	return ''; // Jika format tidak sesuai atau $tgl kosong
 }
 
 function tgl_indo($tgl)
@@ -722,11 +782,11 @@ function sisa_waktu($tanggal)
 	$masa_berlaku = strtotime(ubah_tanggal($tanggal)) - strtotime($sekarang);
 
 	if ($masa_berlaku / (24 * 60 * 60) < 1) {
-		@$ket = "(Habis Masa Berlaku)";
+		@$ket = "<div class='text-danger fs-10'>(Habis Masa Berlaku)</div>";
 	} else if ($masa_berlaku / (24 * 60 * 60) < 32) {
-		@$ket = "(Habis dalam " . $masa_berlaku / (24 * 60 * 60) . " hari lagi)";
+		@$ket = "<div class='text-danger fs-10'>(" . $masa_berlaku / (24 * 60 * 60) . " hari lagi)</div>";
 	}
-	return @$ket;
+	return tgl_indo($tanggal) . @$ket;
 }
 
 function jumlah_tanggal($tanggal, $jumlah)

@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('../../config/koneksi.php');
+require_once('../../config/fungsi_indotgl.php');
 require_once('../../config/cek_ajax.php');
 
 $sql = $proses->tampil_data_select('*', 'tenaga_ahli', 'id_profil ="' . $_SESSION['kode_profil'] . '"');
@@ -11,7 +12,7 @@ foreach ($sql as $row) {
     $subdata = array();
     $subdata[] = $no;
     $subdata[] = $row['nama'];
-    $subdata[] = $row['tgl_lahir'];
+    $subdata[] = tgl_indo($row['tgl_lahir']);
     $subdata[] = $row['pendidikan'];
     $subdata[] = $row['jabatan'];
     $subdata[] = $row['pengalaman'];

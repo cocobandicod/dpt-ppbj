@@ -9,15 +9,19 @@ Options All -Indexes
 
 RewriteRule ^404$ web/404.php [L]
 RewriteRule ^$ web/index.php?aktif1=active&hal=1 [L]
+
 RewriteRule ^aktivasi/kode/([a-zA-Z0-9/_]+)$ web/aktivasi.php?act=aktivasi&token=$1 [L]
 RewriteRule ^logout$ web/logout.php [L]
 RewriteRule ^beranda$ web/beranda.php?aktif_1=active [L]
 RewriteRule ^ganti/password$ web/ganti_password.php?judul=Ganti-Password [L]
 RewriteRule ^pengumuman$ web/pengumuman.php?judul=Pengumuman&aktif_2=active [L]
 RewriteRule ^info/penting$ web/info_penting.php?judul=Info-Penting&aktif_3=active [L]
-RewriteRule ^regulasi$ web/regulasi.php?judul=Regulasi&aktif_4=active [L]
+RewriteRule ^daftar/penyedia/terpilih$ web/daftar_penyedia_terpilih.php?judul=Daftar-Penyedia-Terpilih&aktif_4=active [L]
+
 RewriteRule ^panduan$ web/panduan.php?judul=Panduan&aktif_5=active [L]
 RewriteRule ^contact$ web/contact.php?judul=Contact&aktif_6=active [L]
+
+RewriteRule ^detail/modal/pengumuman$ web/form/modal_pengumuman.php [L]
 
 RewriteRule ^ubah/profil$ web/profil.php?aktif1=active&judul=Ubah-Profil [L]
 RewriteRule ^dokumen/verifikasi$ web/form/form_dokumen_verifikasi.php?aktif6=active&judul=Dokumen-Verifikasi [L]
@@ -41,9 +45,9 @@ RewriteRule ^syarat/npwp$ web/npwp.php?aktif2=active&aktif22=active&judul=NPWP [
 RewriteRule ^syarat/npwp/add$ web/form/form_npwp.php?aktif2=active&aktif22=active&act=add&judul=Tambah-NPWP [L]
 RewriteRule ^syarat/npwp/edit/([0-9]+)$ web/form/form_npwp.php?aktif2=active&aktif22=active&act=edit&id=$1&judul=Edit-NPWP [L]
 
-RewriteRule ^syarat/kswp$ web/kswp.php?aktif2=active&aktif210=active&judul=KSWP [L]
-RewriteRule ^syarat/kswp/add$ web/form/form_kswp.php?aktif2=active&aktif210=active&act=add&judul=Tambah-KSWP [L]
-RewriteRule ^syarat/kswp/edit/([0-9]+)$ web/form/form_kswp.php?aktif2=active&aktif210=active&act=edit&id=$1&judul=Edit-KSWP [L]
+RewriteRule ^syarat/kswp$ web/kswp.php?aktif2=active&aktif210=active&judul=Konfirmasi-Status-Wajib-Pajak [L]
+RewriteRule ^syarat/kswp/add$ web/form/form_kswp.php?aktif2=active&aktif210=active&act=add&judul=Tambah-Konfirmasi-Status-Wajib-Pajak [L]
+RewriteRule ^syarat/kswp/edit/([0-9]+)$ web/form/form_kswp.php?aktif2=active&aktif210=active&act=edit&id=$1&judul=Edit-Konfirmasi-Status-Wajib-Pajak [L]
 
 RewriteRule ^syarat/domisili$ web/domisili.php?aktif2=active&aktif23=active&judul=Syarat-Domisili [L]
 RewriteRule ^syarat/domisili/add$ web/form/form_domisili.php?aktif2=active&aktif23=active&act=add&judul=Tambah-Syarat-Domisili [L]
@@ -73,6 +77,12 @@ RewriteRule ^syarat/pengalaman$ web/pengalaman.php?aktif3=active&aktif33=active&
 RewriteRule ^syarat/pengalaman/edit/([0-9]+)$ web/form/form_pengalaman.php?aktif3=active&aktif33=active&act=edit&id=$1&judul=Edit-Pengalaman [L]
 RewriteRule ^syarat/pengalaman/add$ web/form/form_pengalaman.php?aktif3=active&aktif33=active&act=add&judul=Tambah-Pengalaman [L]
 RewriteRule ^status/verifikasi$ web/status_verifikasi.php?aktif5=active&judul=Status-Verifikasi [L]
+RewriteRule ^status/catatan$ web/catatan.php?aktif10=active&judul=Catatan [L]
+
+RewriteRule ^paket/pekerjaan$ web/paket_pakerjaan.php?judul=Daftar-Penyedia-Terpilih&aktif9=active [L]
+RewriteRule ^paket/pekerjaan/([a-zA-Z0-9]+)$ web/detail_paket_pakerjaan.php?judul=Paket-Pekerjaan-Yang-Anda-Ikuti&aktif9=active&id=$1 [L]
+RewriteRule ^paket/pekerjaan/([a-zA-Z0-9]+)/kirim/kualifikasi$ web/kirim_kualifikasi.php?judul=Kirim-Data-Kualifikasi&aktif9=active&id=$1 [L]
+
 RewriteRule ^company/profile$ web/company_profile.php?aktif4=active&judul=Company-Profile [L]
 RewriteRule ^company/profile/edit/([0-9]+)$ web/form/form_company_profile.php?aktif4=active&act=edit&id=$1&judul=Edit-Company-Profile [L]
 RewriteRule ^company/profile/add$ web/form/form_company_profile.php?aktif4=active&act=add&judul=Tambah-Company-Profile [L]
@@ -100,6 +110,7 @@ RewriteRule ^tabel/pengalaman$ web/tabel/tabel_pengalaman.php [L]
 RewriteRule ^tabel/company/profile$ web/tabel/tabel_company_profile.php [L]
 RewriteRule ^tabel/detail/pengumuman$ web/tabel/tabel_detail_pengumuman.php [L]
 RewriteRule ^tabel/dokumen/penawaran/teknis$ web/tabel/tabel_dokumen_penawaran_teknis.php [L]
+RewriteRule ^tabel/paket/pekerjaan$ web/tabel/tabel_paket_pekerjaan.php [L]
 
 #----------------------------------------- PROSES -------------------------------------------------
 
@@ -110,6 +121,8 @@ RewriteRule ^proses/dokumen/penawaran/biaya$ web/proses/proses_dokumen_penawaran
 RewriteRule ^proses/profil$ web/proses/proses_profil.php [L]
 RewriteRule ^proses/daftar$ web/proses/proses_daftar.php [L]
 RewriteRule ^proses/login$ web/proses/proses_login.php [L]
+RewriteRule ^proses/reset$ web/proses/proses_reset.php [L]
+
 RewriteRule ^proses/izin/usaha$ web/proses/proses_izin_usaha.php [L]
 RewriteRule ^proses/nib$ web/proses/proses_nib.php [L]
 RewriteRule ^proses/sbu$ web/proses/proses_sbu.php [L]
@@ -131,3 +144,6 @@ RewriteRule ^proses/aktivasi$ web/proses/proses_aktivasi.php [L]
 RewriteRule ^proses/ganti/password$ web/proses/proses_ganti_password.php [L]
 RewriteRule ^setting/proses/setting$ web/proses/proses.php [L]
 RewriteRule ^proses/pengguna$ web/proses/proses.php [L]
+
+RewriteRule ^proses/paket/pekerjaan$ web/proses/proses_paket_pekerjaan.php [L]
+RewriteRule ^proses/kirim/kualifikasi$ web/proses/proses_kirim_kualifikasi.php [L]

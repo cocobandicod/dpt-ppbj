@@ -80,21 +80,35 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                                         <h4 class="card-title mb-0 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
                                     </div><!-- end card header -->
                                     <div class="card-body small">
-                                        <h5 class="mb-3">Penyedia Pengadaan Langsung</h5>
-                                        <table id="DTable" class="table table-bordered dt-responsive table-striped align-middle fs-12" style="width:100%">
+                                        <table id="example" class="table table-bordered dt-responsive table-striped align-middle fs-13" style="width:100%">
                                             <thead>
                                                 <tr>
-                                                    <th>No</th>
+                                                    <th class="text-center" style="width: 3%;">No</th>
                                                     <th>Nama Pekerjaan</th>
-                                                    <th>Nama Perusahaan</th>
-                                                    <th>
-                                                        <center>Nilai (Rp.)</center>
-                                                    </th>
-                                                    <th>
-                                                        <center>TA</center>
-                                                    </th>
+                                                    <th>Sumber Dana</th>
+                                                    <th class="text-center">Nilai HPS (Rp)</th>
                                                 </tr>
                                             </thead>
+                                            <tbody>
+                                                <?php
+                                                $today = date('Y-m-d');
+                                                $sql = $proses->tampil_data_select('*', 'paket_pekerjaan', '1=1 ORDER BY id_paket DESC');
+                                                $no = 1;
+                                                foreach ($sql as $row) {
+                                                    //$p = $proses->tampil_data_saja('GROUP_CONCAT(CONCAT("<span class=\"badge bg-success fs-10 mb-1\">", tahap, "</span>") SEPARATOR " ") as pengumuman', 'jadwal_paket', '1=1 AND id_paket = "' . $row['id_paket'] . '" AND "' . $today . '" BETWEEN DATE(tgl_mulai) AND DATE(tgl_selesai)');
+                                                ?>
+                                                    <tr>
+                                                        <td class="text-center"><?= $no; ?></td>
+                                                        <td><span class="cursor-pointer text-primary" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= @$row['id_paket']; ?>" data-act="pengumuman"><?= @$row['nama_pekerjaan']; ?></span></td>
+                                                        <td><?= $row['sumber_dana']; ?></td>
+                                                        <td class="text-end"><?= number_format(@$row['nilai_hps']); ?></td>
+                                                        <!--
+                                            <td class="text-center"><span class="cursor-pointer text-primary" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= @$row['id_paket']; ?>" data-act="jadwal"><?= @$p['pengumuman']; ?></span></td>
+                                            -->
+                                                    </tr>
+                                                <?php $no++;
+                                                } ?>
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -117,6 +131,16 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
 
     </div>
     <!-- end layout wrapper -->
+
+    <!-- Basic modal -->
+    <div id="DetailModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="fetched-data"></div>
+            </div>
+        </div>
+    </div>
+    <!-- /basic modal -->
 
 
     <!-- JAVASCRIPT -->
@@ -143,36 +167,36 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <script src="<?= $url; ?>assets/js/pages/nft-landing.init.js"></script>
     <script src="<?= $url; ?>assets/js/ajax.js"></script>
     <script>
-        var dataTable
         $(document).ready(function() {
-            dataTable = $('#DTable').DataTable({
+            dataTable = $('#example,#example2').DataTable({
                 stateSave: true,
                 autoWidth: false,
                 processing: true,
                 ordering: false,
-                responsive: true,
-                columnDefs: [{
-                        className: 'text-center p-2',
-                        width: '5%',
-                        targets: [0]
-                    },
-                    {
-                        className: 'text-end p-2',
-                        width: '12%',
-                        targets: [3]
-                    },
-                    {
-                        className: 'text-center p-2',
-                        targets: [4]
-                    },
-                    {
-                        className: 'p-2',
-                        targets: [0, 1, 2, 3, 4]
-                    },
-                ],
-                "ajax": {
-                    url: "<?= $url; ?>tabel/detail/pengumuman",
-                    type: "post"
+                responsive: true
+            });
+        });
+
+        $('#DetailModal').on('show.bs.modal', function(e) {
+            var act = $(e.relatedTarget).data('act');
+            var id = $(e.relatedTarget).data('id');
+            $.ajax({
+                type: 'post',
+                url: '<?= $url; ?>detail/modal/pengumuman',
+                data: {
+                    act: act,
+                    id: id
+                },
+                beforeSend: function(data) {
+                    // Show image container
+                    $("#wait").show();
+                },
+                success: function(data) {
+                    $('.fetched-data').html(data); //menampilkan data ke dalam modal
+                },
+                complete: function(data) {
+                    // Hide image container
+                    $("#wait").hide();
                 }
             });
         });

@@ -11,7 +11,26 @@ if (@$_POST['act'] == 'add') {
         $ekstensi_ok1    = in_array($ext1, $ekstensi_file);
         if (!($ekstensi_ok1)) {
             echo 'gagal';
+            exit();
         } else {
+
+            // Pemeriksaan tipe MIME
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $_FILES['fupload']['tmp_name']);
+            finfo_close($finfo);
+
+            // Daftar tipe MIME yang diperbolehkan
+            $allowedMimeTypes = array(
+                "application/pdf",
+                "image/jpeg",
+            );
+
+            // Pemeriksaan tipe MIME file
+            if (!in_array($mime, $allowedMimeTypes)) {
+                echo 'gagal';
+                exit();
+            }
+
             define("UPLOAD_DIR", "../../berkas/"); // LOKASI FILE
             $myFile1 = $_FILES['fupload'];
             $name1 = uniqid() . "." . $ext1;
@@ -38,7 +57,26 @@ if (@$_POST['act'] == 'add') {
         $ekstensi_ok1    = in_array($ext1, $ekstensi_file);
         if (!($ekstensi_ok1)) {
             echo 'gagal';
+            exit();
         } else {
+
+            // Pemeriksaan tipe MIME
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $_FILES['fupload']['tmp_name']);
+            finfo_close($finfo);
+
+            // Daftar tipe MIME yang diperbolehkan
+            $allowedMimeTypes = array(
+                "application/pdf",
+                "image/jpeg",
+            );
+
+            // Pemeriksaan tipe MIME file
+            if (!in_array($mime, $allowedMimeTypes)) {
+                echo 'gagal';
+                exit();
+            }
+
             $file = $proses->cek_fetch('pemilik_saham', 'id = "' . $_POST['id'] . '"');
             if (!empty($file['file'])) {
                 unlink('../../berkas/' . $file['file']);

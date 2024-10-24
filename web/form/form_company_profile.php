@@ -68,7 +68,7 @@ cek_url($url, $proses, $_GET['act'], 'company_profile', 'id_profil ="' . @$_SESS
                             <div class="col-lg-3 mt-3">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-1 mt-1 flex-grow-1">Menu</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Menu</h4>
                                     </div><!-- end card header -->
                                     <div class="card-body small">
                                         <?= kiri($url, $proses); ?>
@@ -78,7 +78,7 @@ cek_url($url, $proses, $_GET['act'], 'company_profile', 'id_profil ="' . @$_SESS
                             <div class="col-lg-9 mt-3">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-1 mt-1 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
+                                        <h4 class="card-title mb-0 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
                                     </div><!-- end card header -->
                                     <div class="card-body small">
                                         <form id="form" enctype="multipart/form-data">

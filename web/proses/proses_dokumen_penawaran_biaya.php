@@ -39,7 +39,8 @@ if (!empty($_FILES['fupload1']['tmp_name'])) {
         $name1 = uniqid() . "." . $ext1;
         move_uploaded_file($myFile1['tmp_name'], UPLOAD_DIR1 . $name1);
         $data = array(
-            'file_penawaran_biaya'  => $name1
+            'file_penawaran_biaya'  => $name1,
+            'status'                => 'Pending'
         );
         $result = $proses->edit_data('dokumen_penawaran_biaya', $data, 'id_profil', $_SESSION['kode_profil']); // SIMPAN KE DATABASE
     }
@@ -80,7 +81,8 @@ if (!empty($_FILES['fupload2']['tmp_name'])) {
         $name1 = uniqid() . "." . $ext1;
         move_uploaded_file($myFile1['tmp_name'], UPLOAD_DIR2 . $name1);
         $data = array(
-            'file_rekapitulasi'  => $name1
+            'file_rekapitulasi'  => $name1,
+            'status'             => 'Pending'
         );
         $result = $proses->edit_data('dokumen_penawaran_biaya', $data, 'id_profil', $_SESSION['kode_profil']); // SIMPAN KE DATABASE
     }
@@ -121,7 +123,8 @@ if (!empty($_FILES['fupload3']['tmp_name'])) {
         $name1 = uniqid() . "." . $ext1;
         move_uploaded_file($myFile1['tmp_name'], UPLOAD_DIR3 . $name1);
         $data = array(
-            'file_rincian_komponen'  => $name1
+            'file_rincian_komponen'  => $name1,
+            'status'                 => 'Pending'
         );
         $result = $proses->edit_data('dokumen_penawaran_biaya', $data, 'id_profil', $_SESSION['kode_profil']); // SIMPAN KE DATABASE
     }

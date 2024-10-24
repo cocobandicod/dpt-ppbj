@@ -21,6 +21,12 @@ function navbar($url)
                         <a class="nav-link fs-14" href="#pengumuman">Pengumuman</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link fs-14" href="#dpt">Daftar Penyedia Terpilih</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-14" href="#hasil">Hasil Pengadaan</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link fs-14" href="#infopenting">Info Penting</a>
                     </li>
                     <!--
@@ -28,9 +34,6 @@ function navbar($url)
                         <a class="nav-link fs-14" href="#regulasi">Regulasi</a>
                     </li>
                     -->
-                    <li class="nav-item">
-                        <a class="nav-link fs-14" href="#panduan">Panduan</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link fs-14" href="#contact">Contact</a>
                     </li>
@@ -67,16 +70,19 @@ function navbar2($url)
                         <a class="nav-link fs-14 <?= @$_GET['aktif_2'] ?>" href="<?= $url; ?>pengumuman">Pengumuman</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link fs-14 <?= @$_GET['aktif_4'] ?>" href="<?= $url; ?>daftar/penyedia/terpilih">Daftar Penyedia Terpilih</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-14 <?= @$_GET['aktif_7'] ?>" href="<?= $url; ?>hasil">Evaluasi</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link fs-14 <?= @$_GET['aktif_3'] ?>" href="<?= $url; ?>info/penting">Info Penting</a>
                     </li>
                     <!--
                     <li class="nav-item">
-                        <a class="nav-link fs-14 <?= @$_GET['aktif_4'] ?>" href="<?= $url; ?>regulasi">Regulasi</a>
-                    </li>
-                    -->
-                    <li class="nav-item">
                         <a class="nav-link fs-14 <?= @$_GET['aktif_5'] ?>" href="<?= $url; ?>panduan">Panduan</a>
                     </li>
+                    -->
                     <li class="nav-item">
                         <a class="nav-link fs-14 <?= @$_GET['aktif_6'] ?>" href="<?= $url; ?>contact">Contact</a>
                     </li>
@@ -113,32 +119,48 @@ function navbar3($url)
 function kiri($url, $proses)
 {
     $notif1 = $proses->cek_row('catatan', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND status = "Waiting"');
-    $notif2 = $proses->cek_row('catatan', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND status = "Verified"');
-    $notif3 = $proses->cek_row('profil_badan_usaha', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND status = "Terverifikasi"');
-    if ($notif3) {
-        $notif = '<i class="ri-checkbox-circle-fill text-success"></i>';
+    $notif2 = $proses->cek_row('profil_badan_usaha', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND status = "Terverifikasi"');
+    $notif3 = $proses->cek_row(
+        'daftar_penyedia_terpilih a
+        LEFT JOIN paket_pekerjaan b
+        ON a.id_paket = b.id_paket
+        LEFT JOIN tender c
+        ON a.id_paket = c.id_paket',
+        '1=1 AND a.id_profil = "' . $_SESSION['kode_profil'] . '"
+        AND b.status = "Berlangsung"
+        GROUP BY a.id_paket'
+    );
+
+    if ($notif2) {
+        $notif_2 = '<i class="ri-checkbox-circle-fill text-success"></i>';
     } else {
-        $notif = '<i class="ri-close-circle-fill text-danger"></i>';
+        $notif_2 = '<i class="ri-close-circle-fill text-danger"></i>';
     }
-    if ($notif1 && $notif2) {
-        $notif = '<span class="badge rounded-pill bg-danger">' . $notif1 . '</span>';
+    if ($notif1) {
+        $notif_1 = '<span class="badge rounded-pill bg-danger">' . $notif1 . '</span>';
+    } else {
+        $notif_1 = '';
+    }
+    if ($notif3) {
+        $notif_3 = '<span class="badge rounded-pill bg-success">' . $notif3 . '</span>';
+    } else {
+        $notif_3 = '';
     }
 ?>
     <div class="mt-0 mx-n4 px-4 file-menu-sidebar-scroll" data-simplebar>
         <ul class="list-unstyled file-manager-menu">
             <li>
-                <a href="<?= $url; ?>ubah/profil" class="<?= @$_GET['aktif1']; ?>"><i class="ri-file-list-2-line align-bottom me-2"></i> <span class="file-list-link">Ubah Profil</span></a>
+                <a href="<?= $url; ?>ubah/profil" class="<?= @$_GET['aktif1']; ?>"><i class="ri-file-list-2-line align-bottom me-2"></i><span class="file-list-link">Ubah Profil</span></a>
             </li>
             <li>
-                <a href="<?= $url; ?>dokumen/verifikasi" class="<?= @$_GET['aktif6']; ?>"><i class="ri-file-list-2-line align-bottom me-2"></i> <span class="file-list-link">Dokumen Verifikasi</span></a>
+                <a href="<?= $url; ?>dokumen/verifikasi" class="<?= @$_GET['aktif6']; ?>"><i class="ri-file-list-2-line align-bottom me-2"></i><span class="file-list-link">Dokumen Verifikasi</span></a>
             </li>
             <li>
                 <a data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample" class="<?= @$_GET['aktif2']; ?>">
-                    <i class="ri-folder-2-line align-bottom me-2"></i> <span class="file-list-link">Syarat Pendaftaran</span>
+                    <i class="ri-folder-2-line align-bottom me-2"></i><span class="file-list-link">Syarat Pendaftaran</span>
                 </a>
                 <div class="collapse buka1" id="collapseExample1">
                     <ul class="sub-menu list-unstyled">
-                        <!--
                         <li class="pt-2">
                             <a href="<?= $url; ?>syarat/izin/usaha" class="<?= @$_GET['aktif21']; ?>">Copy Surat Izin Usaha</a>
                         </li>
@@ -163,7 +185,10 @@ function kiri($url, $proses)
                         <li>
                             <a href="<?= $url; ?>syarat/pajak" class="<?= @$_GET['aktif28']; ?>">Copy Pajak</a>
                         </li>
-                        -->
+                        <li>
+                            <a href="<?= $url; ?>syarat/kswp" class="<?= @$_GET['aktif210']; ?>">KSWP</a>
+                        </li>
+                        <!--
                         <li class="pt-2">
                             <a href="<?= $url; ?>syarat/nib" class="<?= @$_GET['aktif21']; ?>">Nomor Induk Berusaha (NIB)</a>
                         </li>
@@ -173,12 +198,13 @@ function kiri($url, $proses)
                         <li>
                             <a href="<?= $url; ?>syarat/kswp" class="<?= @$_GET['aktif210']; ?>">KSWP</a>
                         </li>
+                        -->
                     </ul>
                 </div>
             </li>
             <li>
                 <a data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample" class="<?= @$_GET['aktif3']; ?>">
-                    <i class="ri-folder-2-line align-bottom me-2"></i> <span class="file-list-link">Syarat Kualifikasi Lainnya</span>
+                    <i class="ri-folder-2-line align-bottom me-2"></i><span class="file-list-link">Syarat Kualifikasi Lainnya</span>
                 </a>
                 <div class="collapse buka2" id="collapseExample2">
                     <ul class="sub-menu list-unstyled">
@@ -194,22 +220,28 @@ function kiri($url, $proses)
                     </ul>
                 </div>
             </li>
+            <!--
             <li>
                 <a href="<?= $url; ?>company/profile" class="<?= @$_GET['aktif4']; ?>"><i class="ri-image-2-line align-bottom me-2"></i> <span class="file-list-link">Company Profile / CV</span></a>
             </li>
+            -->
+            <li>
+                <a href="<?= $url; ?>status/catatan" class="<?= @$_GET['aktif10']; ?>"><i class="ri-file-unknow-line align-bottom me-2"></i><span class="file-list-link">Catatan </span>
+                    <?= $notif_1; ?>
+                </a>
+            </li>
             <li>
                 <a href="<?= $url; ?>status/verifikasi" class="<?= @$_GET['aktif5']; ?>"><i class="ri-file-unknow-line align-bottom me-2"></i><span class="file-list-link">Status Verifikasi </span>
-                    <?= $notif; ?>
+                    <?= $notif_2; ?>
                 </a>
             </li>
             <?php
-            if ($notif3) {
+            if ($notif_3) {
             ?>
                 <li>
-                    <a href="<?= $url; ?>dokumen/penawaran/teknis" class="<?= @$_GET['aktif7']; ?>"><i class="ri-file-list-2-line align-bottom me-2"></i> <span class="file-list-link">Dokumen Penawaran Teknis</span></a>
-                </li>
-                <li>
-                    <a href="<?= $url; ?>dokumen/penawaran/biaya" class="<?= @$_GET['aktif8']; ?>"><i class="ri-file-list-2-line align-bottom me-2"></i> <span class="file-list-link">Dokumen Penawaran Biaya</span></a>
+                    <a href="<?= $url; ?>paket/pekerjaan" class="<?= @$_GET['aktif9']; ?>"><i class="ri-file-list-2-line align-bottom me-2"></i><span class="file-list-link">Paket Pekerjaan</span>
+                        <?= $notif_3; ?>
+                    </a>
                 </li>
             <?php
             } else {
@@ -322,7 +354,6 @@ function sidebar($url)
                             <i class="mdi mdi-home"></i> <span data-key="t-widgets">Beranda</span>
                         </a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link menu-link fs-14 <?= @$_GET['aktif2']; ?>" href="<?= $url; ?>operator/user">
                             <i class="mdi mdi-account-lock"></i> <span data-key="t-widgets">User Management</span>
@@ -331,8 +362,56 @@ function sidebar($url)
 
                     <li class="nav-item">
                         <a class="nav-link menu-link fs-14 <?= @$_GET['aktif3']; ?>" href="<?= $url; ?>operator/penyedia">
-                            <i class="mdi mdi-account-box-multiple"></i> <span data-key="t-widgets">Penyedia</span>
+                            <i class="mdi mdi-account-box-multiple"></i> <span data-key="t-widgets">Data Penyedia</span>
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link fs-14 <?= @$_GET['aktif11']; ?>" href="<?= $url; ?>operator/evaluasi">
+                            <i class="ri-checkbox-circle-line"></i> <span data-key="t-widgets">Evaluasi</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link <?= @$_GET['aktif_1']; ?>" href="#pekerjaan" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="pekerjaan">
+                            <i class="ri-truck-line"></i> <span data-key="t-dashboards">Pekerjaan</span>
+                        </a>
+                        <div class="collapse menu-dropdown <?= @$_GET['show1']; ?>" id="pekerjaan">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link menu-link fs-14 <?= @$_GET['aktif10']; ?>" href="<?= $url; ?>operator/paket-pekerjaan">
+                                        Paket Pekerjaan
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link menu-link fs-14 <?= @$_GET['aktif5']; ?>" href="<?= $url; ?>operator/dpt">
+                                        Penyedia Terpilih
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link <?= @$_GET['aktif_2']; ?>" href="#informasi" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="informasi">
+                            <i class="mdi mdi-information-outline"></i> <span data-key="t-dashboards">Informasi</span>
+                        </a>
+                        <div class="collapse menu-dropdown <?= @$_GET['show2']; ?>" id="informasi">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link menu-link fs-14 <?= @$_GET['aktif6']; ?>" href="<?= $url; ?>operator/info/penting">
+                                        Info Penting
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link menu-link fs-14 <?= @$_GET['aktif8']; ?>" href="<?= $url; ?>operator/panduan">
+                                        Panduan
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link menu-link fs-14 <?= @$_GET['aktif9']; ?>" href="<?= $url; ?>operator/contact">
+                                        Contact
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <!--
                     <li class="nav-item">
@@ -341,35 +420,6 @@ function sidebar($url)
                         </a>
                     </li>
                     -->
-                    <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Informasi</span></li>
-
-                    <li class="nav-item">
-                        <a class="nav-link menu-link fs-14 <?= @$_GET['aktif5']; ?>" href="<?= $url; ?>operator/pengumuman">
-                            <i class="mdi mdi-information-outline"></i> <span data-key="t-widgets">Pengumuman</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link menu-link fs-14 <?= @$_GET['aktif6']; ?>" href="<?= $url; ?>operator/info/penting">
-                            <i class="mdi mdi-comment-processing-outline"></i> <span data-key="t-widgets">Info Penting</span>
-                        </a>
-                    </li>
-                    <!--
-                    <li class="nav-item">
-                        <a class="nav-link menu-link fs-14 <?= @$_GET['aktif7']; ?>" href="<?= $url; ?>operator/regulasi">
-                            <i class="mdi mdi-newspaper-variant-outline"></i> <span data-key="t-widgets">Regulasi</span>
-                        </a>
-                    </li>
-                    -->
-                    <li class="nav-item">
-                        <a class="nav-link menu-link fs-14 <?= @$_GET['aktif8']; ?>" href="<?= $url; ?>operator/panduan">
-                            <i class="mdi mdi-bookmark-box-multiple-outline"></i> <span data-key="t-widgets">Panduan</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link menu-link fs-14 <?= @$_GET['aktif9']; ?>" href="<?= $url; ?>operator/contact">
-                            <i class="ri-contacts-book-2-line"></i> <span data-key="t-widgets">Contact</span>
-                        </a>
-                    </li>
                 </ul>
             </div>
             <!-- Sidebar -->

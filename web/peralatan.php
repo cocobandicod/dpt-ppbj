@@ -69,7 +69,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                             <div class="col-lg-3 mt-3">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-1 mt-1 flex-grow-1">Menu</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Menu</h4>
                                     </div><!-- end card header -->
                                     <div class="card-body small">
                                         <?= kiri($url, $proses); ?>

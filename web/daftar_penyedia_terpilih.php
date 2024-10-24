@@ -25,6 +25,13 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <!--Swiper slider css-->
     <link href="<?= $url; ?>assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
 
+    <!--datatable css-->
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/buttons/2.2.2/css/buttons.dataTables.min.css">
+
     <!-- Layout config Js -->
     <script src="<?= $url; ?>assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
@@ -73,7 +80,35 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                                         <h4 class="card-title mb-0 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
                                     </div><!-- end card header -->
                                     <div class="card-body small">
-                                        <p>Belum ada data</p>
+                                        <table id="example2" class="table table-bordered dt-responsive table-striped align-middle fs-13" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center" style="width: 3%;">No</th>
+                                                    <th>Nama Pekerjaan</th>
+                                                    <th class="text-center" style="width: 10%;">Penyedia</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $sql = $proses->tampil_data_select(
+                                                    'a.id_daftar,b.id_paket,b.nama_pekerjaan,COUNT(a.id_daftar) AS jum',
+                                                    'daftar_penyedia_terpilih a
+                                                    LEFT JOIN paket_pekerjaan b
+                                                    ON a.id_paket = b.id_paket',
+                                                    '1=1 GROUP BY a.id_paket'
+                                                );
+                                                $no = 1;
+                                                foreach ($sql as $row) {
+                                                ?>
+                                                    <tr>
+                                                        <td class="text-center"><?= $no; ?></td>
+                                                        <td><span class="cursor-pointer text-primary" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= @$row['id_paket']; ?>" data-act="penyedia"><?= $row['nama_pekerjaan']; ?></span></td>
+                                                        <td class="text-center"><?= $row['jum']; ?></td>
+                                                    </tr>
+                                                <?php $no++;
+                                                } ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -96,6 +131,16 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     </div>
     <!-- end layout wrapper -->
 
+    <!-- Basic modal -->
+    <div id="DetailModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="fetched-data"></div>
+            </div>
+        </div>
+    </div>
+    <!-- /basic modal -->
+
 
     <!-- JAVASCRIPT -->
     <script src="<?= $url; ?>assets/js/jquery-3.6.0.min.js"></script>
@@ -104,6 +149,12 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <script src="<?= $url; ?>assets/libs/node-waves/waves.min.js"></script>
     <script src="<?= $url; ?>assets/libs/feather-icons/feather.min.js"></script>
     <script src="<?= $url; ?>assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
+
+    <!--datatable js-->
+    <script src="<?= $url; ?>assets/css/datatables/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="<?= $url; ?>assets/css/datatables/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="<?= $url; ?>assets/css/datatables/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="<?= $url; ?>assets/css/datatables/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
 
     <!--Swiper slider js-->
     <script src="<?= $url; ?>assets/libs/swiper/swiper-bundle.min.js"></script>
@@ -115,7 +166,39 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <script src="<?= $url; ?>assets/js/pages/nft-landing.init.js"></script>
     <script src="<?= $url; ?>assets/js/ajax.js"></script>
     <script>
+        $(document).ready(function() {
+            dataTable = $('#example,#example2').DataTable({
+                stateSave: true,
+                autoWidth: false,
+                processing: true,
+                ordering: false,
+                responsive: true
+            });
+        });
 
+        $('#DetailModal').on('show.bs.modal', function(e) {
+            var act = $(e.relatedTarget).data('act');
+            var id = $(e.relatedTarget).data('id');
+            $.ajax({
+                type: 'post',
+                url: '<?= $url; ?>detail/modal/pengumuman',
+                data: {
+                    act: act,
+                    id: id
+                },
+                beforeSend: function(data) {
+                    // Show image container
+                    $("#wait").show();
+                },
+                success: function(data) {
+                    $('.fetched-data').html(data); //menampilkan data ke dalam modal
+                },
+                complete: function(data) {
+                    // Hide image container
+                    $("#wait").hide();
+                }
+            });
+        });
     </script>
 </body>
 

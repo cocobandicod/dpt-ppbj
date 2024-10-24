@@ -24,6 +24,13 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?= $url; ?>assets/images/icon.png">
 
+    <!--datatable css-->
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/buttons/2.2.2/css/buttons.dataTables.min.css">
+
     <!-- Layout config Js -->
     <script src="<?= $url; ?>assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
@@ -88,15 +95,25 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
                                             <div class="col-sm-6 pt-3 pb-3">
                                                 <?php
                                                 $cek = $proses->cek_row('catatan', 'id_profil = "' . $_GET['id'] . '" AND status = "Verified" GROUP BY menu');
-                                                if ($cek == 8) {
+                                                if ($cek >= 9) {
                                                     $kunci = '';
+                                                    $ket = '';
                                                 } else {
                                                     $kunci = 'disabled';
+                                                    $ket = '
+                                                    <div class="alert alert-danger" role="alert">
+                                                        Tombol Verifikasi Penyedia akan aktif jika semua berkas syarat pendaftaran telah di verifikasi
+                                                    </div>
+                                                    ';
                                                 }
                                                 ?>
                                                 <button id="verifikasi" data-id="<?= $row['id_profil']; ?>" data-nama="<?= $row['nama_perusahaan']; ?>" type="button" class="btn btn-success btn-label waves-effect waves-light float-end <?= $kunci; ?>"><i class="ri-checkbox-circle-line label-icon align-middle fs-16 me-2"></i> Verifikasi Penyedia</button>
                                             </div>
+
                                             <!-- Base Example -->
+                                            <div class="col-sm-12 pt-0 pb-0">
+                                                <?= $ket; ?>
+                                            </div>
                                             <div class="accordion" id="default-accordion-example">
                                                 <div class="accordion-item">
                                                     <h2 class="accordion-header" id="head1">
@@ -177,7 +194,7 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
                                                                                 <i class="<?= $iconB; ?>"></i>
                                                                             </div>
                                                                             <div class="flex-grow-1 ms-2">
-                                                                                Surat Kuasa <?= $downloadB; ?>
+                                                                                Surat Kuasa (Jika Ada) <?= $downloadB; ?>
                                                                             </div>
                                                                         </div>
                                                                         <div class="d-flex">
@@ -237,6 +254,10 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
                                                             <div class="row">
                                                                 <div class="col-md-2">
                                                                     <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                                                        <!--
+                                                                        <a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" href="#v-pills-12" role="tab" aria-controls="v-pills-12" aria-selected="true">Nomor Induk Berusaha (NIB)</a>
+                                                                        <a class="nav-link" id="v-pills-home-tab" data-bs-toggle="pill" href="#v-pills-13" role="tab" aria-controls="v-pills-13" aria-selected="true">Sertifikat Badan Usaha (SBU)</a>
+                                                                        -->
                                                                         <a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" href="#v-pills-1" role="tab" aria-controls="v-pills-1" aria-selected="true">Izin Usaha</a>
                                                                         <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" href="#v-pills-8" role="tab" aria-controls="v-pills-8" aria-selected="false">NPWP</a>
                                                                         <a class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" href="#v-pills-2" role="tab" aria-controls="v-pills-2" aria-selected="false">Domisili</a>
@@ -245,10 +266,12 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
                                                                         <a class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" href="#v-pills-5" role="tab" aria-controls="v-pills-5" aria-selected="false">Pengurus</a>
                                                                         <a class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" href="#v-pills-6" role="tab" aria-controls="v-pills-6" aria-selected="false">Pemilik Saham</a>
                                                                         <a class="nav-link" id="v-pills-settings-tab" data-bs-toggle="pill" href="#v-pills-7" role="tab" aria-controls="v-pills-7" aria-selected="false">Pajak</a>
+                                                                        <a class="nav-link" id="v-pills-home-tab" data-bs-toggle="pill" href="#v-pills-14" role="tab" aria-controls="v-pills-14" aria-selected="true">KSWP</a>
                                                                     </div>
                                                                 </div><!-- end col -->
                                                                 <div class="col-md-10">
                                                                     <div class="tab-content text-muted mt-4 mt-md-0" id="v-pills-tabContent">
+
                                                                         <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="v-pills-home-tab">
                                                                             <h5>Izin Usaha</h5>
                                                                             <div class="tabel_izin_usaha"></div>
@@ -280,6 +303,22 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
                                                                         <div class="tab-pane fade" id="v-pills-7" role="tabpanel" aria-labelledby="v-pills-settings-tab">
                                                                             <h5>Pajak</h5>
                                                                             <div class="tabel_pajak"></div>
+                                                                        </div>
+
+                                                                        <!--
+                                                                        <div class="tab-pane fade show active" id="v-pills-12" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                                                                            <h5>Nomor Induk Berusaha (NIB)</h5>
+                                                                            <div class="tabel_nib"></div>
+                                                                        </div>
+
+                                                                        <div class="tab-pane fade" id="v-pills-13" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                                                                            <h5>Sertifikat Badan Usaha (SBU)</h5>
+                                                                            <div class="tabel_sbu"></div>
+                                                                        </div>
+                                                                        -->
+                                                                        <div class="tab-pane fade" id="v-pills-14" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                                                                            <h5>KSWP</h5>
+                                                                            <div class="tabel_kswp"></div>
                                                                         </div>
                                                                     </div><!--  end col -->
                                                                 </div>
@@ -323,6 +362,42 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <!--
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header" id="head5">
+                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#open5" aria-expanded="false" aria-controls="open5">
+                                                            Dokumen Penawaran Teknis
+                                                        </button>
+                                                    </h2>
+                                                    <div id="open5" class="accordion-collapse collapse" aria-labelledby="head5" data-bs-parent="#default-accordion-example">
+                                                        <div class="accordion-body">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="tabel_teknis"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header" id="head6">
+                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#open6" aria-expanded="false" aria-controls="open6">
+                                                            Dokumen Penawaran Biaya
+                                                        </button>
+                                                    </h2>
+                                                    <div class="revdiv4">
+                                                        <div id="open6" class="accordion-collapse collapse" aria-labelledby="head6" data-bs-parent="#default-accordion-example">
+                                                            <div class="accordion-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="tabel_biaya"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                -->
                                             </div>
                                         </div>
                                     </div>
@@ -426,6 +501,12 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
         <script src="<?= $url; ?>assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
         <script src="<?= $url; ?>assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
+        <!--datatable js-->
+        <script src="<?= $url; ?>assets/css/datatables/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script src="<?= $url; ?>assets/css/datatables/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+        <script src="<?= $url; ?>assets/css/datatables/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+        <script src="<?= $url; ?>assets/css/datatables/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+
         <!-- prismjs plugin -->
         <script src="<?= $url; ?>assets/libs/prismjs/prism.js"></script>
         <script src="<?= $url; ?>assets/js/toastify-js.js"></script>
@@ -444,7 +525,7 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
                     var act = $(e.relatedTarget).data('act');
                     $('#myModalview').text('View');
                     if (act === 'pdf') {
-                        $('#viewfile').html('<iframe src="https://docs.google.com/viewer?embedded=true&url=<?= $url; ?>berkas/' + id + '" style="width: 100%; height: 500px; border: none;"></iframe>');
+                        $('#viewfile').html('<iframe src="<?= $url; ?>berkas/' + id + '" style="width: 100%; height: 700px; border: none;"></iframe>');
                     } else {
                         $('#viewfile').html('<img src="<?= $url; ?>berkas/' + id + '" class="gallery-img img-fluid mx-auto">');
                     }
@@ -468,6 +549,7 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
                     $('#db').val(db);
                     $('#act').val(action);
                 });
+
                 detail_tabel('izin_usaha');
                 detail_tabel('domisili');
                 detail_tabel('tdp');
@@ -475,11 +557,20 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
                 detail_tabel('pengurus');
                 detail_tabel('pemilik_saham');
                 detail_tabel('pajak');
+                detail_tabel('npwp');
+
                 detail_tabel('tenaga_ahli');
                 detail_tabel('peralatan');
                 detail_tabel('pengalaman');
-                detail_tabel('npwp');
                 detail_tabel('penyedia');
+
+                detail_tabel('nib');
+                detail_tabel('sbu');
+                detail_tabel('kswp');
+                /*
+                detail_tabel('teknis');
+                detail_tabel('biaya');
+                */
             });
 
             function detail_tabel(judul) {
@@ -491,6 +582,7 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
                         id: <?= $_GET['id']; ?>
                     },
                     success: function(data) {
+
                         if (judul == 'izin_usaha') {
                             $('.tabel_izin_usaha').html(data);
                         }
@@ -512,6 +604,9 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
                         if (judul == 'pajak') {
                             $('.tabel_pajak').html(data);
                         }
+                        if (judul == 'npwp') {
+                            $('.tabel_npwp').html(data);
+                        }
                         if (judul == 'tenaga_ahli') {
                             $('.tabel_tenaga_ahli').html(data);
                         }
@@ -521,12 +616,26 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
                         if (judul == 'pengalaman') {
                             $('.tabel_pengalaman').html(data);
                         }
-                        if (judul == 'npwp') {
-                            $('.tabel_npwp').html(data);
-                        }
                         if (judul == 'penyedia') {
                             $('.tampil_detail_penyedia').html(data);
                         }
+                        if (judul == 'nib') {
+                            $('.tabel_nib').html(data);
+                        }
+                        if (judul == 'sbu') {
+                            $('.tabel_sbu').html(data);
+                        }
+                        if (judul == 'kswp') {
+                            $('.tabel_kswp').html(data);
+                        }
+                        /*
+                        if (judul == 'teknis') {
+                            $('.tabel_teknis').html(data);
+                        }
+                        if (judul == 'biaya') {
+                            $('.tabel_biaya').html(data);
+                        }
+                        */
                     },
                 });
             };
@@ -580,6 +689,14 @@ cek_url($url, $proses, 'edit', 'profil_badan_usaha', 'id_profil ="' . @$_GET['id
                                 detail_tabel('pajak');
                             } else if (judul == 'npwp') {
                                 detail_tabel('npwp');
+                            } else if (judul == 'sbu') {
+                                detail_tabel('sbu');
+                            } else if (judul == 'kswp') {
+                                detail_tabel('kswp');
+                            } else if (judul == 'dokumen_penawaran_teknis') {
+                                detail_tabel('teknis');
+                            } else if (judul == 'dokumen_penawaran_biaya') {
+                                detail_tabel('biaya');
                             }
                         }
                     },

@@ -197,7 +197,7 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                 var act = $(e.relatedTarget).data('act');
                 $('#myModalview').text('View');
                 if (act === 'pdf') {
-                    $('#viewfile').html('<iframe src="https://docs.google.com/viewer?embedded=true&url=<?= $url; ?>download/' + id + '" style="width: 100%; height: 500px; border: none;"></iframe>');
+                    $('#viewfile').html('<iframe src="<?= $url; ?>download/' + id + '" style="width: 100%; height: 700px; border: none;"></iframe>');
                 } else {
                     $('#viewfile').html('<img src="<?= $url; ?>download/' + id + '" class="gallery-img img-fluid mx-auto">');
                 }

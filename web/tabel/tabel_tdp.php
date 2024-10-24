@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('../../config/koneksi.php');
+require_once('../../config/fungsi_indotgl.php');
 require_once('../../config/cek_ajax.php');
 
 $sql = $proses->tampil_data_select('*', 'tdp', 'id_profil ="' . $_SESSION['kode_profil'] . '"');
@@ -19,8 +20,8 @@ foreach ($sql as $row) {
     $subdata = array();
     $subdata[] = $no;
     $subdata[] = $row['nomor'];
-    $subdata[] = $row['tanggal'];
-    $subdata[] = $row['masa_berlaku'];
+    $subdata[] = tgl_indo($row['tanggal']);
+    $subdata[] = sisa_waktu($row['masa_berlaku']);
     $subdata[] = $status;
     $subdata[] = '
                 <div class="dropdown d-inline-block">

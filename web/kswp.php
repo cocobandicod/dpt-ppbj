@@ -69,7 +69,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                             <div class="col-lg-3 mt-3">
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-1 mt-1 flex-grow-1">Menu</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1">Menu</h4>
                                     </div><!-- end card header -->
                                     <div class="card-body small">
                                         <?= kiri($url, $proses); ?>
@@ -164,7 +164,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                 var act = $(e.relatedTarget).data('act');
                 $('#myModalview').text('View');
                 if (act === 'pdf') {
-                    $('#viewfile').html('<iframe src="https://docs.google.com/viewer?embedded=true&url=<?= $url; ?>berkas/' + id + '" style="width: 100%; height: 500px; border: none;"></iframe>');
+                    $('#viewfile').html('<iframe src="<?= $url; ?>berkas/' + id + '" style="width: 100%; height: 700px; border: none;"></iframe>');
                 } else {
                     $('#viewfile').html('<img src="<?= $url; ?>berkas/' + id + '" class="gallery-img img-fluid mx-auto">');
                 }

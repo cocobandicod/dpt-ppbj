@@ -10,7 +10,7 @@ $tokenAkses = token();
 $captchaUser = strip_tags($_POST["captcha"]);
 
 $username = strip_tags(str_replace(' ', '', $_POST['username']));
-$email = strip_tags($_POST['email']);
+$email = strip_tags(str_replace(' ', '', $_POST['email']));
 $pass = random_char(8);
 
 $cek_user = $proses->cek_count('akun_penyedia', 'username LIKE "%' . $username . '"');
