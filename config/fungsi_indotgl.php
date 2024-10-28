@@ -119,6 +119,21 @@ function login_check2($url)
 	}
 }
 
+function pilih_tahun($var, $terpilih)
+{
+	$tahun = date('Y');
+	echo "<select name='$var' id='$var' class='form-select' required>";
+	echo '<option value="" selected>Pilih --</option>';
+	for ($i = $tahun - 5; $i <= $tahun + 1; $i++) {
+		if ($i == $terpilih) {
+			echo '<option value="' . $i . '" selected>' . $i . '</option>';
+		} else {
+			echo '<option value="' . $i . '">' . $i . '</option>';
+		}
+	}
+	echo "</select> ";
+}
+
 function badan_usaha($var, $terpilih)
 {
 	$jk = array(1 => "CV", "Firma", "Koperasi", "PT", "Perusahaan-Dagang", "UD", "Lainnya");

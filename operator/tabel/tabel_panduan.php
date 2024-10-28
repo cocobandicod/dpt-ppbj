@@ -8,11 +8,9 @@ $sql = $proses->tampil_data_select('*', 'panduan', '1=1');
 $data = array();
 $no = 1;
 foreach ($sql as $row) {
-    $act = pathinfo(@$row['file'], PATHINFO_EXTENSION);
     $subdata = array();
     $subdata[] = $no;
     $subdata[] = $row['judul'];
-    $subdata[] = '<a href="#" data-bs-toggle="modal" data-bs-target="#modalview" data-act="' . $act . '" data-id="' . $row['file'] . '"><i class="ri-search-line"></i> View</a>';
     $subdata[] = '
                 <div class="dropdown d-inline-block">
                     <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">

@@ -2,7 +2,7 @@
 function navbar($url)
 {
 ?>
-    <nav class="navbar navbar-expand-lg navbar-landing fixed-top" id="navbar">
+    <nav class="navbar navbar-expand-lg navbar-landing fixed-top is-sticky">
         <div class="container">
             <a class="navbar-brand" href="index.html">
                 <img src="<?= $url; ?>assets/images/logo-dark.png" class="card-logo card-logo-dark" alt="logo dark" height="30">
@@ -15,33 +15,24 @@ function navbar($url)
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mx-auto mt-2 mt-lg-0" id="navbar-example">
                     <li class="nav-item">
-                        <a class="nav-link fs-14 active" href="#home">Home</a>
+                        <a class="nav-link fs-14 <?= @$_GET['aktif1']; ?>" href="<?= $url; ?>">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-14" href="#pengumuman">Pengumuman</a>
+                        <a class="nav-link fs-14 <?= @$_GET['aktif2']; ?>" href="<?= $url; ?>pengumuman-pengadaan">Pengumuman</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-14" href="#dpt">Daftar Penyedia Terpilih</a>
+                        <a class="nav-link fs-14 <?= @$_GET['aktif3']; ?>" href="<?= $url; ?>dpt-terverifikasi">DPT Terverifikasi</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-14" href="#hasil">Hasil Pengadaan</a>
+                        <a class="nav-link fs-14 <?= @$_GET['aktif4']; ?>" href="<?= $url; ?>hasil-pengadaan">Hasil Pengadaan</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-14" href="#infopenting">Info Penting</a>
+                        <a class="nav-link fs-14 <?= @$_GET['aktif5']; ?>" href="<?= $url; ?>info-penting">Info Penting</a>
                     </li>
-                    <!--
                     <li class="nav-item">
-                        <a class="nav-link fs-14" href="#regulasi">Regulasi</a>
-                    </li>
-                    -->
-                    <li class="nav-item">
-                        <a class="nav-link fs-14" href="#contact">Contact</a>
+                        <a class="nav-link fs-14 <?= @$_GET['aktif6']; ?>" href="<?= $url; ?>panduan-aplikasi">Panduan</a>
                     </li>
                 </ul>
-
-                <div class="">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#loginModals" class="btn btn-success btn-sm">Login Penyedia</a>
-                </div>
             </div>
 
         </div>
@@ -283,7 +274,7 @@ function footer($url)
         </div>
     </footer>
 <?php }
-function sidebar($url)
+function sidebar_ppk($url)
 {
 ?>
     <header id="page-topbar">
@@ -348,7 +339,6 @@ function sidebar($url)
                 <div id="two-column-menu"></div>
                 <ul class="navbar-nav" id="navbar-nav">
                     <li class="menu-title"><span data-key="t-menu">Menu</span></li>
-
                     <li class="nav-item">
                         <a class="nav-link menu-link fs-14 <?= @$_GET['aktif1']; ?>" href="<?= $url; ?>operator/beranda">
                             <i class="mdi mdi-home"></i> <span data-key="t-widgets">Beranda</span>
@@ -360,6 +350,163 @@ function sidebar($url)
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link menu-link fs-14 <?= @$_GET['aktif3']; ?>" href="<?= $url; ?>operator/penyedia">
+                            <i class="mdi mdi-account-box-multiple"></i> <span data-key="t-widgets">Data Penyedia</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link menu-link fs-14 <?= @$_GET['aktif11']; ?>" href="<?= $url; ?>operator/evaluasi">
+                            <i class="ri-checkbox-circle-line"></i> <span data-key="t-widgets">Evaluasi</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link <?= @$_GET['aktif_1']; ?>" href="#pekerjaan" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="pekerjaan">
+                            <i class="ri-truck-line"></i> <span data-key="t-dashboards">Pekerjaan</span>
+                        </a>
+                        <div class="collapse menu-dropdown <?= @$_GET['show1']; ?>" id="pekerjaan">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link menu-link fs-14 <?= @$_GET['aktif13']; ?>" href="<?= $url; ?>operator/paket-sirup">
+                                        Buat Paket
+                                    </a>
+                                </li>
+                                <?php
+                                if ($_SESSION['level'] == 'Pokja') {
+                                ?>
+                                    <li class="nav-item">
+                                        <a class="nav-link menu-link fs-14 <?= @$_GET['aktif10']; ?>" href="<?= $url; ?>operator/paket-pekerjaan">
+                                            Paket Pekerjaan
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link menu-link fs-14 <?= @$_GET['aktif5']; ?>" href="<?= $url; ?>operator/dpt">
+                                            Penyedia Terpilih
+                                        </a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link <?= @$_GET['aktif_2']; ?>" href="#informasi" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="informasi">
+                            <i class="mdi mdi-information-outline"></i> <span data-key="t-dashboards">Informasi</span>
+                        </a>
+                        <div class="collapse menu-dropdown <?= @$_GET['show2']; ?>" id="informasi">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link menu-link fs-14 <?= @$_GET['aktif12']; ?>" href="<?= $url; ?>operator/news/update">
+                                        News & Updates
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link menu-link fs-14 <?= @$_GET['aktif6']; ?>" href="<?= $url; ?>operator/info/penting">
+                                        Info Penting
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link menu-link fs-14 <?= @$_GET['aktif8']; ?>" href="<?= $url; ?>operator/panduan">
+                                        Panduan
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link menu-link fs-14 <?= @$_GET['aktif9']; ?>" href="<?= $url; ?>operator/contact">
+                                        Contact
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!--
+                    <li class="nav-item">
+                        <a class="nav-link menu-link fs-14 <?= @$_GET['aktif4']; ?>" href="<?= $url; ?>operator/satker">
+                            <i class="mdi mdi-account-tie"></i> <span data-key="t-widgets">Update Satker</span>
+                        </a>
+                    </li>
+                    -->
+                </ul>
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+    </div>
+<?php }
+function sidebar_pokja($url)
+{
+?>
+    <header id="page-topbar">
+        <div class="layout-width">
+            <div class="navbar-header">
+                <div class="d-flex">
+                    <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">
+                        <span class="hamburger-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                    </button>
+                </div>
+
+                <div class="d-flex align-items-center">
+
+                    <div class="dropdown ms-sm-3 header-item">
+                        <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="d-flex align-items-center">
+                                <img class="rounded-circle header-profile-user" src="<?= $url; ?>assets/images/avatar-1.jpg" alt="Header Avatar">
+                                <span class="text-start ms-xl-2">
+                                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?= $_SESSION['nama']; ?></span>
+                                    <span class="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text"><?= $_SESSION['level']; ?></span>
+                                </span>
+                            </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- item-->
+                            <h6 class="dropdown-header">Welcome!</h6>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="<?= $url; ?>operator/profil"><i class="mdi mdi-face-agent text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profil</span></a>
+                            <a class="dropdown-item" href="<?= $url; ?>operator/ganti/password"><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Ganti Password</span></a>
+                            <a class="dropdown-item" href="<?= $url; ?>operator/logout"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ========== App Menu ========== -->
+    <div class="app-menu navbar-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box">
+            <!-- Dark Logo-->
+            <a href="index.html" class="logo logo-dark">
+                <span class="logo-sm">
+                    <img src="<?= $url; ?>assets/images/logo-sm.png" alt="" height="40">
+                </span>
+                <span class="logo-lg">
+                    <img src="<?= $url; ?>assets/images/logo-dark.png" alt="" height="35">
+                </span>
+            </a>
+            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
+            </button>
+        </div>
+
+        <div id="scrollbar">
+            <div class="container-fluid ">
+
+                <div id="two-column-menu"></div>
+                <ul class="navbar-nav" id="navbar-nav">
+                    <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link fs-14 <?= @$_GET['aktif1']; ?>" href="<?= $url; ?>operator/beranda">
+                            <i class="mdi mdi-home"></i> <span data-key="t-widgets">Beranda</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link fs-14 <?= @$_GET['aktif2']; ?>" href="<?= $url; ?>operator/user">
+                            <i class="mdi mdi-account-lock"></i> <span data-key="t-widgets">User Management</span>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link menu-link fs-14 <?= @$_GET['aktif3']; ?>" href="<?= $url; ?>operator/penyedia">
                             <i class="mdi mdi-account-box-multiple"></i> <span data-key="t-widgets">Data Penyedia</span>
@@ -396,6 +543,11 @@ function sidebar($url)
                         <div class="collapse menu-dropdown <?= @$_GET['show2']; ?>" id="informasi">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
+                                    <a class="nav-link menu-link fs-14 <?= @$_GET['aktif12']; ?>" href="<?= $url; ?>operator/news/update">
+                                        News & Updates
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link menu-link fs-14 <?= @$_GET['aktif6']; ?>" href="<?= $url; ?>operator/info/penting">
                                         Info Penting
                                     </a>
@@ -424,7 +576,6 @@ function sidebar($url)
             </div>
             <!-- Sidebar -->
         </div>
-
         <div class="sidebar-background"></div>
     </div>
 <?php } ?>

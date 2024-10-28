@@ -1,5 +1,5 @@
-ErrorDocument 404 https://dpt.ppbj.ung.ac.id/404
-ErrorDocument 403 https://dpt.ppbj.ung.ac.id/404
+#ErrorDocument 404 https://dpt.ppbj.ung.ac.id/404
+#ErrorDocument 403 https://dpt.ppbj.ung.ac.id/404
 
 RewriteEngine On
 Options All -Indexes
@@ -8,7 +8,15 @@ Options All -Indexes
 #RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 RewriteRule ^404$ web/404.php [L]
-RewriteRule ^$ web/index.php?aktif1=active&hal=1 [L]
+RewriteRule ^$ web/index.php?aktif1=active [L]
+RewriteRule ^news/updates/([a-zA-Z0-9/-]+)$ web/berita_detail.php?aktif1=active&id=$1 [L]
+RewriteRule ^pengumuman-pengadaan$ web/pengumuman_pengadaan.php?aktif2=active&judul=Pengumuman-Pengadaan [L]
+RewriteRule ^dpt-terverifikasi$ web/dpt_terverifikasi.php?judul=DPT-Terverifikasi&aktif3=active [L]
+RewriteRule ^hasil-pengadaan$ web/hasil_pengadaan.php?judul=Hasil-Pengadaan&aktif4=active [L]
+RewriteRule ^info-penting$ web/informasi_penting.php?judul=Penting&aktif5=active [L]
+RewriteRule ^panduan-aplikasi$ web/panduan_aplikasi.php?judul=Panduan-Aplikasi&aktif6=active [L]
+
+RewriteRule ^login$ web/login.php?aktif1=active&hal=1 [L]
 
 RewriteRule ^aktivasi/kode/([a-zA-Z0-9/_]+)$ web/aktivasi.php?act=aktivasi&token=$1 [L]
 RewriteRule ^logout$ web/logout.php [L]
@@ -17,6 +25,7 @@ RewriteRule ^ganti/password$ web/ganti_password.php?judul=Ganti-Password [L]
 RewriteRule ^pengumuman$ web/pengumuman.php?judul=Pengumuman&aktif_2=active [L]
 RewriteRule ^info/penting$ web/info_penting.php?judul=Info-Penting&aktif_3=active [L]
 RewriteRule ^daftar/penyedia/terpilih$ web/daftar_penyedia_terpilih.php?judul=Daftar-Penyedia-Terpilih&aktif_4=active [L]
+
 
 RewriteRule ^panduan$ web/panduan.php?judul=Panduan&aktif_5=active [L]
 RewriteRule ^contact$ web/contact.php?judul=Contact&aktif_6=active [L]

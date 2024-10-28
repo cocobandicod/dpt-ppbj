@@ -13,7 +13,7 @@ if (empty($_SESSION['csrf_token'])) {
 <head>
 
     <meta charset="utf-8" />
-    <title>Simpan Universitas Negeri Gorontalo</title>
+    <title>Daftar Penyedia Terpilih Universitas Negeri Gorontalo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?= $_SESSION['csrf_token'] ?>">
     <meta content="Daftar Penyedia Terpilih Pengelola Pengadaan Barang dan Jasa Universitas Negeri Gorontalo" name="description" />
@@ -63,227 +63,93 @@ if (empty($_SESSION['csrf_token'])) {
         <!-- end navbar -->
 
         <!-- start hero section -->
-        <section class="section pb-0 hero-section" id="home">
-            <div class="bg-overlay bg-overlay-pattern"></div>
+        <section class="section nft-hero" style="background-image: url(assets/images/bg-home.jpg); background-color: #000; opacity:.95; padding-top:200px; padding-bottom:250px;" id="home">
             <div class="container">
-                <div class="row justify-content-center pb-5">
-                    <div class="col-lg-10 col-sm-10 mb-5 pb-lg-5">
-                        <div class="text-center mt-lg-5 pt-5 pb-5 mb-lg-5">
-                            <h1 class="display-6 fw-semibold mb-3 lh-base pt-5">Daftar Penyedia Terpilih<br><span class="text-success"> Pengelola Pengadaan Barang dan Jasa</span></h1>
-                            <h2 class="pb-5">Universitas Negeri Gorontalo</h2>
-                            <div class="hstack gap-2 justify-content-center">
-                                <a href="#" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" class="btn btn-success">Daftar Penyedia Badan Usaha</a>
+                <div class="row align-items-center gy-4">
+                    <div class="col-lg-7 order-2 order-lg-1">
+                        <div class="text-muted mt-5 mt-lg-0">
+                            <h5 class="fs-12 text-uppercase text-success">Daftar Penyedia Terpilih</h5>
+                            <h1 class="mb-3 ff-secondary fw-semibold text-capitalize lh-base text-white">Universitas Negeri Gorontalo</h1>
+                            <p class="ff-secondary mb-2 text-white">Ini adalah sistem e-procurement Pengelola Barang dan Jasa Universitas Negeri Gorontalo. Silakan daftarkan vendor Anda menjadi Daftar Penyedia Tetap (DPT) agar dapat mengikuti tender yang tersedia.</p>
+                            <div class="mt-4">
+                                <a href="#" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" class="btn btn-success">Daftar Penyedia <i class="ri-arrow-right-line align-middle ms-1"></i></a>
                             </div>
                         </div>
-                    </div><!--end col-->
-                </div><!-- end row -->
-            </div><!-- end container -->
-        </section><!-- end hero section -->
-
-        <!-- start wallet -->
-        <section class="section" id="pengumuman">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-12">
-                        <div class="mb-5">
-                            <h2 class="mb-3 fw-bold lh-base text-center">Pengumuman Pengadaan</h2>
-                            <p class="text-muted text-center">Paket Pekerjaan Pengadaan Barang dan Jasa</p>
-                            <table id="example" class="table table-bordered dt-responsive table-striped align-middle fs-14" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" style="width: 3%;">No</th>
-                                        <th>Nama Pekerjaan</th>
-                                        <th>Sumber Dana</th>
-                                        <th class="text-center">Nilai HPS (Rp)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $today = date('Y-m-d');
-                                    $sql = $proses->tampil_data_select('*', 'paket_pekerjaan', '1=1 ORDER BY id_paket DESC');
-                                    $no = 1;
-                                    foreach ($sql as $row) {
-                                        //$p = $proses->tampil_data_saja('GROUP_CONCAT(CONCAT("<span class=\"badge bg-success fs-10 mb-1\">", tahap, "</span>") SEPARATOR " ") as pengumuman', 'jadwal_paket', '1=1 AND id_paket = "' . $row['id_paket'] . '" AND "' . $today . '" BETWEEN DATE(tgl_mulai) AND DATE(tgl_selesai)');
-                                    ?>
-                                        <tr>
-                                            <td class="text-center"><?= $no; ?></td>
-                                            <td><span class="cursor-pointer text-primary" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= @$row['id_paket']; ?>" data-act="pengumuman"><?= @$row['nama_pekerjaan']; ?></span></td>
-                                            <td><?= $row['sumber_dana']; ?></td>
-                                            <td class="text-end"><?= number_format(@$row['nilai_hps']); ?></td>
-                                            <!--
-                                            <td class="text-center"><span class="cursor-pointer text-primary" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= @$row['id_paket']; ?>" data-act="jadwal"><?= @$p['pengumuman']; ?></span></td>
-                                            -->
-                                        </tr>
-                                    <?php $no++;
-                                    } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!-- end col -->
-                </div><!-- end row -->
-
-                <div class="row g-4">
-
-                </div><!-- end row -->
-            </div><!-- end container -->
-        </section><!-- end wallet -->
-
-        <!-- start wallet -->
-        <section class="section" id="dpt">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-12">
-                        <div class="mb-5">
-                            <h2 class="mb-3 fw-bold lh-base text-center">Daftar Penyedia Terpilih</h2>
-                            <p class="text-muted text-center">Paket Pekerjaan Pengadaan Barang dan Jasa</p>
-                            <table id="example2" class="table table-bordered dt-responsive table-striped align-middle fs-14" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" style="width: 3%;">No</th>
-                                        <th>Nama Pekerjaan</th>
-                                        <th class="text-center" style="width: 10%;">Penyedia</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $sql = $proses->tampil_data_select(
-                                        'a.id_daftar,b.id_paket,b.nama_pekerjaan,COUNT(a.id_daftar) AS jum',
-                                        'daftar_penyedia_terpilih a
-                                        LEFT JOIN paket_pekerjaan b
-                                        ON a.id_paket = b.id_paket',
-                                        '1=1 GROUP BY a.id_paket'
-                                    );
-                                    $no = 1;
-                                    foreach ($sql as $row) {
-                                    ?>
-                                        <tr>
-                                            <td class="text-center"><?= $no; ?></td>
-                                            <td><span class="cursor-pointer text-primary" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= @$row['id_paket']; ?>" data-act="penyedia"><?= $row['nama_pekerjaan']; ?></span></td>
-                                            <td class="text-center"><?= $row['jum']; ?></td>
-                                        </tr>
-                                    <?php $no++;
-                                    } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!-- end col -->
-                </div><!-- end row -->
-
-                <div class="row g-4">
-
-                </div><!-- end row -->
-            </div><!-- end container -->
-        </section><!-- end wallet -->
-
-        <!-- start wallet -->
-        <section class="section" id="hasil">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-12">
-                        <div class="mb-5">
-                            <h2 class="mb-3 fw-bold lh-base text-center">Hasil Pengadaan</h2>
-                            <p class="text-muted text-center">Paket Pekerjaan Pengadaan Barang dan Jasa</p>
-                            <table id="example2" class="table table-bordered dt-responsive table-striped align-middle fs-14" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" style="width: 3%;">No</th>
-                                        <th>Nama Pekerjaan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $sql = $proses->tampil_data_select('*', 'paket_pekerjaan', '1=1 ORDER BY id_paket DESC');
-                                    $no = 1;
-                                    foreach ($sql as $row) {
-                                    ?>
-                                        <tr>
-                                            <td class="text-center"><?= $no; ?></td>
-                                            <td><span class="cursor-pointer text-primary" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= @$row['id_paket']; ?>" data-act="evaluasi"><?= $row['nama_pekerjaan']; ?></span></td>
-                                        </tr>
-                                    <?php $no++;
-                                    } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!-- end col -->
-                </div><!-- end row -->
-
-                <div class="row g-4">
-
-                </div><!-- end row -->
-            </div><!-- end container -->
-        </section><!-- end wallet -->
-
-        <section class="section bg-light" id="infopenting">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-12">
-                        <div class="text-center mb-5">
-                            <h2 class="mb-3 fw-bold lh-base">Info Penting</h2>
-                        </div>
-                        <!-- Base Example -->
-                        <div class="accordion" id="default-accordion-example">
-                            <?php
-                            $sql = $proses->tampil_data_select('*', 'info_penting', '1=1');
-                            $no = 1;
-                            foreach ($sql as $row) {
-                            ?>
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="heading<?= $no; ?>">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $no; ?>" aria-expanded="false" aria-controls="collapse<?= $no; ?>">
-                                            <?= $row['judul']; ?>
-                                        </button>
-                                    </h2>
-                                    <div id="collapse<?= $no; ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $no; ?>" data-bs-parent="#default-accordion-example">
-                                        <div class="accordion-body">
-                                            <?= $row['isi']; ?>
+                    </div>
+                    <!-- end col -->
+                    <div class="col-lg-4 col-sm-7 col-10 ms-lg-auto mx-auto order-1 order-lg-2">
+                        <div>
+                            <div class="card shadow-lg">
+                                <div class="card-body">
+                                    <h5 class="mb-4">Login Penyedia</h5>
+                                    <div class="alert alert-success login-success small" role="alert" style="display:none;"></div>
+                                    <div class="alert alert-danger login-danger small" role="alert" style="display:none;"></div>
+                                    <form id="login">
+                                        <div class="mb-2">
+                                            <input type="text" class="form-control" name="username" id="username" placeholder="Masukan username" required>
                                         </div>
+                                        <div class="mb-3">
+                                            <input type="password" class="form-control" name="password" id="password" placeholder="Masukan password" required>
+                                        </div>
+                                        <div class="mt-4 hstack gap-2">
+                                            <button type="submit" class="btn btn-success w-100" id="tblmasuk">Masuk</button>
+                                        </div>
+                                    </form>
+                                    <div class="text-center mt-2">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#resetModals" class="fs-12 text-danger">Lupa Password</a>
                                     </div>
                                 </div>
-                            <?php $no++;
-                            } ?>
+                            </div>
                         </div>
-                    </div><!-- end col -->
-                </div><!-- end row -->
-                <div class="row">
-
-                </div>
-            </div><!-- end container -->
-        </section>
-
-        <!-- start plan -->
-        <section class="section" id="panduan">
-            <div class="container-fluid">
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="mb-5">
-                            <h2 class="mb-3 fw-bold lh-base text-center">Panduan</h2>
-                            <p class="text-muted text-center">Petunjuk penggunaan aplikasi dapat di download dibawah ini</p>
-                            <?php
-                            $sql = $proses->tampil_data_select('*', 'panduan', '1=1');
-                            $no = 1;
-                            foreach ($sql as $row) {
-                            ?>
-                                <div class="d-flex">
-                                    <div class="flex-shrink-0">
-                                        <i class="ri-checkbox-circle-fill text-success"></i>
-                                    </div>
-                                    <div class="flex-grow-1 ms-2">
-                                        <?= $row['judul']; ?> <a href="<?= $url; ?>download/<?= $row['file']; ?>" target="_blank"><span class="badge text-bg-success">Download</span></a>
-                                    </div>
-                                </div>
-                            <?php } ?>
-                        </div>
-                    </div><!-- end col -->
-                </div><!-- end row -->
-                <div class="row">
-                    <div class="col-lg-12">
-
                     </div>
                 </div>
             </div><!-- end container -->
+        </section><!-- end hero section -->
+
+        <section class="section" id="blog">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="text-center mb-5">
+                            <h1 class="mb-3 ff-secondary fw-semibold text-capitalize lh-base">News & <span class="text-success">Updates</span></h1>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+                <div class="row">
+                    <div class="col-lg-12 col-md-6">
+                        <?php
+                        $sql = $proses->tampil_data_select(
+                            'a.*,b.nama',
+                            'berita a LEFT JOIN operator b
+                            ON a.id_operator = b.id_operator',
+                            '1=1 ORDER BY a.tanggal DESC'
+                        );
+                        $no = 1;
+                        foreach ($sql as $row) {
+                        ?>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <ul class="list-inline fs-14 text-muted mb-2">
+                                        <li class="list-inline-item">
+                                            <i class="ri-calendar-line align-bottom me-1"></i> <?= tgl_indo($row['tanggal']); ?>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <i class="ri-user-3-line align-bottom me-1"></i> <?= $row['nama']; ?>
+                                        </li>
+                                    </ul>
+                                    <h5><?= $row['judul']; ?></h5>
+                                    <div>
+                                        <a href="<?= $url; ?>news/updates/<?= $row['judul_seo']; ?>" class="link-success">Selengkapnya <i class="ri-arrow-right-line align-bottom ms-1"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+            <!-- end container -->
         </section>
-        <!-- end plan -->
 
         <!-- Start footer -->
         <footer class="custom-footer bg-dark py-5 position-relative" id="contact">
@@ -300,7 +166,6 @@ if (empty($_SESSION['csrf_token'])) {
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="row text-center text-sm-start align-items-center mt-5">
@@ -460,31 +325,6 @@ if (empty($_SESSION['csrf_token'])) {
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div>
-
-    <div id="loginModals" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 overflow-hidden">
-                <div class="modal-body p-5 pb-3">
-                    <h5 class="mb-3">Login Penyedia</h5>
-                    <div class="alert alert-success login-success" role="alert" style="display:none;"></div>
-                    <div class="alert alert-danger login-danger" role="alert" style="display:none;"></div>
-                    <form id="login">
-                        <div class="mb-2">
-                            <input type="text" class="form-control" name="username" id="username" placeholder="Masukan username" required>
-                        </div>
-                        <div class="mb-3">
-                            <input type="password" class="form-control" name="password" id="password" placeholder="Masukan password" required>
-                        </div>
-                        <button type="submit" class="btn btn-success w-100" id="tblmasuk">Masuk</button>
-                        <p class="text-center mt-2 mb-0"><a href="#" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#resetModals">Lupa Password</a></p>
-                    </form>
-                </div>
-                <div class="modal-footer bg-light p-3 justify-content-center">
-                    <p class="mb-0 text-muted">Universitas Negeri Gorontalo</p>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 
     <div id="resetModals" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-centered">

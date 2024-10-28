@@ -818,9 +818,6 @@ if ($_POST['act'] == 'evaluasi') {
                 <tr>
                     <th>Nomor NPWP</th>
                     <th class="text-center">File</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center">Verifikasi</th>
-                    <th class="text-center">#</th>
                 </tr>
             </thead>
             <tbody>

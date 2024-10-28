@@ -15,13 +15,20 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
 <head>
 
     <meta charset="utf-8" />
-    <title>Operator | Simpan Universitas Negeri Gorontalo</title>
+    <title>Operator | Daftar Penyedia Terpilih Universitas Negeri Gorontalo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?= $_SESSION['csrf_token'] ?>">
     <meta content="Sistem Informasi Penyedia Barang dan Jasa Universitas Negeri Gorontalo" name="description" />
     <meta content="Themesbrand" name="cocobandicod" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?= $url; ?>assets/images/icon.png">
+
+    <!--datatable css-->
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/buttons/2.2.2/css/buttons.dataTables.min.css">
 
     <!-- Layout config Js -->
     <script src="<?= $url; ?>assets/js/layout.js"></script>
@@ -40,8 +47,13 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
 
     <!-- Begin page -->
     <div id="layout-wrapper">
-
-        <?= sidebar($url); ?>
+        <?php
+        if ($_SESSION['level'] == 'PPK') {
+            echo sidebar_ppk($url);
+        } else if ($_SESSION['level'] == 'Pokja') {
+            echo sidebar_pokja($url);
+        }
+        ?>
         <!-- Left Sidebar End -->
         <!-- Vertical Overlay-->
         <div class="vertical-overlay"></div>
@@ -53,7 +65,30 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
 
             <div class="page-content">
                 <div class="container-fluid">
-                    <h3>Selamat Datang</h3>
+                    <div class="col-lg-12 mt-3">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-center pt-3 pb-3">
+                                <h4 class="card-title mb-0 flex-grow-1">Paket Tender Seleksi PPK</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table id="DTable" class="table table-bordered dt-responsive table-striped align-middle fs-13" style="width:100%">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Kode Paket</th>
+                                                    <th>Nama Pekerjaan</th>
+                                                    <th>Tahap</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div> <!-- container-fluid -->
             </div><!-- End Page-content -->
 
@@ -102,10 +137,70 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <script src="<?= $url; ?>assets/libs/feather-icons/feather.min.js"></script>
     <script src="<?= $url; ?>assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
 
+    <!--datatable js-->
+    <script src="<?= $url; ?>assets/css/datatables/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="<?= $url; ?>assets/css/datatables/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="<?= $url; ?>assets/css/datatables/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="<?= $url; ?>assets/css/datatables/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+
     <!-- prismjs plugin -->
     <script src="<?= $url; ?>assets/libs/prismjs/prism.js"></script>
-
+    <script src="<?= $url; ?>assets/js/ajax.js"></script>
     <script src="<?= $url; ?>assets/js/app.js"></script>
+    <script>
+        var dataTable
+        $(document).ready(function() {
+            dataTable = $('#DTable').DataTable({
+                stateSave: true,
+                autoWidth: false,
+                processing: true,
+                ordering: false,
+                responsive: true,
+                columnDefs: [{
+                        className: 'text-center p-2',
+                        width: '3%',
+                        targets: [0, 4]
+                    },
+                    {
+                        className: 'text-center p-2',
+                        targets: [3]
+                    },
+                    {
+                        className: 'p-2',
+                        targets: [0, 1, 2, 3, 4]
+                    },
+                ],
+                "ajax": {
+                    url: "tabel/daftar/pekerjaan",
+                    type: "post"
+                }
+            });
+        });
+
+        $('#DetailModal').on('show.bs.modal', function(e) {
+            var act = $(e.relatedTarget).data('act');
+            var id = $(e.relatedTarget).data('id');
+            $.ajax({
+                type: 'post',
+                url: '<?= $url; ?>detail/modal/pengumuman',
+                data: {
+                    act: act,
+                    id: id
+                },
+                beforeSend: function(data) {
+                    // Show image container
+                    $("#wait").show();
+                },
+                success: function(data) {
+                    $('.fetched-data').html(data); //menampilkan data ke dalam modal
+                },
+                complete: function(data) {
+                    // Hide image container
+                    $("#wait").hide();
+                }
+            });
+        });
+    </script>
 
 </body>
 

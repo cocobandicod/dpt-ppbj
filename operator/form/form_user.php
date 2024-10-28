@@ -16,7 +16,7 @@ cek_url($url, $proses, $_GET['act'], 'operator', 'id_operator ="' . @$_GET['id']
 <head>
 
     <meta charset="utf-8" />
-    <title>Operator | Simpan Universitas Negeri Gorontalo</title>
+    <title>Operator | Daftar Penyedia Terpilih Universitas Negeri Gorontalo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?= $_SESSION['csrf_token'] ?>">
     <meta content="Sistem Informasi Penyedia Barang dan Jasa Universitas Negeri Gorontalo" name="description" />
@@ -42,7 +42,13 @@ cek_url($url, $proses, $_GET['act'], 'operator', 'id_operator ="' . @$_GET['id']
     <!-- Begin page -->
     <div id="layout-wrapper">
 
-        <?= sidebar($url); ?>
+        <?php
+        if ($_SESSION['level'] == 'PPK') {
+            echo sidebar_ppk($url);
+        } else if ($_SESSION['level'] == 'Pokja') {
+            echo sidebar_pokja($url);
+        }
+        ?>
         <!-- Left Sidebar End -->
         <!-- Vertical Overlay-->
         <div class="vertical-overlay"></div>

@@ -13,9 +13,8 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="light" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
 
 <head>
-
     <meta charset="utf-8" />
-    <title>Operator | Simpan Universitas Negeri Gorontalo</title>
+    <title>Operator | Daftar Penyedia Terpilih Universitas Negeri Gorontalo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?= $_SESSION['csrf_token'] ?>">
     <meta content="Sistem Informasi Penyedia Barang dan Jasa Universitas Negeri Gorontalo" name="description" />
@@ -42,7 +41,6 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <link href="<?= $url; ?>assets/css/custom.min.css" rel="stylesheet" type="text/css" />
     <!-- Sweet Alert css-->
     <link href="<?= $url; ?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
-
 </head>
 
 <body>
@@ -50,7 +48,13 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <!-- Begin page -->
     <div id="layout-wrapper">
 
-        <?= sidebar($url); ?>
+        <?php
+        if ($_SESSION['level'] == 'PPK') {
+            echo sidebar_ppk($url);
+        } else if ($_SESSION['level'] == 'Pokja') {
+            echo sidebar_pokja($url);
+        }
+        ?>
         <!-- Left Sidebar End -->
         <!-- Vertical Overlay-->
         <div class="vertical-overlay"></div>
@@ -78,7 +82,6 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Judul</th>
-                                                    <th>File</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -173,17 +176,17 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                 responsive: true,
                 columnDefs: [{
                         className: 'text-center p-2',
-                        width: '5%',
+                        width: '3%',
                         targets: [0]
                     },
                     {
                         className: 'text-center p-2',
                         width: '3%',
-                        targets: [3]
+                        targets: [2]
                     },
                     {
                         className: 'p-2',
-                        targets: [0, 1, 2, 3]
+                        targets: [0, 1, 2]
                     },
                 ],
                 "ajax": {
@@ -191,22 +194,6 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                     type: "post"
                 }
             });
-
-            $('#modalview').on('show.bs.modal', function(e) {
-                var id = $(e.relatedTarget).data('id');
-                var act = $(e.relatedTarget).data('act');
-                $('#myModalview').text('View');
-                if (act === 'pdf') {
-                    $('#viewfile').html('<iframe src="<?= $url; ?>download/' + id + '" style="width: 100%; height: 700px; border: none;"></iframe>');
-                } else {
-                    $('#viewfile').html('<img src="<?= $url; ?>download/' + id + '" class="gallery-img img-fluid mx-auto">');
-                }
-            });
-
-            $('#modalview').on('hidden.bs.modal', function() {
-                $('#viewfile').empty();
-            });
-
         });
 
         $(document).on('click', '#del', function(e) {

@@ -15,7 +15,7 @@ cek_url($url, $proses, $_GET['act'], 'pemilik_saham', 'id_profil ="' . @$_SESSIO
 
 <head>
     <meta charset="utf-8" />
-    <title>Simpan Universitas Negeri Gorontalo</title>
+    <title>Daftar Penyedia Terpilih Universitas Negeri Gorontalo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?= $_SESSION['csrf_token'] ?>">
     <meta content="Sistem Informasi Penyedia Barang dan Jasa Universitas Negeri Gorontalo" name="description" />

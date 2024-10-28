@@ -16,7 +16,7 @@ cek_url($url, $proses, $_GET['act'], 'panduan', 'id ="' . @$_GET['id'] . '"');
 <head>
 
     <meta charset="utf-8" />
-    <title>Operator | Simpan Universitas Negeri Gorontalo</title>
+    <title>Operator | Daftar Penyedia Terpilih Universitas Negeri Gorontalo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?= $_SESSION['csrf_token'] ?>">
     <meta content="Sistem Informasi Penyedia Barang dan Jasa Universitas Negeri Gorontalo" name="description" />
@@ -42,7 +42,13 @@ cek_url($url, $proses, $_GET['act'], 'panduan', 'id ="' . @$_GET['id'] . '"');
     <!-- Begin page -->
     <div id="layout-wrapper">
 
-        <?= sidebar($url); ?>
+        <?php
+        if ($_SESSION['level'] == 'PPK') {
+            echo sidebar_ppk($url);
+        } else if ($_SESSION['level'] == 'Pokja') {
+            echo sidebar_pokja($url);
+        }
+        ?>
         <!-- Left Sidebar End -->
         <!-- Vertical Overlay-->
         <div class="vertical-overlay"></div>
@@ -69,7 +75,7 @@ cek_url($url, $proses, $_GET['act'], 'panduan', 'id ="' . @$_GET['id'] . '"');
                                         $row = $proses->tampil_data_saja('*', 'panduan', 'id = "' . $_GET['id'] . '"');
                                         echo '<input type="hidden" name="id" value="' . $row['id'] . '">';
                                         echo '<input type="hidden" name="act" value="edit">';
-                                        $text = '<br>*Kosongkan jika tidak merubah file';
+                                        $text = '*Kosongkan jika tidak merubah';
                                         $required = '';
                                     } else {
                                         echo '<input type="hidden" name="act" value="add">';
@@ -80,18 +86,14 @@ cek_url($url, $proses, $_GET['act'], 'panduan', 'id ="' . @$_GET['id'] . '"');
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <div class="row">
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-12">
                                                     <div class="col-xxl-12 col-md-12 pt-2">
                                                         <label for="basiInput" class="form-label">Judul</label>
                                                         <input type="text" class="form-control" name="judul" value="<?= @$row['judul']; ?>" <?= $required; ?>>
                                                     </div>
                                                     <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Upload File *</label>
-                                                        <input type="file" name="fupload" onchange="return validasiFile()" class="form-control" id="file" value="Upload" <?= $required; ?>>
-                                                        <div id="passwordHelpBlock" class="form-text">
-                                                            *Accepted formats: pdf, jpg. Max file size 2Mb
-                                                            <?= $text; ?>
-                                                        </div>
+                                                        <label for="basiInput" class="form-label">Isi Informasi</label>
+                                                        <textarea name="isi" class="form-control ckeditor-classic"><?= @$row['isi']; ?></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -151,6 +153,9 @@ cek_url($url, $proses, $_GET['act'], 'panduan', 'id ="' . @$_GET['id'] . '"');
     <script src="<?= $url; ?>assets/libs/node-waves/waves.min.js"></script>
     <script src="<?= $url; ?>assets/libs/feather-icons/feather.min.js"></script>
     <script src="<?= $url; ?>assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
+
+    <!-- ckeditor -->
+    <script src="<?= $url; ?>assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
 
     <!-- prismjs plugin -->
     <script src="<?= $url; ?>assets/libs/prismjs/prism.js"></script>
@@ -214,23 +219,21 @@ cek_url($url, $proses, $_GET['act'], 'panduan', 'id ="' . @$_GET['id'] . '"');
             });
         });
 
-        function validasiFile() {
-            var inputFile = document.getElementById('file');
-            var pathFile = inputFile.value;
-            var ekstensiOk = /(\.jpg|\.jpeg|\.pdf)$/i;
-            var file_size = $('#file')[0].files[0].size;
-            if (!ekstensiOk.exec(pathFile)) {
-                alert('Silakan upload file yang memiliki ekstensi .jpeg/.jpg/.pdf');
-                inputFile.value = '';
-                return false;
-            } else {
-                if (file_size > 2000000) {
-                    alert('Ukuran file harus kurang dari 2Mb');
-                    inputFile.value = '';
-                    return false;
-                }
+        ClassicEditor.create(document.querySelector('.ckeditor-classic'), {
+            toolbar: {
+                items: [
+                    'heading',
+                    'bold', 'italic',
+                    'link', 'blockQuote',
+                    'bulletedList', 'numberedList', 'outdent', 'indent',
+                    'insertTable',
+                    'undo', 'redo'
+                ],
+                shouldNotGroupWhenFull: true
             }
-        }
+        }).catch(error => {
+            console.error(error);
+        });
     </script>
 
 </body>
