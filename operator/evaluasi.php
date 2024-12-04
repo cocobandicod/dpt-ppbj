@@ -134,7 +134,7 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     </div>
 
     <!-- Basic modal -->
-    <div id="DetailModal" class="modal fade" tabindex="-1">
+    <div id="DetailModal" class="modal zoomIn" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="fetched-data"></div>
@@ -178,7 +178,7 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                     },
                     {
                         className: 'text-center p-2',
-                        width: '5%',
+                        width: '3%',
                         targets: [4, 5]
                     },
                     {

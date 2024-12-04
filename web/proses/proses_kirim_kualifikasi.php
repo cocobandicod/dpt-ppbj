@@ -4,6 +4,8 @@ require_once('../../config/koneksi.php');
 require_once('../../config/cek_ajax.php');
 
 if (@$_POST['act1'] == 'izin') {
+    $hapus = $proses->hapus_data2('kirim_kualifikasi', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND id_paket = "' . $_POST['id_paket'] . '" AND act = "izin"');
+
     $selectizin = $_POST['izin'];
     $data = []; // Create an empty array for batch insert
 
@@ -41,15 +43,17 @@ if (@$_POST['act1'] == 'izin') {
     $result2 = $proses->tambah_data('status_kirim', $data2); // SIMPAN KE DATABASE
 }
 
-if (@$_POST['act2'] == 'tdp') {
-    $select_tdp = $_POST['tdp'];
+if (@$_POST['act2'] == 'sertifikat') {
+    $hapus = $proses->hapus_data2('kirim_kualifikasi', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND id_paket = "' . $_POST['id_paket'] . '" AND act = "sertifikat"');
+
+    $select_sertifikat = $_POST['sertifikat'];
     $data = []; // Create an empty array for batch insert
 
     // Loop through each selected izin
-    foreach ($select_tdp as $tdp_id) {
+    foreach ($select_sertifikat as $sertifikat_id) {
         // Create an array for each izin and push to the $data array
         $data[] = array(
-            'id_kirim'  => $tdp_id,
+            'id_kirim'  => $sertifikat_id,
             'id_profil' => $_POST['id_profil'],
             'id_paket'  => $_POST['id_paket'],
             'act'       => $_POST['act2']
@@ -70,6 +74,8 @@ if (@$_POST['act2'] == 'tdp') {
 }
 
 if (@$_POST['act3'] == 'akta') {
+    $hapus = $proses->hapus_data2('kirim_kualifikasi', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND id_paket = "' . $_POST['id_paket'] . '" AND act = "akta"');
+
     $select_akta = $_POST['akta'];
     $data = []; // Create an empty array for batch insert
 
@@ -97,15 +103,17 @@ if (@$_POST['act3'] == 'akta') {
     }
 }
 
-if (@$_POST['act4'] == 'tenaga_ahli') {
-    $select_sdm = $_POST['sdm'];
+if (@$_POST['act4'] == 'pengurus') {
+    $hapus = $proses->hapus_data2('kirim_kualifikasi', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND id_paket = "' . $_POST['id_paket'] . '" AND act = "pengurus"');
+
+    $select_pengurus = $_POST['pengurus'];
     $data = []; // Create an empty array for batch insert
 
     // Loop through each selected izin
-    foreach ($select_sdm as $sdm_id) {
+    foreach ($select_pengurus as $pengurus_id) {
         // Create an array for each izin and push to the $data array
         $data[] = array(
-            'id_kirim'  => $sdm_id,
+            'id_kirim'  => $pengurus_id,
             'id_profil' => $_POST['id_profil'],
             'id_paket'  => $_POST['id_paket'],
             'act'       => $_POST['act4']
@@ -126,6 +134,8 @@ if (@$_POST['act4'] == 'tenaga_ahli') {
 }
 
 if (@$_POST['act5'] == 'pengalaman') {
+    $hapus = $proses->hapus_data2('kirim_kualifikasi', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND id_paket = "' . $_POST['id_paket'] . '" AND act = "pengalaman"');
+
     $select_pengalaman = $_POST['pengalaman'];
     $data = []; // Create an empty array for batch insert
 
@@ -153,15 +163,17 @@ if (@$_POST['act5'] == 'pengalaman') {
     }
 }
 
-if (@$_POST['act6'] == 'peralatan') {
-    $select_peralatan = $_POST['peralatan'];
+if (@$_POST['act6'] == 'pekerjaan_berjalan') {
+    $hapus = $proses->hapus_data2('kirim_kualifikasi', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND id_paket = "' . $_POST['id_paket'] . '" AND act = "pekerjaan_berjalan"');
+
+    $select_pekerjaan_berjalan = $_POST['pekerjaan_berjalan'];
     $data = []; // Create an empty array for batch insert
 
     // Loop through each selected izin
-    foreach ($select_peralatan as $peralatan_id) {
+    foreach ($select_pekerjaan_berjalan as $pekerjaan_berjalan_id) {
         // Create an array for each izin and push to the $data array
         $data[] = array(
-            'id_kirim'  => $peralatan_id,
+            'id_kirim'  => $pekerjaan_berjalan_id,
             'id_profil' => $_POST['id_profil'],
             'id_paket'  => $_POST['id_paket'],
             'act'       => $_POST['act6']
@@ -181,35 +193,9 @@ if (@$_POST['act6'] == 'peralatan') {
     }
 }
 
-if (@$_POST['act7'] == 'pajak') {
-    $select_pajak = $_POST['pajak'];
-    $data = []; // Create an empty array for batch insert
-
-    // Loop through each selected izin
-    foreach ($select_pajak as $pajak_id) {
-        // Create an array for each izin and push to the $data array
-        $data[] = array(
-            'id_kirim'  => $pajak_id,
-            'id_profil' => $_POST['id_profil'],
-            'id_paket'  => $_POST['id_paket'],
-            'act'       => $_POST['act7']
-        );
-    }
-
-    // If there's data to insert
-    if (!empty($data)) {
-        $result = $proses->tambah_data('kirim_kualifikasi', $data); // Perform batch insert
-        if ($result) {
-            echo json_encode(['status' => 'success', 'message' => 'Data successfully saved']);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to save data']);
-        }
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'No data selected']);
-    }
-}
-
 if (@$_POST['act8'] == 'kswp') {
+    $hapus = $proses->hapus_data2('kirim_kualifikasi', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND id_paket = "' . $_POST['id_paket'] . '" AND act = "kswp"');
+
     $select_kswp = $_POST['kswp'];
     $data = []; // Create an empty array for batch insert
 

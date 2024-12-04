@@ -133,7 +133,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <!-- end layout wrapper -->
 
     <!-- Basic modal -->
-    <div id="DetailModal" class="modal fade" tabindex="-1">
+    <div id="DetailModal" class="modal zoomIn" tabindex="-1">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="fetched-data"></div>

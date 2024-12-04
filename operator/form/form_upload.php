@@ -19,12 +19,12 @@ if (@$_POST['judul'] == 'upload_hps') {
                 if (empty(@$cek['file'])) {
                     $text = '<div class="alert alert-danger mt-2 mb-0" role="alert">Harap mengupload rincian HPS</div>';
                 ?>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= $_POST['id']; ?>" data-act="form_hps"><i class="ri-upload-cloud-2-line"></i> Upload Rincian HPS</button>
+                    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= $_POST['id']; ?>" data-act="form_hps"><i class="ri-upload-cloud-2-line"></i> Upload Rincian HPS</button>
                 <?php } else {
                     $text = '';
                 ?>
                     <span class="me-2"><a href="<?= $url; ?>berkas/<?= $cek['file']; ?>" target="_blank"><?= $cek['nama_file']; ?></a> Upload Tanggal : <?= tgl_indo5(@$cek['timestamp']); ?></span>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= $_POST['id']; ?>" data-act="form_hps"><i class="ri-upload-cloud-2-line"></i> Ubah Rincian HPS</button>
+                    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= $_POST['id']; ?>" data-act="form_hps"><i class="ri-upload-cloud-2-line"></i> Ubah Rincian HPS</button>
                 <?php } ?>
             </div>
         </div>
@@ -75,7 +75,7 @@ if (@$_POST['judul'] == 'dokumen_persiapan') {
                     Kerangka Acuan Kerja (KAK) Spesifikasi Teknis dan Gambar * <?= $ceklist1; ?>
                 </div>
                 <div class="flex-shrink-0 ms-0">
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= $_POST['id']; ?>" data-act="form_kak"><i class="ri-upload-cloud-2-line"></i> Upload</button>
+                    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= $_POST['id']; ?>" data-act="form_kak"><i class="ri-upload-cloud-2-line"></i> Upload</button>
                 </div>
             </div>
         </li>
@@ -85,7 +85,7 @@ if (@$_POST['judul'] == 'dokumen_persiapan') {
                     Rancangan Kontrak * <?= @$ceklist2; ?>
                 </div>
                 <div class="flex-shrink-0 ms-2">
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= $_POST['id']; ?>" data-act="form_kontrak"><i class="ri-upload-cloud-2-line"></i> Upload</button>
+                    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= $_POST['id']; ?>" data-act="form_kontrak"><i class="ri-upload-cloud-2-line"></i> Upload</button>
                 </div>
             </div>
         </li>
@@ -95,7 +95,7 @@ if (@$_POST['judul'] == 'dokumen_persiapan') {
                     Uraian Singkat Pekerjaan * <?= @$ceklist3; ?>
                 </div>
                 <div class="flex-shrink-0 ms-2">
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= $_POST['id']; ?>" data-act="form_pekerjaan"><i class="ri-upload-cloud-2-line"></i> Upload</button>
+                    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= $_POST['id']; ?>" data-act="form_pekerjaan"><i class="ri-upload-cloud-2-line"></i> Upload</button>
                 </div>
             </div>
         </li>
@@ -105,7 +105,7 @@ if (@$_POST['judul'] == 'dokumen_persiapan') {
                     Informasi Lainnya (jika ada) <?= @$ceklist4; ?>
                 </div>
                 <div class="flex-shrink-0 ms-2">
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= $_POST['id']; ?>" data-act="form_lainnya"><i class="ri-upload-cloud-2-line"></i> Upload</button>
+                    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= $_POST['id']; ?>" data-act="form_lainnya"><i class="ri-upload-cloud-2-line"></i> Upload</button>
                 </div>
             </div>
         </li>
@@ -154,7 +154,7 @@ if (@$_POST['act'] == 'form_hps') {
         </div>
         <div class="modal-footer">
             <a href="#" class="btn btn-light fw-medium" data-bs-dismiss="modal">Batal</a>
-            <button id="simpan" class="btn btn-primary" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
+            <button id="simpan" class="btn btn-success" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
         </div>
     </form>
 
@@ -242,7 +242,7 @@ if (@$_POST['act'] == 'form_kak') {
         </div>
         <div class="modal-footer">
             <a href="#" class="btn btn-light fw-medium" data-bs-dismiss="modal">Batal</a>
-            <button id="simpan" class="btn btn-primary" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
+            <button id="simpan" class="btn btn-success" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
         </div>
     </form>
     <script>
@@ -333,7 +333,7 @@ if (@$_POST['act'] == 'form_kontrak') {
         </div>
         <div class="modal-footer">
             <a href="#" class="btn btn-light fw-medium" data-bs-dismiss="modal">Batal</a>
-            <button id="simpan" class="btn btn-primary" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
+            <button id="simpan" class="btn btn-success" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
         </div>
     </form>
     <script>
@@ -429,7 +429,7 @@ if (@$_POST['act'] == 'form_pekerjaan') {
             <?php
             if (empty(@$cek['file'])) {
             ?>
-                <button id="simpan" class="btn btn-primary" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
+                <button id="simpan" class="btn btn-success" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
             <?php } ?>
         </div>
     </form>
@@ -508,7 +508,7 @@ if (@$_POST['act'] == 'form_lainnya') {
         </div>
         <div class="modal-footer">
             <a href="#" class="btn btn-light fw-medium" data-bs-dismiss="modal">Batal</a>
-            <button id="simpan" class="btn btn-primary" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
+            <button id="simpan" class="btn btn-success" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
         </div>
     </form>
     <script>
@@ -537,5 +537,197 @@ if (@$_POST['act'] == 'form_lainnya') {
                 field.value = formatRupiah(this.value);
             });
         });
+    </script>
+<?php }
+if (@$_POST['judul'] == 'ukpbj') {
+    $cek = $proses->cek_count('penugasan a LEFT JOIN paket_pekerjaan b ON a.id_paket = b.id_paket', 'b.kode_paket = "' . $_POST['id'] . '"');
+    if ($cek == 0) {
+        $link = '<a href="#" class="btn btn-warning btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="' . $_POST['id'] . '" data-act="form_ukpbj"> <i class="ri-home-3-line"></i> Pilih UKPBJ</a>';
+        $display = 'style="display:none;"';
+    } else {
+        $link = '';
+        $display = "";
+    }
+?>
+    <?= $link; ?>
+    <div <?= $display; ?>>
+        <table class="table table-bordered mb-0">
+            <thead>
+                <tr class="table-light">
+                    <th>Nama</th>
+                    <th>Tanggal</th>
+                    <th style="width: 5%;" class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $row = $proses->tampil_data_saja(
+                    'a.id,a.timestamp,b.nama',
+                    'penugasan a LEFT JOIN operator b ON a.id_operator = b.id_operator',
+                    '1=1'
+                );
+                ?>
+                <tr>
+                    <td><?= @$row['nama']; ?></td>
+                    <td><?= tgl_indo(@$row['timestamp']); ?></td>
+                    <td class="text-center"><a href="#" id="hapus_ukpbj" data-id="<?= @$row['id']; ?>"><i class="ri-delete-bin-line fs-15"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<?php }
+if (@$_POST['judul'] == 'kirim_ukpbj') {
+?>
+    <a href="#" class="btn btn-warning btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= $_POST['id']; ?>" data-act="email_ukpbj"> <i class="ri-mail-send-line"></i> Kirim Email UKPBJ</a>
+<?php }
+if (@$_POST['act'] == 'form_ukpbj') {
+    $s = $proses->tampil_data_saja('*', 'paket_pekerjaan', '1=1 AND kode_paket = "' . $_POST['id'] . '"');
+?>
+    <div class="modal-header">
+        <h5 class="modal-title">Pilih UKPBJ</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body pt-3">
+        <table class="table table-bordered fs-13">
+            <tbody>
+                <tr>
+                    <td>Kode Paket</td>
+                    <td><?= $s['kode_paket']; ?></td>
+                </tr>
+                <tr>
+                    <td>Nama Pekerjaan</td>
+                    <td><?= $s['nama_pekerjaan']; ?></td>
+                </tr>
+                <tr>
+                    <td>Lokasi Pekerjaan</td>
+                    <td><?= $s['lokasi_pekerjaan']; ?></td>
+                </tr>
+                <tr>
+                    <td>Sumber Dana</td>
+                    <td><?= $s['sumber_dana']; ?></td>
+                </tr>
+                <tr>
+                    <td>Tahun Anggaran</td>
+                    <td><?= $s['tahun_anggaran']; ?></td>
+                </tr>
+            </tbody>
+        </table>
+        <table id="example" class="table table-bordered mb-0 fs-13">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Alamat</th>
+                    <th>Jabatan</th>
+                    <th style="width: 5%;" class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $sql = $proses->tampil_data_select('*', 'operator', '1=1 AND level = "UKPBJ" ORDER BY id_operator DESC');
+                foreach ($sql as $row) {
+                ?>
+                    <tr>
+                        <td><?= $row['nama']; ?></td>
+                        <td><?= $row['email']; ?></td>
+                        <td><?= $row['alamat']; ?></td>
+                        <td><?= $row['jabatan']; ?></td>
+                        <td class="text-center"><a href="#" id="terapkan" data-id="<?= $s['id_paket']; ?>" data-operator="<?= $row['id_operator']; ?>" data-nama="<?= $row['nama']; ?>"><i class="ri-send-plane-line"></i></a></td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-light fw-medium" data-bs-dismiss="modal">Batal</a>
+    </div>
+    <script>
+        $(document).ready(function() {
+            dataTable = $('#example').DataTable({
+                stateSave: true,
+                autoWidth: false,
+                processing: true,
+                ordering: false,
+                responsive: true
+            });
+        });
+    </script>
+<?php }
+if (@$_POST['act'] == 'email_ukpbj') {
+    $s = $proses->tampil_data_saja('*', 'paket_pekerjaan', '1=1 AND kode_paket = "' . $_POST['id'] . '"');
+?>
+    <div class="modal-header">
+        <h5 class="modal-title">Kirim Email UKPBJ</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <form id="form" enctype="multipart/form-data">
+        <div class="modal-body pt-3">
+            <p>Kami informasikan bahwa anda telah di tunjuk oleh PPK pada paket pekerjaan</p>
+            <table class="table table-bordered fs-13">
+                <tbody>
+                    <tr>
+                        <td>Kode Paket</td>
+                        <td><?= $s['kode_paket']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Nama Pekerjaan</td>
+                        <td><?= $s['nama_pekerjaan']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Lokasi Pekerjaan</td>
+                        <td><?= $s['lokasi_pekerjaan']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Sumber Dana</td>
+                        <td><?= $s['sumber_dana']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Tahun Anggaran</td>
+                        <td><?= $s['tahun_anggaran']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Nilai PAGU</td>
+                        <td>Rp. <?= number_format(@$s['nilai_pagu']); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Nilai HPS</td>
+                        <td>Rp. <?= number_format(@$s['nilai_hps']); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Nota Dinas</td>
+                        <td>
+                            <input type="file" name="fupload" id="file" onchange="return validasiFile()" class="form-control" required>
+                            <div id="passwordHelpBlock" class="form-text">
+                                *Accepted formats: *.pdf
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-light fw-medium" data-bs-dismiss="modal">Batal</a>
+            <button id="simpan" class="btn btn-success" type="submit"><i class="ri-mail-send-line"></i> Kirim</button>
+        </div>
+    </form>
+    <script>
+        function validasiFile() {
+            var inputFile = document.getElementById('file');
+            var pathFile = inputFile.value;
+            var allowedExtensions = /(\.pdf)$/i;
+
+            if (!allowedExtensions.exec(pathFile)) {
+                alert('Silakan upload file dengan ekstensi *.pdf');
+                inputFile.value = '';
+                return false;
+            }
+
+            if (inputFile.files[0].size > 10 * 1024 * 1024) { // 10 MB in bytes
+                alert('Ukuran file harus kurang dari 10MB');
+                inputFile.value = '';
+                return false;
+            }
+            return true;
+        }
     </script>
 <?php } ?>

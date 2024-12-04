@@ -80,13 +80,13 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                                 <div class="card">
                                     <div class="card-header align-items-center d-flex">
                                         <h4 class="card-title mb-0 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
-                                        <a href="<?= $url; ?>company/profile/add" class="btn btn-primary btn-sm"><i class="ri-add-line align-bottom me-1"></i> Data</a>
+                                        <a href="<?= $url; ?>company/profile/add" class="btn btn-success btn-sm"><i class="ri-add-line align-bottom me-1"></i> Data</a>
                                     </div><!-- end card header -->
                                     <div class="card-body small">
                                         <div class="alert  alert-primary" role="alert">
                                             Fitur Company Profile / CV ini disediakan bagi penyedia badan usaha untuk mendeskripsikan perusahaan Anda. Gambar yang diunggah dapat berupa brosur, curriculum vitae, atau media lainnya yang discan atau foto produk/jasa sesuai bidang usaha Anda
                                         </div>
-                                        <table id="DTable" class="table table-bordered dt-responsive table-striped align-middle fs-12" style="width:100%">
+                                        <table id="DTable" class="table table-bordered dt-responsive table-striped align-middle fs-13" style="width:100%">
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
@@ -118,7 +118,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <!-- end layout wrapper -->
 
     <!-- Default Modals -->
-    <div id="modalview" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div id="modalview" class="modal zoomIn" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -185,7 +185,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                 responsive: true,
                 columnDefs: [{
                         className: 'text-center p-2',
-                        width: '5%',
+                        width: '3%',
                         targets: [0]
                     },
                     {

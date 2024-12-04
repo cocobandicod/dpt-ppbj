@@ -197,6 +197,25 @@ class prosesCrud
         return $row->execute();
     }
 
+    function edit_data_where2($tabel, $data, $where1, $id1, $where2, $id2)
+    {
+        // sumber kode 
+        // https://stackoverflow.com/questions/23019219/creating-generic-update-function-using-php-mysql
+        $setPart = array();
+        foreach ($data as $key => $value) {
+            $setPart[] = $key . "=:" . $key;
+        }
+        $sql = "UPDATE $tabel SET " . implode(', ', $setPart) . " WHERE $where1 = :id1 AND $where2 = :id2";
+        $row = $this->db->prepare($sql);
+        //Bind our values.
+        $row->bindValue(':id1', $id1); // where
+        $row->bindValue(':id2', $id2); // and
+        foreach ($data as $param => $val) {
+            $row->bindValue($param, $val);
+        }
+        return $row->execute();
+    }
+
     function edit_data_where($tabel, $data, $where1, $id1, $where2, $id2, $where3, $id3)
     {
         // sumber kode 
@@ -222,5 +241,12 @@ class prosesCrud
         $sql = "DELETE FROM $tabel WHERE $where = ?";
         $row = $this->db->prepare($sql);
         return $row->execute(array($id));
+    }
+
+    function hapus_data2($tabel, $where)
+    {
+        $sql = "DELETE FROM $tabel WHERE $where";
+        $row = $this->db->prepare($sql);
+        return $row->execute();
     }
 }

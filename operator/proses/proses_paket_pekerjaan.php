@@ -159,9 +159,18 @@ if ($_POST['act'] == 'buat') {
         'kode_paket'        => strip_tags($_POST['kode']),
         'nama_pekerjaan'    => strip_tags($_POST['nama']),
         'lokasi_pekerjaan'  => strip_tags($_POST['lokasi']),
-        'status'            => 'Baru'
+        'status'            => 'Draf'
     );
     $result = $proses->tambah_data('paket_pekerjaan', $data);
+}
+
+if ($_POST['act'] == 'pilih_ukpbj') {
+    $data[] = array(
+        'id_paket'          => strip_tags($_POST['id']),
+        'id_operator'       => strip_tags($_POST['operator']),
+        'status'            => 'UKPBJ'
+    );
+    $result = $proses->tambah_data('penugasan', $data);
 }
 
 if ($_POST['act'] == 'buat_update') {
@@ -468,4 +477,9 @@ if ($_POST['act'] == 'upload_lainnya') { // INSERT
             $result = $proses->tambah_data('dokumen_persiapan', $data1); // SIMPAN KE DATABASE
         }
     }
+}
+
+if ($_POST['act'] == 'hapus_ukpbj') {
+    $id = $_POST['id'];
+    $result = $proses->hapus_data('penugasan', 'id', $id);
 }

@@ -26,10 +26,10 @@ function cek_url($url, $proses, $act, $tabel, $where)
     }
 }
 
-function cek_akses($url, $proses, $token)
+function cek_akses($url, $proses, $token, $level)
 {
     if (isset($token)) {
-        $row = $proses->tampil_data_saja('token,nama', 'pengguna', 'token = "' . $token . '"');
+        $row = $proses->tampil_data_saja('token,nama', 'operator', 'token = "' . $token . '" AND level = "' . $level . '"');
         if (isset($row['token'])) {
         } else {
             echo "<script>

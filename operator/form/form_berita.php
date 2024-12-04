@@ -11,18 +11,24 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
 cek_url($url, $proses, $_GET['act'], 'berita', 'id ="' . @$_GET['id'] . '"');
 ?>
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="light" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+<html lang="en" data-layout="horizontal" data-layout-style="" data-layout-position="fixed" data-topbar="light">
 
 <head>
-
     <meta charset="utf-8" />
-    <title>Operator | Daftar Penyedia Terpilih Universitas Negeri Gorontalo</title>
+    <title>Daftar Penyedia Terpilih Universitas Negeri Gorontalo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?= $_SESSION['csrf_token'] ?>">
     <meta content="Sistem Informasi Penyedia Barang dan Jasa Universitas Negeri Gorontalo" name="description" />
-    <meta content="Themesbrand" name="cocobandicod" />
+    <meta property="og:image" content="<?= $url; ?>assets/images/logo-dark.png" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?= $url; ?>assets/images/icon.png">
+
+    <!--datatable css-->
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/buttons/2.2.2/css/buttons.dataTables.min.css">
 
     <!-- Layout config Js -->
     <script src="<?= $url; ?>assets/js/layout.js"></script>
@@ -34,6 +40,16 @@ cek_url($url, $proses, $_GET['act'], 'berita', 'id ="' . @$_GET['id'] . '"');
     <link href="<?= $url; ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="<?= $url; ?>assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <!-- Sweet Alert css-->
+    <link href="<?= $url; ?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <!-- Sweet Alert css-->
+    <link href="<?= $url; ?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        .kunci {
+            display: none;
+            visibility: hidden;
+        }
+    </style>
 
 </head>
 
@@ -42,11 +58,26 @@ cek_url($url, $proses, $_GET['act'], 'berita', 'id ="' . @$_GET['id'] . '"');
     <!-- Begin page -->
     <div id="layout-wrapper">
 
+        <header id="page-topbar">
+            <div class="layout-width">
+                <div class="navbar-header">
+                    <!-- LOGO -->
+                    <?= logo($url); ?>
+
+                    <div class="d-flex align-items-center">
+                        <?= profil_operator($proses, $url); ?>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== App Menu ========== -->
         <?php
         if ($_SESSION['level'] == 'PPK') {
-            echo sidebar_ppk($url);
+            menu_ppk($url);
         } else if ($_SESSION['level'] == 'Pokja') {
-            echo sidebar_pokja($url);
+            menu_pokja($url);
+        } else {
         }
         ?>
         <!-- Left Sidebar End -->
@@ -60,33 +91,37 @@ cek_url($url, $proses, $_GET['act'], 'berita', 'id ="' . @$_GET['id'] . '"');
 
             <div class="page-content">
                 <div class="container-fluid">
-                    <div class="col-lg-12 mt-3">
-                        <div class="card">
-                            <div class="card-header d-flex align-items-center pt-3 pb-3">
-                                <h4 class="card-title mb-0 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
-                                <div>
-                                    <button onclick="back()" type="button" class="btn btn-primary btn-label waves-effect waves-light btn-sm"><i class="ri-arrow-go-back-line label-icon align-middle fs-16 me-2"></i> Back</button>
-                                </div>
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
                             </div>
-                            <div class="card-body">
-                                <form id="form" enctype="multipart/form-data">
-                                    <?php
-                                    if ($_GET['act'] == 'edit') {
-                                        $row = $proses->tampil_data_saja('*', 'berita', 'id = "' . $_GET['id'] . '"');
-                                        echo '<input type="hidden" name="id" value="' . $row['id'] . '">';
-                                        echo '<input type="hidden" name="act" value="edit">';
-                                        $text = '*Kosongkan jika tidak merubah';
-                                        $required = '';
-                                    } else {
-                                        echo '<input type="hidden" name="act" value="add">';
-                                        $text = '';
-                                        $required = 'required';
-                                    }
-                                    ?>
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <div class="row">
-                                                <div class="col-sm-12">
+                        </div>
+                    </div>
+                    <!-- end page title -->
+                    <div class="row">
+
+                        <div class="row h-100">
+                            <div class="card">
+                                <div class="p-3">
+                                    <form id="form" enctype="multipart/form-data">
+                                        <?php
+                                        if ($_GET['act'] == 'edit') {
+                                            $row = $proses->tampil_data_saja('*', 'berita', 'id = "' . $_GET['id'] . '"');
+                                            echo '<input type="hidden" name="id" value="' . $row['id'] . '">';
+                                            echo '<input type="hidden" name="act" value="edit">';
+                                            $text = '*Kosongkan jika tidak merubah';
+                                            $required = '';
+                                        } else {
+                                            echo '<input type="hidden" name="act" value="add">';
+                                            $text = '';
+                                            $required = 'required';
+                                        }
+                                        ?>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="row">
                                                     <div class="col-xxl-2 col-md-2 pt-2">
                                                         <label for="basiInput" class="form-label">Tanggal</label>
                                                         <input type="date" class="form-control" name="tanggal" value="<?= @$row['tanggal']; ?>" <?= $required; ?>>
@@ -101,54 +136,38 @@ cek_url($url, $proses, $_GET['act'], 'berita', 'id ="' . @$_GET['id'] . '"');
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-12 pt-5">
+                                                <button id="simpan" class="btn btn-success" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
+                                            </div>
                                         </div>
-                                        <div class="col-12 pt-5">
-                                            <button id="simpan" class="btn btn-primary" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div> <!-- container-fluid -->
-            </div><!-- End Page-content -->
+                        </div> <!-- end row-->
 
-            <footer class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script> © Universitas Negeri Gorontalo.
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="text-sm-end d-none d-sm-block">
-                                Develop by Bengkel IT Gorontalo
-                            </div>
-                        </div>
-                    </div>
+                    </div> <!-- end row-->
                 </div>
-            </footer>
+                <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+            <?= footer($url); ?>
+
         </div>
         <!-- end main content-->
 
     </div>
     <!-- END layout-wrapper -->
 
-    <!--start back-to-top-->
-    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
-        <i class="ri-arrow-up-line"></i>
-    </button>
-    <!--end back-to-top-->
-
-    <!--preloader-->
-    <div id="preloader">
-        <div id="status">
-            <div class="spinner-border text-primary avatar-sm" role="status">
-                <span class="visually-hidden">Loading...</span>
+    <!-- Basic modal -->
+    <div id="DetailModal" class="modal zoomIn" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="fetched-data"></div>
             </div>
         </div>
     </div>
+    <!-- /basic modal -->
 
     <!-- JAVASCRIPT -->
     <script src="<?= $url; ?>assets/js/jquery-3.6.0.min.js"></script>
@@ -157,16 +176,13 @@ cek_url($url, $proses, $_GET['act'], 'berita', 'id ="' . @$_GET['id'] . '"');
     <script src="<?= $url; ?>assets/libs/node-waves/waves.min.js"></script>
     <script src="<?= $url; ?>assets/libs/feather-icons/feather.min.js"></script>
     <script src="<?= $url; ?>assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
+    <script src="<?= $url; ?>assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
     <!-- ckeditor -->
     <script src="<?= $url; ?>assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
 
-    <!-- prismjs plugin -->
-    <script src="<?= $url; ?>assets/libs/prismjs/prism.js"></script>
     <script src="<?= $url; ?>assets/js/toastify-js.js"></script>
     <script src="<?= $url; ?>assets/js/ajax.js"></script>
-
-    <script src="<?= $url; ?>assets/js/app.js"></script>
 
     <script>
         function back() {
@@ -212,6 +228,7 @@ cek_url($url, $proses, $_GET['act'], 'berita', 'id ="' . @$_GET['id'] . '"');
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     Toastify({
                         text: "Data Gagal Dimasukan!",
+                        className: "bg-danger",
                         gravity: "top",
                         position: "center",
                         duration: 3000
@@ -239,7 +256,6 @@ cek_url($url, $proses, $_GET['act'], 'berita', 'id ="' . @$_GET['id'] . '"');
             console.error(error);
         });
     </script>
-
 </body>
 
 </html>

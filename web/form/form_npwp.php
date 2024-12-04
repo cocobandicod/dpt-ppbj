@@ -11,7 +11,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
 cek_url($url, $proses, $_GET['act'], 'npwp', 'id_profil ="' . @$_SESSION['kode_profil'] . '" AND id ="' . @$_GET['id'] . '"');
 ?>
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="light" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+<html lang="en" data-layout="horizontal" data-layout-style="" data-layout-position="fixed" data-topbar="light">
 
 <head>
     <meta charset="utf-8" />
@@ -23,16 +23,6 @@ cek_url($url, $proses, $_GET['act'], 'npwp', 'id_profil ="' . @$_SESSION['kode_p
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?= $url; ?>assets/images/icon.png">
 
-    <!--Swiper slider css-->
-    <link href="<?= $url; ?>assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
-
-    <!--datatable css-->
-    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/1.11.5/css/dataTables.bootstrap5.min.css" />
-    <!--datatable responsive css-->
-    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/responsive/2.2.9/css/responsive.bootstrap.min.css" />
-
-    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/buttons/2.2.2/css/buttons.dataTables.min.css">
-
     <!-- Layout config Js -->
     <script src="<?= $url; ?>assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
@@ -43,6 +33,9 @@ cek_url($url, $proses, $_GET['act'], 'npwp', 'id_profil ="' . @$_SESSION['kode_p
     <link href="<?= $url; ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="<?= $url; ?>assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <!-- Sweet Alert css-->
+    <link href="<?= $url; ?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+
     <style>
         .kunci {
             display: none;
@@ -52,94 +45,131 @@ cek_url($url, $proses, $_GET['act'], 'npwp', 'id_profil ="' . @$_SESSION['kode_p
 
 </head>
 
-<body data-bs-spy="scroll" data-bs-target="#navbar-example">
+<body>
 
     <!-- Begin page -->
-    <div class="layout-wrapper landing">
-        <?= navbar2($url); ?>
-        <!-- end navbar -->
+    <div id="layout-wrapper">
 
-        <!-- start hero section -->
-        <section class="section pb-0 hero-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 mt-12">
-                        <div class="row">
-                            <div class="col-lg-3 mt-3">
-                                <div class="card">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Menu</h4>
-                                    </div><!-- end card header -->
-                                    <div class="card-body small">
-                                        <?= kiri($url, $proses); ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-9 mt-3">
-                                <div class="card">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
-                                    </div><!-- end card header -->
-                                    <div class="card-body small">
-                                        <form id="form" enctype="multipart/form-data">
-                                            <?php
-                                            if ($_GET['act'] == 'edit') {
-                                                $row = $proses->tampil_data_saja('*', 'npwp', 'id = "' . $_GET['id'] . '"');
-                                                echo '<input type="hidden" name="id" value="' . $row['id'] . '">';
-                                                echo '<input type="hidden" name="act" value="edit">';
-                                                $text = '<br>*Kosongkan jika tidak merubah file';
-                                                $required = '';
-                                            } else {
-                                                echo '<input type="hidden" name="act" value="add">';
-                                                $text = '';
-                                                $required = 'required';
-                                            }
-                                            ?>
-                                            <div class="row pt-2">
-                                                <div class="col-xl-6">
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">NPWP *</label>
-                                                        <input type="text" id="cleave-delimiters" class="form-control" name="npwp" value="<?= @$row['npwp']; ?>" placeholder="xx.xxx.xxx.x-xxx.xxx" required>
-                                                    </div>
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Upload File *</label>
-                                                        <input type="file" name="fupload" onchange="return validasiFile()" class="form-control" id="file" value="Upload" <?= $required; ?>>
-                                                        <div id="passwordHelpBlock" class="form-text">
-                                                            *Accepted formats: pdf, jpg. Max file size 2Mb
-                                                            <?= $text; ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12 pt-5">
-                                                <div class="text-start">
-                                                    <a href="#" class="btn btn-light" onclick="back()"><i class=" ri-arrow-go-back-line"></i> Kembali</a>
-                                                    <button type="submit" class="btn btn-primary" id="simpan"><i class="ri-save-2-fill"></i> Simpan</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <header id="page-topbar">
+            <div class="layout-width">
+                <div class="navbar-header">
+                    <!-- LOGO -->
+                    <?= logo($url); ?>
+
+                    <div class="d-flex align-items-center">
+                        <?= notif($proses, $url); ?>
+                        <?= profil($proses, $url); ?>
                     </div>
                 </div>
-            </div><!-- end container -->
-        </section><!-- end hero section -->
+            </div>
+        </header>
 
-        <!-- Start footer -->
-        <?= footer($url); ?>
-        <!-- end footer -->
+        <!-- ========== App Menu ========== -->
+        <?= menu_penyedia($url); ?>
+        <!-- Left Sidebar End -->
+        <!-- Vertical Overlay-->
+        <div class="vertical-overlay"></div>
 
-        <!--start back-to-top-->
-        <button onclick="topFunction()" class="btn btn-danger btn-icon landing-back-top" id="back-to-top">
-            <i class="ri-arrow-up-line"></i>
-        </button>
-        <!--end back-to-top-->
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <div class="col-xl-12">
+                        <div class="card card-height-100">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
+                            </div><!-- end card header -->
+                            <!-- card body -->
+                            <div class="card-body">
+                                <form id="form" enctype="multipart/form-data">
+                                    <?php
+                                    if ($_GET['act'] == 'edit') {
+                                        $row = $proses->tampil_data_saja('*', 'npwp', 'id = "' . $_GET['id'] . '"');
+                                        echo '<input type="hidden" name="id" value="' . $row['id'] . '">';
+                                        echo '<input type="hidden" name="act" value="edit">';
+                                        $text = '<br>*Kosongkan jika tidak merubah file';
+                                        $required = '';
+                                    } else {
+                                        echo '<input type="hidden" name="act" value="add">';
+                                        $text = '';
+                                        $required = 'required';
+                                    }
+                                    ?>
+                                    <div class="row pt-2">
+                                        <div class="col-xl-6">
+                                            <div class="col-xxl-12 col-md-12 pt-2">
+                                                <label for="basiInput" class="form-label">NPWP *</label>
+                                                <input type="text" id="cleave-delimiters" class="form-control" name="npwp" value="<?= @$row['npwp']; ?>" placeholder="xx.xxx.xxx.x-xxx.xxx" required>
+                                            </div>
+                                            <div class="col-xxl-12 col-md-12 pt-2">
+                                                <label for="basiInput" class="form-label">Upload File *</label>
+                                                <?php
+                                                if (!empty($row['file'])) {
+                                                    $act = pathinfo($row['file'], PATHINFO_EXTENSION);
+                                                ?>
+                                                    <div class="col-12">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalview" data-act="<?= $act; ?>" data-id="<?= $row['file']; ?>" class="btn btn-success btn-sm mb-2"><i class="ri-search-line align-bottom me-1"></i> Lihat File</a>
+                                                    </div>
+                                                <?php } else {
+                                                } ?>
+                                                <input type="file" name="fupload" onchange="return validasiFile()" class="form-control" id="file" value="Upload" <?= $required; ?>>
+                                                <div id="passwordHelpBlock" class="form-text">
+                                                    *Accepted formats: pdf, jpg. Max file size 2Mb
+                                                    <?= $text; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 pt-5">
+                                        <div class="text-start">
+                                            <span class="btn btn-light cursor-pointer" onclick="back()"><i class=" ri-arrow-go-back-line"></i> Kembali</span>
+                                            <button type="submit" class="btn btn-success" id="simpan"><i class="ri-save-2-fill"></i> Simpan</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- end card body -->
+                        </div><!-- end card -->
+                    </div>
+                </div>
+                <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+            <?= footer($url); ?>
+
+        </div>
+        <!-- end main content-->
 
     </div>
-    <!-- end layout wrapper -->
+    <!-- END layout-wrapper -->
 
+    <!-- Default Modals -->
+    <div id="modalview" class="modal zoomIn" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalview"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div id="viewfile"></div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div id="DetailModal" class="modal zoomIn" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="fetched-data"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- JAVASCRIPT -->
     <script src="<?= $url; ?>assets/js/jquery-3.6.0.min.js"></script>
@@ -149,21 +179,30 @@ cek_url($url, $proses, $_GET['act'], 'npwp', 'id_profil ="' . @$_SESSION['kode_p
     <script src="<?= $url; ?>assets/libs/feather-icons/feather.min.js"></script>
     <script src="<?= $url; ?>assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
     <script src="<?= $url; ?>assets/js/toastify-js.js"></script>
+    <script src="<?= $url; ?>assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
-    <!--Swiper slider js-->
-    <script src="<?= $url; ?>assets/libs/swiper/swiper-bundle.min.js"></script>
-    <!-- cleave.js -->
-    <script src="<?= $url; ?>assets/libs/cleave.js/cleave.min.js"></script>
-    <!-- prismjs plugin -->
-    <script src="<?= $url; ?>assets/libs/prismjs/prism.js"></script>
-    <!-- notifications init -->
-    <script src="<?= $url; ?>assets/js/pages/notifications.init.js"></script>
-
-    <script src="<?= $url; ?>assets/js/pages/form-masks.init.js"></script>
-
-    <script src="<?= $url; ?>assets/js/pages/nft-landing.init.js"></script>
+    <!-- App js -->
+    <script src="<?= $url; ?>assets/js/app.js"></script>
     <script src="<?= $url; ?>assets/js/ajax.js"></script>
     <script>
+        $(document).ready(function() {
+            $('.buka1').addClass('show');
+            $('#modalview').on('show.bs.modal', function(e) {
+                var id = $(e.relatedTarget).data('id');
+                var act = $(e.relatedTarget).data('act');
+                $('#myModalview').text('View');
+                if (act === 'pdf') {
+                    $('#viewfile').html('<iframe src="<?= $url; ?>berkas/' + id + '" style="width: 100%; height: 700px; border: none;"></iframe>');
+                } else {
+                    $('#viewfile').html('<img src="<?= $url; ?>berkas/' + id + '" class="gallery-img img-fluid mx-auto">');
+                }
+            });
+
+            $('#modalview').on('hidden.bs.modal', function() {
+                $('#viewfile').empty();
+            });
+        });
+
         $('.buka1').addClass('show');
 
         function back() {
@@ -209,6 +248,7 @@ cek_url($url, $proses, $_GET['act'], 'npwp', 'id_profil ="' . @$_SESSION['kode_p
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     Toastify({
                         text: "Data Gagal Dimasukan!",
+                        className: "bg-danger",
                         gravity: "top",
                         position: "center",
                         duration: 3000
@@ -238,6 +278,7 @@ cek_url($url, $proses, $_GET['act'], 'npwp', 'id_profil ="' . @$_SESSION['kode_p
             }
         }
     </script>
+
 </body>
 
 </html>

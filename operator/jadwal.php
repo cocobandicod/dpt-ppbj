@@ -164,7 +164,7 @@ cek_url($url, $proses, 'edit', 'paket_pekerjaan', 'id_paket ="' . @$_GET['id'] .
     </div>
 
     <!-- Basic modal -->
-    <div id="DetailModal" class="modal fade" tabindex="-1">
+    <div id="DetailModal" class="modal zoomIn" tabindex="-1">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="fetched-data"></div>

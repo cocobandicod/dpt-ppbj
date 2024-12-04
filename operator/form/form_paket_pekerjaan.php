@@ -157,7 +157,7 @@ cek_url($url, $proses, $_GET['act'], 'paket_pekerjaan', 'id_paket ="' . @$_GET['
                                             </div>
                                         </div>
                                         <div class="col-12 pt-5">
-                                            <button id="simpan" class="btn btn-primary" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
+                                            <button id="simpan" class="btn btn-success" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
                                         </div>
                                     </div>
                                 </form>
@@ -291,6 +291,7 @@ cek_url($url, $proses, $_GET['act'], 'paket_pekerjaan', 'id_paket ="' . @$_GET['
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     Toastify({
                         text: "Data Gagal Dimasukan!",
+                        className: "bg-danger",
                         gravity: "top",
                         position: "center",
                         duration: 3000

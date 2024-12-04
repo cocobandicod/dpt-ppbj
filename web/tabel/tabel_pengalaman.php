@@ -8,6 +8,7 @@ $sql = $proses->tampil_data_select('*', 'pengalaman', 'id_profil ="' . $_SESSION
 $data = array();
 $no = 1;
 foreach ($sql as $row) {
+    $act = pathinfo($row['file'], PATHINFO_EXTENSION);
     $subdata = array();
     $subdata[] = $no;
     $subdata[] = $row['nama_pekerjaan'];
@@ -19,7 +20,8 @@ foreach ($sql as $row) {
                         <i class="ri-more-fill align-middle"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a href="' . $url . 'syarat/pengalaman/edit/' . $row['id'] . '" data-id="' . $row['id'] . '" class="dropdown-item edit-item-btn"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a></li>
+                    <li><a href="#" data-bs-toggle="modal" data-bs-target="#modalview" data-act="' . $act . '" data-id="' . $row['file'] . '" class="dropdown-item edit-item-btn"><i class="ri-search-eye-line align-bottom me-2 text-muted"></i> File</a></li>    
+                    <li><a href="' . $url . 'syarat-pengalaman/edit/' . $row['id'] . '" data-id="' . $row['id'] . '" class="dropdown-item edit-item-btn"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a></li>
                         <li>
                             <a href="#" id="del" data-id="' . $row['id'] . '" data-nama="' . $row['nama_pekerjaan'] . '" data-act="del" class="dropdown-item remove-item-btn">
                                 <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete

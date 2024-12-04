@@ -1,0 +1,39 @@
+#ErrorDocument 404 https://dpt.ppbj.ung.ac.id/404
+#ErrorDocument 403 https://dpt.ppbj.ung.ac.id/404
+
+RewriteEngine On
+Options All -Indexes
+
+#RewriteCond %{HTTPS} off
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+RewriteRule ^404$ 404.php [L]
+RewriteRule ^$ login.php [L]
+RewriteRule ^logout$ logout.php [L]
+RewriteRule ^beranda$ beranda.php?aktif_1=active&judul=Beranda [L]
+RewriteRule ^daftar-paket$ daftar_paket.php?aktif_2=active&judul=Daftar-Paket&show1=show [L]
+RewriteRule ^daftar-paket/add$ daftar_paket_sirup.php?aktif_2=active&judul=Buat-Paket&show1=show [L]
+RewriteRule ^daftar-paket/([0-9]+)/([0-9]+)$ buat_paket.php?aktif_2=active&judul=Data-Paket&show1=show&rup=$1&tahun=$2 [L]
+RewriteRule ^daftar-paket/([0-9]+)/([0-9]+)/dokumen-persiapan$ dokumen_persiapan.php?aktif_2=active&judul=Dokumen-Persiapan&show1=show&rup=$1&tahun=$2 [L]
+RewriteRule ^daftar-paket/([0-9]+)/([0-9]+)/rincian-hps$ rincian_hps.php?aktif_2=active&judul=Rincian-HPS&show1=show&rup=$1&tahun=$2 [L]
+
+RewriteRule ^inbox$ inbox.php?aktif_3=active&judul=Inbox  [L]
+RewriteRule ^ganti-password$ ganti_password.php?judul=Ganti-Password&act=edit&aktif_4=active [L]
+RewriteRule ^profil$ profil.php?judul=Profil  [L]
+
+#----------------------------------------- FORM ----------------------------------------------------
+RewriteRule ^form/upload$ form/form_upload.php [L]
+
+
+#----------------------------------------- TABEL ---------------------------------------------------
+
+RewriteRule ^tabel/beranda$ tabel/tabel_beranda.php [L]
+RewriteRule ^tabel/daftar/paket$ tabel/tabel_daftar_paket.php [L]
+RewriteRule ^tabel/daftar/paket/sirup$ tabel/tabel_daftar_paket_sirup.php [L]
+
+
+#----------------------------------------- PROSES --------------------------------------------------
+
+RewriteRule ^proses/paket/pekerjaan$ proses/proses_paket_pekerjaan.php [L]
+RewriteRule ^proses/ganti/password$ proses/proses_ganti_password.php [L]
+RewriteRule ^proses/profil$ proses/profil.php [L]

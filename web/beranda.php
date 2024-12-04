@@ -10,7 +10,7 @@ if (empty($_SESSION['csrf_token'])) {
 cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
 ?>
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="light" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+<html lang="en" data-layout="horizontal" data-layout-style="" data-layout-position="fixed" data-topbar="light">
 
 <head>
     <meta charset="utf-8" />
@@ -22,93 +22,90 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?= $url; ?>assets/images/icon.png">
 
-    <!--Swiper slider css-->
-    <link href="<?= $url; ?>assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+    <!--datatable css-->
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/buttons/2.2.2/css/buttons.dataTables.min.css">
 
     <!-- Layout config Js -->
-    <script src="<?= $url; ?>assets/js/layout.js"></script>
+    <script src="assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
-    <link href="<?= $url; ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
-    <link href="<?= $url; ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
-    <link href="<?= $url; ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
-    <link href="<?= $url; ?>assets/css/custom.min.css" rel="stylesheet" type="text/css" />
-    <style>
-        .kunci {
-            display: none;
-            visibility: hidden;
-        }
-    </style>
-
+    <link href="assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <!-- Sweet Alert css-->
+    <link href="<?= $url; ?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body data-bs-spy="scroll" data-bs-target="#navbar-example">
+<body>
 
     <!-- Begin page -->
-    <div class="layout-wrapper landing">
-        <?= navbar2($url); ?>
-        <!-- end navbar -->
-
-        <!-- start hero section -->
-        <section class="section pb-0 hero-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 mt-12">
-                        <div class="row">
-                            <div class="col-lg-3 mt-3">
-                                <div class="card">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Menu</h4>
-                                    </div><!-- end card header -->
-                                    <div class="card-body small">
-                                        <?= kiri($url, $proses); ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-9 mt-3">
-                                <div class="card">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Selamat Datang</h4>
-                                    </div><!-- end card header -->
-                                    <div class="card-body small">
-                                        <p>Selamat, Anda telah bergabung dalam sistem aplikasi Pengelola Pengadaan Barang dan Jasa Universitas Negeri Gorontalo. Anda dapat login ke dalam sistem aplikasi ini menggunakan username dan password yang telah dikirimkan ke email Anda.</p>
-                                        <p>Anda diwajibkan melengkapi data isian penyedia dan melakukan upload dokumen di menu "Dokumen Verifikasi" selanjutnya Anda dapat mengubah/melengkapi data melalui menu "Syarat Pendaftaran".</p>
-                                        <p>Untuk proses verifikasi dokumen dilakukan oleh Admin yang terdapat di Unit Layanan Universitas Negeri Gorontalo, Dokumen yang harus Anda lengkapi sebagai berikut :</p>
-                                        <ul>
-                                            <li>Formulir Keikutsertaan link <a href="<?= $url; ?>download/formulir-pendaftaran-simpan.doc" class="badge text-bg-primary" target="_blank">Download File</a></li>
-                                            <li>Surat Penunjukan Admin link <a href="<?= $url; ?>download/surat-penunjukan-admin.doc" class="badge text-bg-primary" target="_blank">Download File</a></li>
-                                            <li>Surat Kuasa link <a href="<?= $url; ?>download/surat-kuasa.doc" class="badge text-bg-primary" target="_blank">Download File</a></li>
-                                            <li>KTP Direksi/Pemilik Perusahaan/Pejabat yang berwenang di perusahaan dan Admin</li>
-                                            <li>NPWP</li>
-                                            <li>Surat Izin Usaha sesuai dengan bidang masing-masing</li>
-                                            <li>Tanda Daftar Perusahaan, Akta Pendirian Perusahaan, dan Akta Perubahan Terakhir</li>
-                                            <li>Surat Keterangan Domisili</li>
-                                            <li>Surat Pemberitahuan Tahunan Pajak Penghasilan (SPT PPh) tahun terakhir atau Surat Keterangan Fiskal tahun terakhir</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <div id="layout-wrapper">
+        <header id="page-topbar">
+            <div class="layout-width">
+                <div class="navbar-header">
+                    <!-- LOGO -->
+                    <?= logo($url); ?>
+                    <div class="d-flex align-items-center">
+                        <?= notif($proses, $url); ?>
+                        <?= profil($proses, $url); ?>
                     </div>
                 </div>
-            </div><!-- end container -->
-        </section><!-- end hero section -->
+            </div>
+        </header>
+        <!-- ========== App Menu ========== -->
+        <?= menu_penyedia($url); ?>
+        <!-- Left Sidebar End -->
+        <!-- Vertical Overlay-->
+        <div class="vertical-overlay"></div>
 
-        <!-- Start footer -->
-        <?= footer($url); ?>
-        <!-- end footer -->
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
 
-        <!--start back-to-top-->
-        <button onclick="topFunction()" class="btn btn-danger btn-icon landing-back-top" id="back-to-top">
-            <i class="ri-arrow-up-line"></i>
-        </button>
-        <!--end back-to-top-->
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <div class="col-xl-12">
+                        <div class="card card-height-100">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1">Daftar Paket Pekerjaan Yang Anda Ikuti</h4>
+                            </div><!-- end card header -->
+                            <!-- card body -->
+                            <div class="card-body">
+                                <table id="DTable" class="table table-bordered dt-responsive table-striped align-middle fs-13" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 3%;">No</th>
+                                            <th>Nama Pekerjaan</th>
+                                            <th class="text-center">Nilai HPS</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <!-- end card body -->
+                        </div><!-- end card -->
+                    </div>
+
+                </div>
+                <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+            <?= footer($url); ?>
+
+        </div>
+        <!-- end main content-->
 
     </div>
-    <!-- end layout wrapper -->
-
+    <!-- END layout-wrapper -->
 
     <!-- JAVASCRIPT -->
     <script src="<?= $url; ?>assets/js/jquery-3.6.0.min.js"></script>
@@ -118,17 +115,87 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <script src="<?= $url; ?>assets/libs/feather-icons/feather.min.js"></script>
     <script src="<?= $url; ?>assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
 
-    <!--Swiper slider js-->
-    <script src="<?= $url; ?>assets/libs/swiper/swiper-bundle.min.js"></script>
-    <!-- cleave.js -->
-    <script src="<?= $url; ?>assets/libs/cleave.js/cleave.min.js"></script>
+    <!--datatable js-->
+    <script src="<?= $url; ?>assets/css/datatables/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="<?= $url; ?>assets/css/datatables/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="<?= $url; ?>assets/css/datatables/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="<?= $url; ?>assets/css/datatables/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="<?= $url; ?>assets/js/toastify-js.js"></script>
+    <script src="<?= $url; ?>assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
-    <script src="<?= $url; ?>assets/js/pages/form-masks.init.js"></script>
+    <!-- Dashboard init -->
+    <script src="<?= $url; ?>assets/js/pages/dashboard-analytics.init.js"></script>
 
-    <script src="<?= $url; ?>assets/js/pages/nft-landing.init.js"></script>
+    <!-- App js -->
+    <script src="<?= $url; ?>assets/js/app.js"></script>
+
+    <!-- App js -->
     <script src="<?= $url; ?>assets/js/ajax.js"></script>
     <script>
+        $(document).ready(function() {
+            dataTable = $('#example,#example2').DataTable({
+                stateSave: true,
+                autoWidth: false,
+                processing: true,
+                ordering: false,
+                responsive: true
+            });
+        });
 
+        var dataTable
+        $(document).ready(function() {
+            dataTable = $('#DTable').DataTable({
+                stateSave: true,
+                autoWidth: false,
+                processing: true,
+                ordering: false,
+                responsive: true,
+                columnDefs: [{
+                        className: 'text-center p-2',
+                        width: '3%',
+                        targets: [0]
+                    },
+                    {
+                        className: 'text-center p-2',
+                        targets: [2]
+                    },
+                    {
+                        className: 'p-2',
+                        targets: [0, 1, 2]
+                    },
+                ],
+                "ajax": {
+                    url: "<?= $url; ?>tabel/paket/pekerjaan",
+                    type: "post"
+                }
+            });
+        });
+
+        $('#DetailModal').on('show.bs.modal', function(e) {
+            var act = $(e.relatedTarget).data('act');
+            var id = $(e.relatedTarget).data('id');
+            var profil = $(e.relatedTarget).data('profil');
+            $.ajax({
+                type: 'post',
+                url: '<?= $url; ?>detail/modal/pengumuman',
+                data: {
+                    act: act,
+                    id: id,
+                    profil: profil
+                },
+                beforeSend: function(data) {
+                    // Show image container
+                    $("#wait").show();
+                },
+                success: function(data) {
+                    $('.fetched-data').html(data); //menampilkan data ke dalam modal
+                },
+                complete: function(data) {
+                    // Hide image container
+                    $("#wait").hide();
+                }
+            });
+        });
     </script>
 </body>
 

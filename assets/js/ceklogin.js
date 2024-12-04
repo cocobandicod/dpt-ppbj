@@ -10,14 +10,20 @@ $('#login').submit(function(e) {
         },
         success: function(data) {
             if (data === 'gagal') {
-                $("#pesan1").fadeIn();
-                $("#pesan1").html('Username atau Password Anda Salah!');
-                setTimeout(function() {
-                    $("#pesan1").fadeOut();
-                }, 2000); //will call the function after 2 secs.
+                Toastify({
+                    text: "Login Gagal...",
+                    className: "bg-danger",
+                    gravity: "top",
+                    position: "center",
+                    duration: 3000,
+                }).showToast();
             } else {
-                $("#pesan2").fadeIn();
-                $("#pesan2").html('Login Berhasil..');
+                Toastify({
+                    text: "Login Berhasil...",
+                    gravity: "top",
+                    position: "center",
+                    duration: 3000
+                }).showToast();
                 setTimeout(function() {
                     document.cookie = 'token' + "=" + data + "secure";
                     window.location = data;

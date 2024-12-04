@@ -84,13 +84,12 @@ if (empty($_SESSION['csrf_token'])) {
                     <div class="col-lg-12 col-md-6">
                         <div class="card mb-2">
                             <div class="card-body">
-                                <table id="example" class="table table-bordered dt-responsive table-striped align-middle fs-14" style="width:100%">
-                                    <thead>
+                                <table id="example" class="table table-bordered dt-responsive table-striped align-middle fs-13 table-sm" style="width:100%">
+                                    <thead class="table-light">
                                         <tr>
-                                            <th class="text-center" style="width: 3%;">No</th>
-                                            <th>Badan Usaha</th>
-                                            <th>Nama Penyedia</th>
-                                            <th>Alamat</th>
+                                            <th class="text-center p-2" style="width: 3%;">No</th>
+                                            <th class="p-2">Nama Penyedia</th>
+                                            <th class="p-2">Alamat</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -100,10 +99,9 @@ if (empty($_SESSION['csrf_token'])) {
                                         foreach ($sql as $row) {
                                         ?>
                                             <tr>
-                                                <td class="text-center"><?= $no; ?></td>
-                                                <td><?= $row['badan_usaha']; ?></td>
-                                                <td><?= $row['nama_perusahaan']; ?></td>
-                                                <td><?= $row['alamat']; ?></td>
+                                                <td class="text-center p-2"><?= $no; ?></td>
+                                                <td class="p-2"><?= $row['nama_perusahaan']; ?></td>
+                                                <td class="p-2"><?= $row['alamat']; ?></td>
                                             </tr>
                                         <?php $no++;
                                         } ?>
@@ -159,7 +157,7 @@ if (empty($_SESSION['csrf_token'])) {
     <!-- end layout wrapper -->
 
     <!-- Basic modal -->
-    <div id="DetailModal" class="modal fade" tabindex="-1">
+    <div id="DetailModal" class="modal zoomIn" tabindex="-1">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="fetched-data"></div>

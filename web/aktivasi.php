@@ -86,7 +86,7 @@ cek_aktivasi($url, $proses, $_GET['token']);
     </div>
     <!-- end layout wrapper -->
 
-    <div id="loginModals" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div id="loginModals" class="modal zoomIn" tabindex="-1" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 overflow-hidden">
                 <div class="modal-body p-5">

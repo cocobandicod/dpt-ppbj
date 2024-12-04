@@ -44,7 +44,7 @@ if (@$_POST['act'] == 'add') {
         </div>
         <div class="modal-footer">
             <a href="javascript:void(0);" class="btn btn-link link-primary fw-medium" data-bs-dismiss="modal">Batal</a>
-            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button type="submit" class="btn btn-success">Simpan</button>
         </div>
     </form>
     <script src="<?= $url; ?>assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
@@ -82,36 +82,34 @@ if (@$_POST['act'] == 'kirim') {
         </div>
         <div class="modal-body pt-3">
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="col-xxl-12 col-md-12 pt-2">
-                        <label for="basiInput" class="form-label">Nama Penyedia</label>
-                        <input type="text" class="form-control" name="nama" value="<?= @$row['nama_perusahaan']; ?>" readonly>
-                    </div>
-                    <div class="col-xxl-12 col-md-12 pt-2">
-                        <label for="basiInput" class="form-label">Email Penyedia</label>
-                        <input type="email" class="form-control" name="email" value="<?= @$row['email']; ?>" readonly>
-                    </div>
-                    <div class="col-xxl-12 col-md-12 pt-2">
-                        <label for="basiInput" class="form-label">Judul</label>
-                        <input type="text" class="form-control" name="judul" required>
-                    </div>
-                    <div class="col-xxl-12 col-md-12 pt-2">
-                        <label for="basiInput" class="form-label">Isi Undangan</label>
-                        <textarea name="isi_undangan" class="form-control ckeditor-classic"></textarea>
-                    </div>
-                    <div class="col-xxl-12 col-md-12 pt-2">
-                        <label for="basiInput" class="form-label">File Lampiran (Jika Ada)</label>
-                        <input type="file" id="file" onchange="return validasiFile()" name="fupload" class="form-control">
-                        <div id="passwordHelpBlock" class="form-text">
-                            *Accepted formats: pdf, Max file size 2Mb
-                        </div>
+                <div class="col-xxl-6 col-md-6 pt-2">
+                    <label for="basiInput" class="form-label">Nama Penyedia</label>
+                    <input type="text" class="form-control" name="nama" value="<?= @$row['nama_perusahaan']; ?>" readonly>
+                </div>
+                <div class="col-xxl-6 col-md-6 pt-2">
+                    <label for="basiInput" class="form-label">Email Penyedia</label>
+                    <input type="email" class="form-control" name="email" value="<?= @$row['email']; ?>" readonly>
+                </div>
+                <div class="col-xxl-12 col-md-12 pt-2">
+                    <label for="basiInput" class="form-label">Judul</label>
+                    <input type="text" class="form-control" name="judul" required>
+                </div>
+                <div class="col-xxl-12 col-md-12 pt-2">
+                    <label for="basiInput" class="form-label">Isi Undangan</label>
+                    <textarea name="isi_undangan" class="form-control ckeditor-classic"></textarea>
+                </div>
+                <div class="col-xxl-12 col-md-12 pt-2">
+                    <label for="basiInput" class="form-label">File Lampiran (Jika Ada)</label>
+                    <input type="file" id="file" onchange="return validasiFile()" name="fupload" class="form-control">
+                    <div id="passwordHelpBlock" class="form-text">
+                        *Accepted formats: pdf, Max file size 2Mb
                     </div>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
             <a href="javascript:void(0);" class="btn btn-link link-primary fw-medium" data-bs-dismiss="modal">Batal</a>
-            <button type="submit" class="btn btn-primary" id="kirim">Kirim</button>
+            <button type="submit" class="btn btn-success" id="kirim">Kirim</button>
         </div>
     </form>
     <script>

@@ -46,6 +46,6 @@ require_once('../../config/cek_ajax.php');
     </div>
     <div class="modal-footer">
         <a href="javascript:void(0);" class="btn btn-link link-primary fw-medium" data-bs-dismiss="modal">Batal</a>
-        <button type="submit" class="btn btn-primary">Simpan</button>
+        <button type="submit" class="btn btn-success">Simpan</button>
     </div>
 </form>

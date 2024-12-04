@@ -84,22 +84,22 @@ if (empty($_SESSION['csrf_token'])) {
                     <div class="col-lg-12 col-md-6">
                         <div class="card mb-2">
                             <div class="card-body">
-                                <table id="example" class="table table-bordered dt-responsive table-striped align-middle fs-14" style="width:100%">
-                                    <thead>
+                                <table id="example" class="table table-bordered dt-responsive table-striped align-middle fs-13 table-sm" style="width:100%">
+                                    <thead class="table-light">
                                         <tr>
-                                            <th class="text-center" style="width: 3%;">No</th>
-                                            <th>Nama Pekerjaan</th>
+                                            <th class="text-center p-2" style="width: 3%;">No</th>
+                                            <th class="p-2">Nama Pekerjaan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $sql = $proses->tampil_data_select('*', 'paket_pekerjaan', '1=1 ORDER BY id_paket DESC');
+                                        $sql = $proses->tampil_data_select('*', 'paket_pekerjaan', '1=1 AND status = "Berlangsung" ORDER BY id_paket DESC');
                                         $no = 1;
                                         foreach ($sql as $row) {
                                         ?>
                                             <tr>
-                                                <td class="text-center"><?= $no; ?></td>
-                                                <td><span class="cursor-pointer text-primary" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= @$row['id_paket']; ?>" data-act="evaluasi"><?= $row['nama_pekerjaan']; ?></span></td>
+                                                <td class="text-center p-2"><?= $no; ?></td>
+                                                <td class="p-2"><span class="cursor-pointer text-primary" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id="<?= @$row['id_paket']; ?>" data-act="evaluasi"><?= $row['nama_pekerjaan']; ?></span></td>
                                             </tr>
                                         <?php $no++;
                                         } ?>
@@ -155,7 +155,7 @@ if (empty($_SESSION['csrf_token'])) {
     <!-- end layout wrapper -->
 
     <!-- Basic modal -->
-    <div id="DetailModal" class="modal fade" tabindex="-1">
+    <div id="DetailModal" class="modal zoomIn" tabindex="-1">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="fetched-data"></div>

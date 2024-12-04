@@ -11,18 +11,24 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
 cek_url($url, $proses, $_GET['act'], 'profil_badan_usaha', 'id_profil ="' . @$_GET['id'] . '"');
 ?>
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="light" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+<html lang="en" data-layout="horizontal" data-layout-style="" data-layout-position="fixed" data-topbar="light">
 
 <head>
-
     <meta charset="utf-8" />
-    <title>Operator | Daftar Penyedia Terpilih Universitas Negeri Gorontalo</title>
+    <title>Daftar Penyedia Terpilih Universitas Negeri Gorontalo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?= $_SESSION['csrf_token'] ?>">
     <meta content="Sistem Informasi Penyedia Barang dan Jasa Universitas Negeri Gorontalo" name="description" />
-    <meta content="Themesbrand" name="cocobandicod" />
+    <meta property="og:image" content="<?= $url; ?>assets/images/logo-dark.png" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?= $url; ?>assets/images/icon.png">
+
+    <!--datatable css-->
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/buttons/2.2.2/css/buttons.dataTables.min.css">
 
     <!-- Layout config Js -->
     <script src="<?= $url; ?>assets/js/layout.js"></script>
@@ -34,6 +40,14 @@ cek_url($url, $proses, $_GET['act'], 'profil_badan_usaha', 'id_profil ="' . @$_G
     <link href="<?= $url; ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="<?= $url; ?>assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <!-- Sweet Alert css-->
+    <link href="<?= $url; ?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        .kunci {
+            display: none;
+            visibility: hidden;
+        }
+    </style>
 
 </head>
 
@@ -42,11 +56,26 @@ cek_url($url, $proses, $_GET['act'], 'profil_badan_usaha', 'id_profil ="' . @$_G
     <!-- Begin page -->
     <div id="layout-wrapper">
 
+        <header id="page-topbar">
+            <div class="layout-width">
+                <div class="navbar-header">
+                    <!-- LOGO -->
+                    <?= logo($url); ?>
+
+                    <div class="d-flex align-items-center">
+                        <?= profil_operator($proses, $url); ?>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== App Menu ========== -->
         <?php
         if ($_SESSION['level'] == 'PPK') {
-            echo sidebar_ppk($url);
+            menu_ppk($url);
         } else if ($_SESSION['level'] == 'Pokja') {
-            echo sidebar_pokja($url);
+            menu_pokja($url);
+        } else {
         }
         ?>
         <!-- Left Sidebar End -->
@@ -60,145 +89,127 @@ cek_url($url, $proses, $_GET['act'], 'profil_badan_usaha', 'id_profil ="' . @$_G
 
             <div class="page-content">
                 <div class="container-fluid">
-                    <div class="col-lg-12 mt-3">
-                        <div class="card">
-                            <div class="card-header d-flex align-items-center pt-3 pb-3">
-                                <h4 class="card-title mb-0 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
-                                <div>
-                                    <button onclick="back()" type="button" class="btn btn-primary btn-label waves-effect waves-light btn-sm"><i class="ri-arrow-go-back-line label-icon align-middle fs-16 me-2"></i> Back</button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <form id="form" enctype="multipart/form-data">
-                                    <?php
-                                    if ($_GET['act'] == 'edit') {
-                                        $row = $proses->tampil_data_saja_join2('a.*,b.username,b.email', 'profil_badan_usaha', 'akun_penyedia', 'id_akun', 'a.id_profil = "' . $_GET['id'] . '"');
-                                        echo '<input type="hidden" name="id" value="' . $row['id_profil'] . '">';
-                                        echo '<input type="hidden" name="id_akun" value="' . $row['id_akun'] . '">';
-                                        echo '<input type="hidden" name="act" value="edit">';
-                                    }
-                                    ?>
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <h5>Akun</h5>
-                                                    <div class="col-xxl-6 col-md-6 pt-2">
-                                                        <label for="basiInput" class="form-label">Username</label>
-                                                        <input type="text" class="form-control" name="username" value="<?= @$row['username']; ?>" disabled>
-                                                    </div>
-                                                    <div class="col-xxl-6 col-md-6 pt-2">
-                                                        <label for="basiInput" class="form-label">Email</label>
-                                                        <input type="email" class="form-control" name="email" value="<?= @$row['email']; ?>">
-                                                    </div>
-                                                    <h5 class="pt-4">Profil</h5>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">NPWP *</label>
-                                                        <input type="hidden" name="id" value="<?= $row['id_profil']; ?>">
-                                                        <input type="text" id="cleave-delimiters" class="form-control" name="npwp" value="<?= $row['npwp']; ?>" placeholder="xx.xxx.xxx.x-xxx.xxx" required>
-                                                    </div>
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Badan Usaha *</label>
-                                                        <?= badan_usaha('badan_usaha', $row['badan_usaha']); ?>
-                                                    </div>
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Nama Perusahaan *</label>
-                                                        <input type="text" name="nama_perusahaan" value="<?= $row['nama_perusahaan']; ?>" class="form-control" required>
-                                                    </div>
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Status *</label>
-                                                        <?= status_usaha('status_usaha', $row['status_usaha']); ?>
-                                                    </div>
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Alamat *</label>
-                                                        <textarea name="alamat" class="form-control" required><?= $row['alamat']; ?></textarea>
-                                                    </div>
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Provinsi *</label>
-                                                        <input type="text" name="provinsi" value="<?= $row['provinsi']; ?>" class="form-control" required>
-                                                    </div>
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Kabupaten/Kota *</label>
-                                                        <input type="text" name="kab_kota" value="<?= $row['kab_kota']; ?>" class="form-control" required>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-6">
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Kode Pos *</label>
-                                                        <input type="number" name="kode_pos" value="<?= $row['kode_pos']; ?>" class="form-control" required>
-                                                    </div>
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Telepon / HP *</label>
-                                                        <input type="number" name="telepon" value="<?= $row['telepon']; ?>" class="form-control" required>
-                                                    </div>
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Fax</label>
-                                                        <input type="number" name="fax" value="<?= $row['fax']; ?>" class="form-control">
-                                                    </div>
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Website</label>
-                                                        <input type="text" name="website" value="<?= $row['website']; ?>" placeholder="https://google.com" class="form-control">
-                                                    </div>
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Nama Contact Person</label>
-                                                        <input type="text" name="contact_person" value="<?= $row['contact_person']; ?>" class="form-control">
-                                                    </div>
-                                                    <div class="col-xxl-12 col-md-12 pt-2">
-                                                        <label for="basiInput" class="form-label">Telepon / HP CP</label>
-                                                        <input type="number" name="telepon_cp" value="<?= $row['telepon_cp']; ?>" class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 pt-5">
-                                            <button id="simpan" class="btn btn-primary" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div> <!-- container-fluid -->
-            </div><!-- End Page-content -->
 
-            <footer class="footer">
-                <div class="container-fluid">
+                    <!-- start page title -->
                     <div class="row">
-                        <div class="col-sm-6">
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script> © Universitas Negeri Gorontalo.
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="text-sm-end d-none d-sm-block">
-                                Develop by Bengkel IT Gorontalo
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
                             </div>
                         </div>
                     </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex flex-column h-100">
+                                <div class="row h-100">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-body p-0">
+                                                <div class="row align-items-end">
+                                                    <div class="col-sm-12">
+                                                        <div class="p-3">
+                                                            <form id="form" enctype="multipart/form-data">
+                                                                <?php
+                                                                if ($_GET['act'] == 'edit') {
+                                                                    $row = $proses->tampil_data_saja_join2('a.*,b.username,b.email', 'profil_badan_usaha', 'akun_penyedia', 'id_akun', 'a.id_profil = "' . $_GET['id'] . '"');
+                                                                    echo '<input type="hidden" name="id" value="' . $row['id_profil'] . '">';
+                                                                    echo '<input type="hidden" name="id_akun" value="' . $row['id_akun'] . '">';
+                                                                    echo '<input type="hidden" name="act" value="edit">';
+                                                                }
+                                                                ?>
+                                                                <div class="row">
+                                                                    <h5>Akun</h5>
+                                                                    <div class="col-xxl-6 col-md-6 pt-2">
+                                                                        <label for="basiInput" class="form-label">Username</label>
+                                                                        <input type="text" class="form-control" name="username" value="<?= @$row['username']; ?>" disabled>
+                                                                    </div>
+                                                                    <div class="col-xxl-6 col-md-6 pt-2">
+                                                                        <label for="basiInput" class="form-label">Email</label>
+                                                                        <input type="email" class="form-control" name="email" value="<?= @$row['email']; ?>">
+                                                                    </div>
+                                                                    <h5 class="pt-4">Profil</h5>
+                                                                    <div class="col-xxl-4 col-md-4 pt-2">
+                                                                        <label for="basiInput" class="form-label">NPWP *</label>
+                                                                        <input type="hidden" name="id" value="<?= $row['id_profil']; ?>">
+                                                                        <input type="text" id="cleave-delimiters" class="form-control" name="npwp" value="<?= $row['npwp']; ?>" placeholder="xx.xxx.xxx.x-xxx.xxx" required>
+                                                                    </div>
+                                                                    <div class="col-xxl-4 col-md-4 pt-2">
+                                                                        <label for="basiInput" class="form-label">Badan Usaha *</label>
+                                                                        <?= badan_usaha('badan_usaha', $row['badan_usaha']); ?>
+                                                                    </div>
+                                                                    <div class="col-xxl-4 col-md-4 pt-2">
+                                                                        <label for="basiInput" class="form-label">Nama Perusahaan *</label>
+                                                                        <input type="text" name="nama_perusahaan" value="<?= $row['nama_perusahaan']; ?>" class="form-control" required>
+                                                                    </div>
+                                                                    <div class="col-xxl-4 col-md-4 pt-2">
+                                                                        <label for="basiInput" class="form-label">Status *</label>
+                                                                        <?= status_usaha('status_usaha', $row['status_usaha']); ?>
+                                                                    </div>
+                                                                    <div class="col-xxl-4 col-md-4 pt-2">
+                                                                        <label for="basiInput" class="form-label">Provinsi *</label>
+                                                                        <input type="text" name="provinsi" value="<?= $row['provinsi']; ?>" class="form-control" required>
+                                                                    </div>
+                                                                    <div class="col-xxl-4 col-md-4 pt-2">
+                                                                        <label for="basiInput" class="form-label">Kabupaten/Kota *</label>
+                                                                        <input type="text" name="kab_kota" value="<?= $row['kab_kota']; ?>" class="form-control" required>
+                                                                    </div>
+                                                                    <div class="col-xxl-12 col-md-12 pt-2">
+                                                                        <label for="basiInput" class="form-label">Alamat *</label>
+                                                                        <textarea name="alamat" class="form-control" required><?= $row['alamat']; ?></textarea>
+                                                                    </div>
+                                                                    <div class="col-xxl-4 col-md-4 pt-2">
+                                                                        <label for="basiInput" class="form-label">Kode Pos *</label>
+                                                                        <input type="number" name="kode_pos" value="<?= $row['kode_pos']; ?>" class="form-control" required>
+                                                                    </div>
+                                                                    <div class="col-xxl-4 col-md-4 pt-2">
+                                                                        <label for="basiInput" class="form-label">Telepon / HP *</label>
+                                                                        <input type="number" name="telepon" value="<?= $row['telepon']; ?>" class="form-control" required>
+                                                                    </div>
+                                                                    <div class="col-xxl-4 col-md-4 pt-2">
+                                                                        <label for="basiInput" class="form-label">Fax</label>
+                                                                        <input type="number" name="fax" value="<?= $row['fax']; ?>" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-xxl-4 col-md-4 pt-2">
+                                                                        <label for="basiInput" class="form-label">Website</label>
+                                                                        <input type="text" name="website" value="<?= $row['website']; ?>" placeholder="https://google.com" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-xxl-4 col-md-4 pt-2">
+                                                                        <label for="basiInput" class="form-label">Nama Contact Person</label>
+                                                                        <input type="text" name="contact_person" value="<?= $row['contact_person']; ?>" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-xxl-4 col-md-4 pt-2">
+                                                                        <label for="basiInput" class="form-label">Telepon / HP CP</label>
+                                                                        <input type="number" name="telepon_cp" value="<?= $row['telepon_cp']; ?>" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-12 pt-5">
+                                                                        <button id="simpan" class="btn btn-success" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> <!-- end card-body-->
+                                        </div>
+                                    </div> <!-- end col-->
+                                </div> <!-- end row-->
+                            </div>
+                        </div> <!-- end col-->
+                    </div> <!-- end row-->
                 </div>
-            </footer>
+                <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+            <?= footer($url); ?>
+
         </div>
         <!-- end main content-->
 
     </div>
     <!-- END layout-wrapper -->
-
-    <!--start back-to-top-->
-    <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
-        <i class="ri-arrow-up-line"></i>
-    </button>
-    <!--end back-to-top-->
-
-    <!--preloader-->
-    <div id="preloader">
-        <div id="status">
-            <div class="spinner-border text-primary avatar-sm" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-    </div>
 
     <!-- JAVASCRIPT -->
     <script src="<?= $url; ?>assets/js/jquery-3.6.0.min.js"></script>
@@ -208,12 +219,13 @@ cek_url($url, $proses, $_GET['act'], 'profil_badan_usaha', 'id_profil ="' . @$_G
     <script src="<?= $url; ?>assets/libs/feather-icons/feather.min.js"></script>
     <script src="<?= $url; ?>assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
 
-    <!-- prismjs plugin -->
-    <script src="<?= $url; ?>assets/libs/prismjs/prism.js"></script>
+    <!--datatable js-->
+    <script src="<?= $url; ?>assets/css/datatables/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="<?= $url; ?>assets/css/datatables/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="<?= $url; ?>assets/css/datatables/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="<?= $url; ?>assets/css/datatables/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
     <script src="<?= $url; ?>assets/js/toastify-js.js"></script>
     <script src="<?= $url; ?>assets/js/ajax.js"></script>
-
-    <script src="<?= $url; ?>assets/js/app.js"></script>
 
     <script>
         function back() {
@@ -259,6 +271,7 @@ cek_url($url, $proses, $_GET['act'], 'profil_badan_usaha', 'id_profil ="' . @$_G
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     Toastify({
                         text: "Data Gagal Dimasukan!",
+                        className: "bg-danger",
                         gravity: "top",
                         position: "center",
                         duration: 3000
@@ -270,7 +283,6 @@ cek_url($url, $proses, $_GET['act'], 'profil_badan_usaha', 'id_profil ="' . @$_G
             });
         });
     </script>
-
 </body>
 
 </html>

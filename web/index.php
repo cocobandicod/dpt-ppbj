@@ -27,7 +27,7 @@ if (empty($_SESSION['csrf_token'])) {
     <link rel="shortcut icon" href="<?= $url; ?>assets/images/icon.png">
 
     <!--Swiper slider css-->
-    <link href="<?= $url; ?>assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
 
     <!--datatable css-->
     <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/1.11.5/css/dataTables.bootstrap5.min.css" />
@@ -61,9 +61,34 @@ if (empty($_SESSION['csrf_token'])) {
     <div class="layout-wrapper landing">
         <?= navbar($url); ?>
         <!-- end navbar -->
-
-        <!-- start hero section -->
-        <section class="section nft-hero" style="background-image: url(assets/images/bg-home.jpg); background-color: #000; opacity:.95; padding-top:200px; padding-bottom:250px;" id="home">
+        <section class="section bg-light pt-5 pb-4 mt-5" id="reviews">
+            <div class="bg-overlay bg-overlay-pattern"></div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="text-center">
+                            <!-- Swiper -->
+                            <div class="swiper client-review-swiper rounded" dir="ltr">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <div class="row justify-content-center">
+                                            <div class="col-12">
+                                                <img src="<?= $url; ?>assets/images/banner.jpeg" class="w-100">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end slider -->
+                        </div>
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- end container -->
+        </section>
+        <section class="section nft-hero" style="background-image: url(assets/images/bg-home.jpg); background-color: #000; opacity:.95; padding-top:100px; padding-bottom:100px;" id="home">
             <div class="container">
                 <div class="row align-items-center gy-4">
                     <div class="col-lg-7 order-2 order-lg-1">
@@ -97,6 +122,9 @@ if (empty($_SESSION['csrf_token'])) {
                                     </form>
                                     <div class="text-center mt-2">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#resetModals" class="fs-12 text-danger">Lupa Password</a>
+                                    </div>
+                                    <div class="text-center mt-2">
+                                        <a href="<?= $url; ?>login" class="fs-12 text-success">Login Non Penyedia</a>
                                     </div>
                                 </div>
                             </div>
@@ -192,7 +220,7 @@ if (empty($_SESSION['csrf_token'])) {
     </div>
     <!-- end layout wrapper -->
 
-    <div class="modal fade bs-example-modal-xl" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal zoomIn bs-example-modal-xl" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -326,7 +354,7 @@ if (empty($_SESSION['csrf_token'])) {
         </div><!-- /.modal-dialog -->
     </div>
 
-    <div id="resetModals" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div id="resetModals" class="modal zoomIn" tabindex="-1" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 overflow-hidden">
                 <div class="modal-body p-5 pb-3">
@@ -348,7 +376,7 @@ if (empty($_SESSION['csrf_token'])) {
     </div><!-- /.modal -->
 
     <!-- Basic modal -->
-    <div id="DetailModal" class="modal fade" tabindex="-1">
+    <div id="DetailModal" class="modal zoomIn" tabindex="-1">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="fetched-data"></div>
@@ -378,8 +406,8 @@ if (empty($_SESSION['csrf_token'])) {
     <script src="<?= $url; ?>assets/libs/cleave.js/cleave.min.js"></script>
 
     <script src="<?= $url; ?>assets/js/pages/form-masks.init.js"></script>
-
-    <script src="<?= $url; ?>assets/js/pages/nft-landing.init.js"></script>
+    <script src="assets/js/pages/remix-icons-listing.js"></script>
+    <script src="<?= $url; ?>assets/js/pages/landing.init.js"></script>
     <script src="<?= $url; ?>assets/js/ajax.js"></script>
     <script src="<?= $url; ?>assets/js/index.js"></script>
     <script>

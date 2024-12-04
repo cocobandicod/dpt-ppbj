@@ -6,7 +6,7 @@ require_once('../../config/fungsi_indotgl.php');
 require_once('../../config/cek_ajax.php');
 ?>
 <?php
-if ($_POST['act'] == 'pengumuman') {
+if (@$_POST['act'] == 'pengumuman') {
     $today = date('Y-m-d');
     $s = $proses->tampil_data_saja('*', 'paket_pekerjaan', '1=1 AND id_paket = "' . $_POST['id'] . '"');
     $p = $proses->tampil_data_saja('GROUP_CONCAT(CONCAT("<span class=\"badge bg-success mb-1\">", tahap, "</span>") SEPARATOR " ") as pengumuman', 'jadwal_paket', '1=1 AND id_paket = "' . $s['id_paket'] . '" AND "' . $today . '" BETWEEN DATE(tgl_mulai) AND DATE(tgl_selesai)');
@@ -75,7 +75,7 @@ if ($_POST['act'] == 'pengumuman') {
         <a href="javascript:void(0);" class="btn btn-light fw-medium" data-bs-dismiss="modal">Batal</a>
     </div>
 <?php }
-if ($_POST['act'] == 'jadwal') {
+if (@$_POST['act'] == 'jadwal') {
     $today = date('Y-m-d');
     $judul = 'Detail Tahapan Saat Ini';
 ?>
@@ -85,12 +85,12 @@ if ($_POST['act'] == 'jadwal') {
     </div>
     <div class="modal-body pt-3">
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-sm">
                 <thead>
-                    <th style="width: 3%;">No</th>
-                    <th>Tahap</th>
-                    <th>Mulai</th>
-                    <th>Sampai</th>
+                    <th style="width: 3%;" class="p-2">No</th>
+                    <th class="p-2">Tahap asd</th>
+                    <th class="p-2">Mulai</th>
+                    <th class="p-2">Sampai</th>
                 </thead>
                 <tbody>
                     <?php
@@ -102,19 +102,19 @@ if ($_POST['act'] == 'jadwal') {
                         END AS tahap,
                         tgl_mulai, 
                         tgl_selesai',
-                        'jadwal_paket',
+                        'jadwal',
                         '1=1 
-                        AND id_paket = "' . $_POST['id'] . '" 
+                        AND kode_paket = "' . $_POST['id'] . '" 
                         ORDER BY id_jadwal ASC'
                     );
                     $no = 1;
                     foreach ($sql as $row) {
                     ?>
                         <tr>
-                            <td class="text-center"><?= $no; ?>.</td>
-                            <td><?= str_replace('-', ' ', $row['tahap']); ?></td>
-                            <td><?= tgl_indo5($row['tgl_mulai']); ?></td>
-                            <td><?= tgl_indo5($row['tgl_selesai']); ?></td>
+                            <td class="text-center p-2"><?= $no; ?>.</td>
+                            <td class="p-2"><?= str_replace('-', ' ', $row['tahap']); ?></td>
+                            <td class="p-2"><?= tgl_indo5($row['tgl_mulai']); ?></td>
+                            <td class="p-2"><?= tgl_indo5($row['tgl_selesai']); ?></td>
                         </tr>
                     <?php $no++;
                     } ?>
@@ -126,7 +126,7 @@ if ($_POST['act'] == 'jadwal') {
         <a href="javascript:void(0);" class="btn btn-light fw-medium" data-bs-dismiss="modal">Batal</a>
     </div>
 <?php }
-if ($_POST['act'] == 'penyedia') {
+if (@$_POST['act'] == 'penyedia') {
     $today = date('Y-m-d');
     $judul = 'Daftar Penyedia Terpilih';
     $s = $proses->tampil_data_saja('*', 'paket_pekerjaan', '1=1 AND id_paket = "' . $_POST['id'] . '"');
@@ -205,7 +205,7 @@ if ($_POST['act'] == 'penyedia') {
         });
     </script>
 <?php }
-if ($_POST['act'] == 'evaluasi') {
+if (@$_POST['act'] == 'evaluasi') {
     $today = date('Y-m-d');
     $judul = 'Hasil Pengadaan';
     $s = $proses->tampil_data_saja('*', 'paket_pekerjaan', '1=1 AND id_paket = "' . $_POST['id'] . '"');
@@ -411,11 +411,44 @@ if ($_POST['act'] == 'evaluasi') {
             });
         });
     </script>
-<?php } else if ($_POST['act'] == 'ikut') {
+<?php } else if (@$_POST['act'] == 'ikut') {
     $today = date('Y-m-d');
-    $s = $proses->tampil_data_saja('*', 'paket_pekerjaan', '1=1 AND id_paket = "' . $_POST['id'] . '"');
-    $p = $proses->tampil_data_saja('GROUP_CONCAT(CONCAT("<span class=\"badge bg-success mb-1\">", tahap, "</span>") SEPARATOR " ") as pengumuman', 'jadwal_paket', '1=1 AND id_paket = "' . $s['id_paket'] . '" AND "' . $today . '" BETWEEN DATE(tgl_mulai) AND DATE(tgl_selesai)');
+    $s = $proses->tampil_data_saja(
+        'a.*, b.nama_file, b.file',
+        'paket_pekerjaan a 
+        LEFT JOIN dokumen_persiapan b ON a.kode_paket = b.kode_paket',
+        '1=1 AND a.id_paket = "' . $_POST['id'] . '"
+        AND b.jenis = "Pekerjaan"'
+    );
+    $p = $proses->tampil_data_saja('GROUP_CONCAT(CONCAT("<span class=\"badge bg-success fs-12 mb-1\">", tahap, "</span>") SEPARATOR " ") as pengumuman', 'jadwal', '1=1 AND kode_paket = "' . $s['kode_paket'] . '" AND "' . $today . '" BETWEEN DATE(tgl_mulai) AND DATE(tgl_selesai)');
+
     $judul = 'Pendaftaran Paket Pekerjaan';
+    $profil = $proses->tampil_data_saja('nama_perusahaan', 'profil_badan_usaha', '1=1 AND id_profil = "' . $_SESSION['kode_user'] . '"');
+
+    $cek_kbli = $proses->tampil_data_saja(
+        'CASE 
+        WHEN COUNT(dp.nomor) = COUNT(kk.kode_kbli) THEN "Cocok"
+        ELSE "Tidak Cocok"
+        END AS status_kbli',
+        'kode_kbli kk LEFT JOIN 
+        dokumen_persiapan dp ON kk.kode_kbli = dp.nomor',
+        'dp.menu = "KBLI" AND kk.id_profil = "' . $_SESSION['kode_user'] . '"'
+    );
+
+    $cek_klasifikasi = $proses->tampil_data_saja(
+        'CASE 
+        WHEN EXISTS (
+            SELECT 1 
+            FROM izin_usaha iu
+            WHERE iu.grade = pp.kualifikasi_usaha
+            AND iu.id_profil = "' . $_SESSION['kode_user'] . '"
+        ) THEN "Cocok"
+        ELSE "Tidak Cocok"
+        END AS status_klasifikasi',
+        'paket_pekerjaan pp',
+        'pp.kode_paket = "' . $s['kode_paket'] . '"'
+    );
+
 ?>
     <div class="modal-header">
         <h5 class="modal-title"><?= $judul; ?></h5>
@@ -424,69 +457,186 @@ if ($_POST['act'] == 'evaluasi') {
     <div class="modal-body pt-3">
         <center id="wait"><i class="icon-spinner2 spinner mr-1"></i> Loading..</center>
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-sm">
                 <tbody>
                     <tr>
-                        <td style="width: 20%;">Nama Pekerjaan</td>
-                        <td><?= @$s['nama_pekerjaan']; ?></td>
+                        <td class="p-2 w-25">Kode Paket</td>
+                        <td class="p-2"><?= @$s['kode_paket']; ?></td>
                     </tr>
                     <tr>
-                        <td>Lokasi Pekerjaan</td>
-                        <td><?= @$s['lokasi_pekerjaan']; ?></td>
+                        <td class="p-2">Nama Pekerjaan</td>
+                        <td class="p-2"><?= @$s['nama_pekerjaan']; ?></td>
                     </tr>
                     <tr>
-                        <td>Uraian Singkat</td>
-                        <td><?= @$s['uraian_singkat']; ?></td>
+                        <td class="p-2">Lokasi Pekerjaan</td>
+                        <td class="p-2"><?= @$s['lokasi_pekerjaan']; ?></td>
                     </tr>
                     <tr>
-                        <td>Sumber Dana</td>
-                        <td><?= @$s['nama_pekerjaan']; ?></td>
+                        <td class="p-2">Uraian Singkat Pekerjaan</td>
+                        <td class="p-2"><a href="<?= $url; ?>berkas/<?= $s['file']; ?>" target="_blank"><i class="ri-folder-download-line"></i> <?= $s['nama_file']; ?></a></td>
                     </tr>
                     <tr>
-                        <td>Tanggal Pembuatan</td>
-                        <td><?= tgl_indo(@$s['tanggal']); ?></td>
+                        <td class="p-2">Sumber Dana</td>
+                        <td class="p-2"><?= @$s['nama_pekerjaan']; ?></td>
                     </tr>
                     <tr>
-                        <td>Tahapan Saat Ini</td>
-                        <td><?= $p['pengumuman']; ?></td>
+                        <td class="p-2">Tanggal Pembuatan</td>
+                        <td class="p-2"><?= tgl_indo(@$s['tanggal']); ?></td>
                     </tr>
                     <tr>
-                        <td>Tahun Anggaran</td>
-                        <td><?= @$s['tahun_anggaran']; ?></td>
+                        <td class="p-2">Tahapan Saat Ini</td>
+                        <td class="p-2"><a href="#" data-bs-toggle="modal" data-bs-target="#DetailJadwal" data-id="<?= @$s['kode_paket']; ?>" data-act="jadwal"><?= $p['pengumuman']; ?></a></td>
                     </tr>
                     <tr>
-                        <td>Nilai Pagu</td>
-                        <td>Rp. <?= number_format(@$s['nilai_pagu']); ?></td>
+                        <td class="p-2">Satuan Kerja</td>
+                        <td class="p-2"><?= @$s['satuan_kerja']; ?></td>
                     </tr>
                     <tr>
-                        <td>Nilai HPS</td>
-                        <td>Rp. <?= number_format(@$s['nilai_hps']); ?></td>
+                        <td class="p-2">Jenis Pengadaan</td>
+                        <td class="p-2"><?= @$s['jenis_pengadaan']; ?></td>
                     </tr>
                     <tr>
-                        <td>Kualifikasi Usaha</td>
-                        <td><?= @$s['kualifikasi_usaha']; ?></td>
+                        <td class="p-2">Metode Pengadaan</td>
+                        <td class="p-2"><?= @$s['metode_pengadaan'] . ' - ' . @$s['metode_evaluasi']; ?></td>
                     </tr>
                     <tr>
-                        <td>Syarat Kualifikasi</td>
-                        <td>
-                            <?= @$s['syarat_kualifikasi']; ?>
+                        <td class="p-2">Tahun Anggaran</td>
+                        <td class="p-2"><?= @$s['sumber_dana'] . ' ' . @$s['tahun_anggaran']; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Nilai Pagu</td>
+                        <td class="p-2">Rp. <?= number_format(@$s['nilai_pagu'], 2, ',', '.'); ?></td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Nilai HPS</td>
+                        <td class="p-2">Rp. <?= number_format(@$s['nilai_hps'], 2, ',', '.'); ?></td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Kualifikasi Usaha</td>
+                        <td class="p-2"><?= @$s['kualifikasi_usaha']; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Syarat Kualifikasi</td>
+                        <td class="p-2">
+                            <h5>Persyaratan Kualifikasi Administrasi/Legalitas</h5>
+                            <p>Memenuhi ketentuan peraturan perundang-undangan untuk menjalankan kegiatan/usaha</p>
+                            <table class="table table-sm mb-2">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="p-2">Jenis Izin</th>
+                                        <th class="p-2">Bidang Usaha/Sub Bidang Usaha/Klasifikasi/Sub Klasifikasi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $sql = $proses->tampil_data_select(
+                                        '*',
+                                        'dokumen_persiapan',
+                                        '1=1 AND kode_paket = "' . $s['kode_paket'] . '"
+                                        AND jenis = "Kualifikasi" AND menu = "KBLI" OR menu = "Izin-Lainnya"'
+                                    );
+                                    foreach ($sql as $row) {
+                                        if ($row['menu'] == 'KBLI') {
+                                            $jenis = 'NIB';
+                                            $deskripsi = $row['deskripsi'] . ' - ' . $row['nomor'];
+                                        } else {
+                                            $jenis = '';
+                                            $deskripsi = $row['deskripsi'];
+                                        }
+                                    ?>
+                                        <tr>
+                                            <td class="p-2"><?= $jenis; ?></td>
+                                            <td class="p-2"><?= $deskripsi; ?></td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                            <?php
+                            $sql = $proses->tampil_data_select(
+                                '*',
+                                'dokumen_persiapan',
+                                '1=1 AND kode_paket = "' . $s['kode_paket'] . '"
+                                AND jenis = "Kualifikasi" AND menu = "Syarat-Administrasi"'
+                            );
+                            if (empty($sql)) {
+                                echo '<div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="ri-close-circle-fill text-danger"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Tidak ada data
+                                </div>
+                            </div>';
+                            } else {
+                                foreach ($sql as $row) {
+                                    $deskripsi = $row['deskripsi'];
+                            ?>
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="ri-checkbox-circle-fill text-success"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-2">
+                                            <?= $deskripsi; ?>
+                                        </div>
+                                    </div>
+                            <?php }
+                            } ?>
+                            <h5 class="mt-3 mb-2">Persyaratan Kualifikasi Teknis</h5>
+                            <?php
+                            $sql = $proses->tampil_data_select(
+                                '*',
+                                'dokumen_persiapan',
+                                '1=1 AND kode_paket = "' . $s['kode_paket'] . '"
+                                AND jenis = "Kualifikasi" AND menu = "Teknis"'
+                            );
+                            if (empty($sql)) {
+                                echo '<div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="ri-close-circle-fill text-danger"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Tidak ada data
+                                </div>
+                            </div>';
+                            } else {
+                                foreach ($sql as $row) {
+                                    $deskripsi = $row['deskripsi'];
+                            ?>
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="ri-checkbox-circle-fill text-success"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-2">
+                                            <?= $deskripsi; ?>
+                                        </div>
+                                    </div>
+                            <?php }
+                            } ?>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2">
-                            <center>
-                                <h5>PAKTA INTEGRITAS</h5>
-                            </center>
-                            <p class="mb-0">Untuk mengikuti pengadaan, Anda harus membaca dan menyetujui Pakta Integritas dibawah ini</p>
-                            Saya menyetuji bahwa
-                            <ol type="1">
-                                <li>Tidak akan melakukan praktek Korupsi, Kolusi, dan/atau Nepotisme;</li>
-                                <li>Akan melaporkan kepada PA/KPA/APIP jika mengetahui terjadinya praktik Korupsi, Kolusi, dan/atau Nepotisme dalam proses pengadaan ini</li>
-                                <li>Akan mengikuti proses pengadaan secara bersih transparan, dan profesional untuk memberikan hasil kerja terbaik sesuai ketentuan</li>
-                                <li>Apabila melanggar hal-hal yang dinyatakan dalam angka 1),2) dan 3) maka bersedia menerima sanksi sesuai dengan peraturan perundang-undangan</li>
-                            </ol>
-                            <button id="ikuttender" data-paket="<?= $_POST['id']; ?>" data-profil="<?= $_POST['profil']; ?>" data-act="daftar" class="btn btn-success simpan"><i class="ri-save-3-line align-middle ms-1"></i> Setuju & Ikut</button>
-                            <button class="btn btn-light" data-bs-dismiss="modal">Tidak Setuju</button>
+                        <td colspan="2" class="p-3">
+                            <?php
+                            if (@$cek_klasifikasi['status_klasifikasi'] == 'Cocok' && @$cek_kbli['status_kbli'] == 'Cocok') {
+                            ?>
+                                <center>
+                                    <h5>PAKTA INTEGRITAS</h5>
+                                </center>
+                                <p class="mb-0">Untuk mengikuti pengadaan, Anda harus membaca dan menyetujui Pakta Integritas dibawah ini</p>
+                                Saya menyetuji bahwa
+                                <ol type="1">
+                                    <li>Tidak akan melakukan praktek Korupsi, Kolusi, dan/atau Nepotisme;</li>
+                                    <li>Akan melaporkan kepada PA/KPA/APIP jika mengetahui terjadinya praktik Korupsi, Kolusi, dan/atau Nepotisme dalam proses pengadaan ini</li>
+                                    <li>Akan mengikuti proses pengadaan secara bersih transparan, dan profesional untuk memberikan hasil kerja terbaik sesuai ketentuan</li>
+                                    <li>Apabila melanggar hal-hal yang dinyatakan dalam angka 1),2) dan 3) maka bersedia menerima sanksi sesuai dengan peraturan perundang-undangan</li>
+                                </ol>
+                                <button id="ikuttender" data-paket="<?= $_POST['id']; ?>" data-profil="<?= $_POST['profil']; ?>" data-act="daftar" class="btn btn-success simpan"><i class="ri-save-3-line align-middle ms-1"></i> Setuju & Ikut</button>
+                                <button class="btn btn-light" data-bs-dismiss="modal">Tidak Setuju</button>
+                            <?php } else { ?>
+                                <div class="alert alert-danger mb-0" role="alert">
+                                    <strong> Mohon Maaf! </strong> Anda tidak dapat mengikuti Paket Pekerjaan ini karena tidak memenuhi klasifikasi perusahaan anda
+                                </div>
+                            <?php } ?>
                         </td>
                     </tr>
                 </tbody>
@@ -537,7 +687,7 @@ if ($_POST['act'] == 'evaluasi') {
             });
         });
     </script>
-<?php } else if ($_POST['act'] == 'pernyataan') {
+<?php } else if (@$_POST['act'] == 'pernyataan') {
     $judul = 'Surat Pernyataan';
 ?>
     <div class="modal-header">
@@ -567,7 +717,7 @@ if ($_POST['act'] == 'evaluasi') {
         <button type="submit" id="tblizin" class="btn btn-success simpan"><i class="ri-send-plane-line align-middle ms-1"></i> Kirim Kualifikasi</button>
         <a href="javascript:void(0);" class="btn btn-light fw-medium" data-bs-dismiss="modal">Batal</a>
     </div>
-<?php } else if ($_POST['act'] == 'lihat_data') {
+<?php } else if (@$_POST['act'] == 'lihat_data') {
     $judul = 'Lihat Data Kualifikasi';
 ?>
     <div class="modal-header">
@@ -577,14 +727,14 @@ if ($_POST['act'] == 'evaluasi') {
     <div class="modal-body pt-3">
         <center id="wait"><i class="icon-spinner2 spinner mr-1"></i> Loading..</center>
         <h5>Izin Usaha</h5>
-        <table class="table table-bordered small tabel1">
+        <table class="table table-bordered small tabel1 table-sm">
             <thead class="table-light">
                 <tr>
-                    <th>Jenis Izin</th>
-                    <th>Nomor</th>
-                    <th>Tanggal</th>
-                    <th>Berlaku</th>
-                    <th>Kualifikasi</td>
+                    <th class="p-2">Jenis Izin</th>
+                    <th class="p-2">Nomor</th>
+                    <th class="p-2">Tanggal</th>
+                    <th class="p-2">Berlaku</th>
+                    <th class="p-2">Kualifikasi</td>
                 </tr>
             </thead>
             <tbody>
@@ -600,55 +750,50 @@ if ($_POST['act'] == 'evaluasi') {
                 foreach ($sql1 as $a) {
                 ?>
                     <tr>
-                        <td><?= str_replace('-', ' ', $a['jenis_izin']); ?></td>
-                        <td><?= $a['nomor']; ?></td>
-                        <td><?= tgl_indo($a['tanggal']); ?></td>
-                        <td>
+                        <td class="p-2"><?= str_replace('-', ' ', $a['jenis_izin']); ?></td>
+                        <td class="p-2"><?= $a['nomor']; ?></td>
+                        <td class="p-2"><?= tgl_indo($a['tanggal']); ?></td>
+                        <td class="p-2">
                             <?= sisa_waktu($a['masa_berlaku']); ?>
                         </td>
-                        <td><?= str_replace('-', ' ', $a['grade']); ?></td>
+                        <td class="p-2"><?= str_replace('-', ' ', $a['grade']); ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
         </table>
-        <h5>TDP</h5>
-        <table class="table table-bordered small tabel4">
+        <h5>Sertifikat Standard</h5>
+        <table class="table table-bordered small tabel9 table-sm">
             <thead class="table-light">
                 <tr>
-                    <th>Nomor</th>
-                    <th>Tanggal</th>
-                    <th>Berlaku</th>
+                    <th class="p-2">Nama Sertifikat</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $sql3 = $proses->tampil_data_join2('a.*,b.nama', 'tdp', 'operator', 'id_operator', 'a.id_profil = ' . $_POST['id'] . '');
-                $sql3 = $proses->tampil_data_select(
+                $sql8 = $proses->tampil_data_select(
                     'b.*',
-                    'kirim_kualifikasi a LEFT JOIN tdp b 
+                    'kirim_kualifikasi a LEFT JOIN sertifikat b 
                     ON a.id_kirim = b.id',
                     '1=1 AND a.id_profil = "' . $_SESSION['kode_profil'] . '"
                     AND a.id_paket = "' . $_POST['id'] . '"
-                    AND a.act = "tdp"'
+                    AND a.act = "sertifikat"'
                 );
-                foreach ($sql3 as $c) {
+                foreach ($sql8 as $h) {
                 ?>
                     <tr>
-                        <td><?= $c['nomor']; ?></td>
-                        <td><?= tgl_indo($c['tanggal']); ?></td>
-                        <td><?= sisa_waktu($c['masa_berlaku']); ?></td>
+                        <td class="p-2"><?= $h['nama_sertifikat']; ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
         </table>
         <h5>Akta</h5>
-        <table class="table table-bordered small tabel5">
+        <table class="table table-bordered small tabel5 table-sm">
             <thead class="table-light">
                 <tr>
-                    <th>Jenis</th>
-                    <th>Nomor</th>
-                    <th>Tanggal</th>
-                    <th>Nama Notaris</th>
+                    <th class="p-2">Jenis</th>
+                    <th class="p-2">Nomor</th>
+                    <th class="p-2">Tanggal</th>
+                    <th class="p-2">Nama Notaris</th>
                 </tr>
             </thead>
             <tbody>
@@ -664,62 +809,56 @@ if ($_POST['act'] == 'evaluasi') {
                 foreach ($sql4 as $d) {
                 ?>
                     <tr>
-                        <td><?= str_replace('-', ' ', $d['jenis']); ?></td>
-                        <td><?= $d['nomor']; ?></td>
-                        <td><?= tgl_indo($d['tanggal']); ?></td>
-                        <td><?= $d['nama_notaris']; ?></td>
+                        <td class="p-2"><?= str_replace('-', ' ', $d['jenis']); ?></td>
+                        <td class="p-2"><?= $d['nomor']; ?></td>
+                        <td class="p-2"><?= tgl_indo($d['tanggal']); ?></td>
+                        <td class="p-2"><?= $d['nama_notaris']; ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
         </table>
-        <h5>Tenaga Ahli</h5>
-        <table class="table table-bordered small tabel9">
+        <h5>Pengurus</h5>
+        <table class="table table-bordered small tabel9 table-sm">
             <thead class="table-light">
                 <tr>
-                    <th>Nama</th>
-                    <th>Tanggal Lahir</th>
-                    <th>Pendidikan</th>
-                    <th>Jabatan</th>
-                    <th>Pengalaman</th>
-                    <th>Keahlian</th>
-                    <th>Tahun Ijazah</th>
+                    <th class="p-2">Nama</th>
+                    <th class="p-2">Nomor KTP</th>
+                    <th class="p-2">Alamat</th>
+                    <th class="p-2">Jabatan</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 $sql8 = $proses->tampil_data_select(
                     'b.*',
-                    'kirim_kualifikasi a LEFT JOIN tenaga_ahli b 
+                    'kirim_kualifikasi a LEFT JOIN pengurus b 
                     ON a.id_kirim = b.id',
                     '1=1 AND a.id_profil = "' . $_SESSION['kode_profil'] . '"
                     AND a.id_paket = "' . $_POST['id'] . '"
-                    AND a.act = "tenaga_ahli"'
+                    AND a.act = "pengurus"'
                 );
                 foreach ($sql8 as $h) {
                 ?>
                     <tr>
-                        <td><?= $h['nama']; ?></td>
-                        <td><?= tgl_indo($h['tgl_lahir']); ?></td>
-                        <td><?= $h['pendidikan']; ?></td>
-                        <td><?= $h['jabatan']; ?></td>
-                        <td><?= $h['pengalaman']; ?></td>
-                        <td><?= $h['keahlian']; ?></td>
-                        <td><?= $h['tahun_ijazah']; ?></td>
+                        <td class="p-2"><?= $h['nama']; ?></td>
+                        <td class="p-2"><?= $h['nomor_ktp']; ?></td>
+                        <td class="p-2"><?= $h['alamat']; ?></td>
+                        <td class="p-2"><?= str_replace('-', ' ', $h['jabatan']); ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
         </table>
         <h5>Pengalaman</h5>
-        <table class="table table-bordered small tabel11">
+        <table class="table table-bordered small tabel11 table-sm">
             <thead class="table-light">
                 <tr>
-                    <th>Nama Pekerjaan</th>
-                    <th>Bidang</th>
-                    <th>Lokasi</th>
-                    <th>Nama Pemberi</th>
-                    <th>Alamat</th>
-                    <th>Telepon</th>
-                    <th>No. Kontrak</th>
+                    <th class="p-2">Nama Pekerjaan</th>
+                    <th class="p-2">Bidang</th>
+                    <th class="p-2">Lokasi</th>
+                    <th class="p-2">Nama Pemberi</th>
+                    <th class="p-2">Alamat</th>
+                    <th class="p-2">Telepon</th>
+                    <th class="p-2">No. Kontrak</th>
                 </tr>
             </thead>
             <tbody>
@@ -735,89 +874,60 @@ if ($_POST['act'] == 'evaluasi') {
                 foreach ($sql10 as $j) {
                 ?>
                     <tr>
-                        <td><?= $j['nama_pekerjaan']; ?></td>
-                        <td><?= $j['bidang_pekerjaan']; ?></td>
-                        <td><?= $j['lokasi']; ?></td>
-                        <td><?= $j['nama_pemberi']; ?></td>
-                        <td><?= $j['alamat_pemberi']; ?></td>
-                        <td><?= $j['telepon_pemberi']; ?></td>
-                        <td><?= $j['no_kontrak']; ?></td>
+                        <td class="p-2"><?= $j['nama_pekerjaan']; ?></td>
+                        <td class="p-2"><?= $j['bidang_pekerjaan']; ?></td>
+                        <td class="p-2"><?= $j['lokasi']; ?></td>
+                        <td class="p-2"><?= $j['nama_pemberi']; ?></td>
+                        <td class="p-2"><?= $j['alamat_pemberi']; ?></td>
+                        <td class="p-2"><?= $j['telepon_pemberi']; ?></td>
+                        <td class="p-2"><?= $j['no_kontrak']; ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
         </table>
-        <h5>Peralatan</h5>
-        <table class="table table-bordered small tabel10">
+        <h5>Pekerjaan Sedang Berjalan</h5>
+        <table class="table table-bordered small tabel11 table-sm">
             <thead class="table-light">
                 <tr>
-                    <th>Jenis Peralatan</th>
-                    <th>Jumlah</th>
-                    <th>Kapasitas</th>
-                    <th>Merek</th>
-                    <th>Tahun</th>
-                    <th>Kondisi</th>
-                    <th>Lokasi</th>
+                    <th class="p-2">Nama Pekerjaan</th>
+                    <th class="p-2">Bidang</th>
+                    <th class="p-2">Lokasi</th>
+                    <th class="p-2">Nama Pemberi</th>
+                    <th class="p-2">Alamat</th>
+                    <th class="p-2">Telepon</th>
+                    <th class="p-2">No. Kontrak</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $sql9 = $proses->tampil_data_select(
+                $sql10 = $proses->tampil_data_select(
                     'b.*',
-                    'kirim_kualifikasi a LEFT JOIN peralatan b 
+                    'kirim_kualifikasi a LEFT JOIN pekerjaan_berjalan b 
                     ON a.id_kirim = b.id',
                     '1=1 AND a.id_profil = "' . $_SESSION['kode_profil'] . '"
                     AND a.id_paket = "' . $_POST['id'] . '"
-                    AND a.act = "peralatan"'
+                    AND a.act = "pekerjaan_berjalan"'
                 );
-                foreach ($sql9 as $i) {
+                foreach ($sql10 as $j) {
                 ?>
                     <tr>
-                        <td><?= $i['jenis_peralatan']; ?></td>
-                        <td><?= $i['jumlah']; ?></td>
-                        <td><?= $i['kapasitas']; ?></td>
-                        <td><?= $i['merek']; ?></td>
-                        <td><?= $i['tahun']; ?></td>
-                        <td><?= $i['kondisi']; ?></td>
-                        <td><?= $i['lokasi']; ?></td>
-                    </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-        <h5>Pajak</h5>
-        <table class="table table-bordered small tabel8">
-            <thead class="table-light">
-                <tr>
-                    <th>Jenis Laporan</th>
-                    <th>Nomor</th>
-                    <th>Tanggal</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $sql7 = $proses->tampil_data_select(
-                    'b.*',
-                    'kirim_kualifikasi a LEFT JOIN pajak b 
-                    ON a.id_kirim = b.id',
-                    '1=1 AND a.id_profil = "' . $_SESSION['kode_profil'] . '"
-                    AND a.id_paket = "' . $_POST['id'] . '"
-                    AND a.act = "pajak"'
-                );
-                foreach ($sql7 as $g) {
-                ?>
-                    <tr>
-                        <td><?= str_replace('-', ' ', $g['jenis_laporan']); ?></td>
-                        <td><?= $g['nomor']; ?></td>
-                        <td><?= tgl_indo($g['tanggal']); ?></td>
+                        <td class="p-2"><?= $j['nama_pekerjaan']; ?></td>
+                        <td class="p-2"><?= $j['bidang_pekerjaan']; ?></td>
+                        <td class="p-2"><?= $j['lokasi']; ?></td>
+                        <td class="p-2"><?= $j['nama_pemberi']; ?></td>
+                        <td class="p-2"><?= $j['alamat_pemberi']; ?></td>
+                        <td class="p-2"><?= $j['telepon_pemberi']; ?></td>
+                        <td class="p-2"><?= $j['no_kontrak']; ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
         </table>
         <h5>KSWP</h5>
-        <table class="table table-bordered small tabel12">
+        <table class="table table-bordered small tabel12 table-sm">
             <thead class="table-light">
                 <tr>
-                    <th>Nomor NPWP</th>
-                    <th class="text-center">File</th>
+                    <th class="p-2">Nomor NPWP</th>
+                    <th class="text-center p-2">File</th>
                 </tr>
             </thead>
             <tbody>
@@ -833,8 +943,8 @@ if ($_POST['act'] == 'evaluasi') {
                 foreach ($sql11 as $k) {
                 ?>
                     <tr>
-                        <td><?= $k['npwp']; ?></td>
-                        <td align="center"><a href="<?= $url . 'berkas/' . $k['file']; ?>" target="_blank"><i class="ri-file-line"></i></a></td>
+                        <td class="p-2"><?= $k['npwp']; ?></td>
+                        <td align="center" class="p-2"><a href="<?= $url . 'berkas/' . $k['file']; ?>" target="_blank"><i class="ri-file-line"></i></a></td>
                     </tr>
                 <?php } ?>
             </tbody>
@@ -843,4 +953,646 @@ if ($_POST['act'] == 'evaluasi') {
     <div class="modal-footer">
         <a href="javascript:void(0);" class="btn btn-light fw-medium" data-bs-dismiss="modal">Batal</a>
     </div>
+<?php } else if (@$_POST['act'] == 'dokumen_pemilihan') {
+    $judul = 'Dokumen Pemilihan';
+?>
+    <div class="modal-header">
+        <h5 class="modal-title"><?= $judul; ?></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body pt-3">
+        <center id="wait"><i class="icon-spinner2 spinner mr-1"></i> Loading..</center>
+        <table class="table table-bordered table-sm fs-13">
+            <tr>
+                <td class="p-2 pb-3">
+                    <h5 class="m-0 mb-3">Dokumen Pemilihan</h5>
+                    <?php
+                    $sql = $proses->tampil_data_select('*', 'dokumen_persiapan', 'kode_paket = "' . $_POST['id'] . '" AND jenis = "Pemilihan"');
+                    foreach ($sql as $row) {
+                    ?>
+                        <div class="d-flex gap-2 align-items-center mb-2">
+                            <div class="avatar-xs flex-shrink-0">
+                                <div class="avatar-title bg-success-subtle text-success rounded-2 fs-17">
+                                    <i class="ri-file-text-line fs-17"></i>
+                                </div>
+                            </div>
+                            <h6 class="mb-0 flex-grow-1"> <?= $row['nama_file']; ?> <a href="<?= $url; ?>berkas/<?= $row['file']; ?>" class="ms-3" target="_blank">[Download]</a></h6>
+                        </div>
+                    <?php } ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="p-2 pb-3">
+                    <h5 class="m-0 mb-3">Masa Berlaku Penawaran</h5>
+                    <?php
+                    $row = $proses->tampil_data_saja('id,nomor', 'dokumen_persiapan', '1=1 AND kode_paket = "' . $_POST['id'] . '" AND jenis = "Berlaku"');
+                    ?>
+                    <p>Masa berlaku penawaran <?= @$row['nomor']; ?> hari kalender sejak batas akhir pemasukan dokumen penawaran</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="p-2 pb-2">
+                    <h5 class="m-0 mb-3">Persyaratan Kualifikasi</h5>
+                    <p>Memenuhi ketentuan peraturan perundang-undangan untuk menjalankan kegiatan/usaha</p>
+                    <table class="table table-sm mb-2">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="p-2">Jenis Izin</th>
+                                <th class="p-2">Bidang Usaha/Sub Bidang Usaha/Klasifikasi/Sub Klasifikasi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = $proses->tampil_data_select(
+                                '*',
+                                'dokumen_persiapan',
+                                '1=1 AND kode_paket = "' . $_POST['id'] . '"
+                                AND jenis = "Kualifikasi" AND menu = "KBLI" OR menu = "Izin-Lainnya"'
+                            );
+                            foreach ($sql as $row) {
+                                if ($row['menu'] == 'KBLI') {
+                                    $jenis = 'NIB';
+                                    $deskripsi = $row['deskripsi'] . ' - ' . $row['nomor'];
+                                } else {
+                                    $jenis = '';
+                                    $deskripsi = $row['deskripsi'];
+                                }
+                            ?>
+                                <tr>
+                                    <td class="p-2"><?= $jenis; ?></td>
+                                    <td class="p-2"><?= $deskripsi; ?></td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                    <?php
+                    $sql = $proses->tampil_data_select(
+                        '*',
+                        'dokumen_persiapan',
+                        '1=1 AND kode_paket = "' . $_POST['id'] . '"
+                        AND jenis = "Kualifikasi" AND menu = "Syarat-Administrasi"'
+                    );
+                    if (empty($sql)) {
+                        echo '<div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="ri-close-circle-fill text-danger"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Tidak ada data
+                                </div>
+                            </div>';
+                    } else {
+                        foreach ($sql as $row) {
+                            $deskripsi = $row['deskripsi'];
+                    ?>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="ri-checkbox-circle-fill text-success"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <?= $deskripsi; ?>
+                                </div>
+                            </div>
+                    <?php }
+                    } ?>
+                    <h5 class="mt-3">Persyaratan Kualifikasi Teknis</h5>
+                    <?php
+                    $sql = $proses->tampil_data_select(
+                        '*',
+                        'dokumen_persiapan',
+                        '1=1 AND kode_paket = "' . $_POST['id'] . '"
+                        AND jenis = "Kualifikasi" AND menu = "Teknis"'
+                    );
+                    if (empty($sql)) {
+                        echo '<div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="ri-close-circle-fill text-danger"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Tidak ada data
+                                </div>
+                            </div>';
+                    } else {
+                        foreach ($sql as $row) {
+                            $deskripsi = $row['deskripsi'];
+                    ?>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="ri-checkbox-circle-fill text-success"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <?= $deskripsi; ?>
+                                </div>
+                            </div>
+                    <?php }
+                    } ?>
+                    <h6 class="fs-14 mt-3">Memiliki SDM Tenaga Teknis/Terampil (Jika Diperlukan)</h6>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr class="table-light">
+                                <th class="p-2 w-25">Jenis Keahlian</th>
+                                <th class="p-2 w-25">Keahlian/Spesifikasi</th>
+                                <th class="p-2 w-25">Pengalaman</th>
+                                <th class="p-2 w-25">Kemampuan Manajerial</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = $proses->tampil_data_select('*', 'dokumen_tenaga_ahli', '1=1 AND kode_paket = "' . $_POST['id'] . '" AND jenis = "Ahli" ORDER BY id ASC');
+                            if (empty($sql)) {
+                                echo '<tr>
+                                    <td class="p-2" colspan="4">Belum ada Data</td>
+                                </tr>';
+                            } else {
+                                foreach ($sql as $row) {
+                            ?>
+                                    <tr>
+                                        <td class="p-2"><?= @$row['jenis_keahlian']; ?></td>
+                                        <td class="p-2"><?= @$row['spesifikasi']; ?></td>
+                                        <td class="p-2"><?= @$row['pengalaman']; ?></td>
+                                        <td class="p-2"><?= @$row['kemampuan']; ?></td>
+                                    </tr>
+                            <?php
+                                }
+                            } ?>
+                        </tbody>
+                    </table>
+                    <h6 class="fs-14">Memiliki SDM Tenaga Teknis/Terampil (Jika Diperlukan)</h6>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr class="table-light">
+                                <th class="p-2 w-25">Jenis Kemampuan</th>
+                                <th class="p-2 w-25">Kemampuan Teknis</th>
+                                <th class="p-2 w-25">Pengalaman</th>
+                                <th class="p-2 w-25">Kemampuan Manajerial</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = $proses->tampil_data_select('*', 'dokumen_tenaga_ahli', '1=1 AND kode_paket = "' . $_POST['id'] . '" AND jenis = "Teknis" ORDER BY id ASC');
+                            if (empty($sql)) {
+                                echo '<tr>
+                                    <td class="p-2" colspan="4">Belum ada Data</td>
+                                </tr>';
+                            } else {
+                                foreach ($sql as $row) {
+                            ?>
+                                    <tr>
+                                        <td class="p-2"><?= @$row['jenis_keahlian']; ?></td>
+                                        <td class="p-2"><?= @$row['spesifikasi']; ?></td>
+                                        <td class="p-2"><?= @$row['pengalaman']; ?></td>
+                                        <td class="p-2"><?= @$row['kemampuan']; ?></td>
+                                    </tr>
+                            <?php
+                                }
+                            } ?>
+                        </tbody>
+                    </table>
+                    <h6 class="fs-14">Memiliki Kemampuan Untuk Menyediakan Peralatan (Jika Diperlukan)</h6>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr class="table-light">
+                                <th class="p-2 w-25">Nama Peralatan</th>
+                                <th class="p-2">Spesifikasi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = $proses->tampil_data_select('*', 'dokumen_peralatan', '1=1 AND kode_paket = "' . $_POST['id'] . '" ORDER BY id ASC');
+                            if (empty($sql)) {
+                                echo '<tr>
+                                    <td class="p-2" colspan="2">Belum ada Data</td>
+                                </tr>';
+                            } else {
+                                foreach ($sql as $row) {
+                            ?>
+                                    <tr>
+                                        <td class="p-2"><?= @$row['nama_peralatan']; ?></td>
+                                        <td class="p-2"><?= @$row['spesifikasi']; ?></td>
+                                    </tr>
+                            <?php
+                                }
+                            } ?>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="p-2 pb-3">
+                    <h5 class="m-0">Dokumen Penawaran</h5>
+                    <h6 class="fs-14 mt-3 mb-2">Administrasi</h6>
+                    <?php
+                    $sql = $proses->tampil_data_select(
+                        '*',
+                        'dokumen_persiapan',
+                        '1=1 AND kode_paket = "' . $_POST['id'] . '"
+                                 AND jenis = "Penawaran" AND menu = "Administrasi"'
+                    );
+                    if (empty($sql)) {
+                        echo '<div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="ri-close-circle-fill text-danger"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Tidak ada data
+                                </div>
+                            </div>';
+                    } else {
+                        foreach ($sql as $row) {
+                            $deskripsi = $row['deskripsi'];
+                    ?>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="ri-checkbox-circle-fill text-success"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <?= $deskripsi; ?>
+                                </div>
+                            </div>
+                    <?php }
+                    } ?>
+                    <h6 class="fs-14 mt-3 mb-2">Teknis</h6>
+                    <?php
+                    $sql = $proses->tampil_data_select(
+                        '*',
+                        'dokumen_persiapan',
+                        '1=1 AND kode_paket = "' . $_POST['id'] . '"
+                                 AND jenis = "Penawaran" AND menu = "Teknis"'
+                    );
+                    if (empty($sql)) {
+                        echo '<div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="ri-close-circle-fill text-danger"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Tidak ada data
+                                </div>
+                            </div>';
+                    } else {
+                        foreach ($sql as $row) {
+                            $deskripsi = $row['deskripsi'];
+                    ?>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="ri-checkbox-circle-fill text-success"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <?= $deskripsi; ?>
+                                </div>
+                            </div>
+                    <?php }
+                    } ?>
+                    <h6 class="fs-14 mt-3 mb-2">Harga/Biaya</h6>
+                    <?php
+                    $sql = $proses->tampil_data_select(
+                        '*',
+                        'dokumen_persiapan',
+                        '1=1 AND kode_paket = "' . $_POST['id'] . '"
+                                 AND jenis = "Penawaran" AND menu = "Biaya"'
+                    );
+                    if (empty($sql)) {
+                        echo '<div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="ri-close-circle-fill text-danger"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    Tidak ada data
+                                </div>
+                            </div>';
+                    } else {
+                        foreach ($sql as $row) {
+                            $deskripsi = $row['deskripsi'];
+                    ?>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <i class="ri-checkbox-circle-fill text-success"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <?= $deskripsi; ?>
+                                </div>
+                            </div>
+                    <?php }
+                    } ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="p-2 pb-3">
+                    <h5 class="mb-3">Kerangka Acuan Kerja (KAK) / Spesifikasi Teknis dan Gambar</h5>
+                    <?php
+                    $sql = $proses->tampil_data_select('*', 'dokumen_persiapan', 'kode_paket = "' . $_POST['id'] . '" AND jenis = "KAK"');
+                    foreach ($sql as $row) {
+                    ?>
+                        <div class="d-flex gap-2 align-items-center mb-2">
+                            <div class="avatar-xs flex-shrink-0">
+                                <div class="avatar-title bg-success-subtle text-success rounded-2 fs-17">
+                                    <i class="ri-file-text-line fs-17"></i>
+                                </div>
+                            </div>
+                            <h6 class="mb-0 flex-grow-1"> <?= $row['nama_file']; ?> <a href="<?= $url; ?>berkas/<?= $row['file']; ?>" class="ms-3" target="_blank">[Download]</a></h6>
+                        </div>
+                    <?php } ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="p-2 pb-3">
+                    <h5 class="mb-3">Rancangan Kontrak</h5>
+                    <?php
+                    $sql = $proses->tampil_data_select('*', 'dokumen_persiapan', 'kode_paket = "' . $_POST['id'] . '" AND jenis = "Kontrak"');
+                    foreach ($sql as $row) {
+                    ?>
+                        <div class="d-flex gap-2 align-items-center mb-2">
+                            <div class="avatar-xs flex-shrink-0">
+                                <div class="avatar-title bg-success-subtle text-success rounded-2 fs-17">
+                                    <i class="ri-file-text-line fs-17"></i>
+                                </div>
+                            </div>
+                            <h6 class="mb-0 flex-grow-1"> <?= $row['nama_file']; ?> <a href="<?= $url; ?>berkas/<?= $row['file']; ?>" class="ms-3" target="_blank">[Download]</a></h6>
+                        </div>
+                    <?php } ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="p-2 pb-3">
+                    <h5 class="mb-3">Daftar Kuantitas dan Harga/Biaya</h5>
+                    <?php
+                    $sql = $proses->tampil_data_select('*', 'dokumen_persiapan', 'kode_paket = "' . $_POST['id'] . '" AND jenis = "HPS"');
+                    foreach ($sql as $row) {
+                    ?>
+                        <div class="d-flex gap-2 align-items-center mb-2">
+                            <div class="avatar-xs flex-shrink-0">
+                                <div class="avatar-title bg-success-subtle text-success rounded-2 fs-17">
+                                    <i class="ri-file-text-line fs-17"></i>
+                                </div>
+                            </div>
+                            <h6 class="mb-0 flex-grow-1"> <?= $row['nama_file']; ?> <a href="<?= $url; ?>berkas/<?= $row['file']; ?>" class="ms-3" target="_blank">[Download]</a></h6>
+                        </div>
+                    <?php } ?>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0);" class="btn btn-light fw-medium" data-bs-dismiss="modal">Batal</a>
+    </div>
+<?php } else if (@$_POST['judul'] == 'upload_penawaran') {
+?>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title mb-2 fs-14">Surat Penawaran</h5>
+            <ul class="list-group list-group-flush border-dashed px-0 pe-0">
+                <?php
+                $sql = $proses->tampil_data_select(
+                    '*',
+                    'kirim_penawaran',
+                    '1=1 AND kode_paket = "' . $_POST['id'] . '"
+                    AND id_profil = "' . $_SESSION['kode_user'] . '"
+                    AND act = "penawaran"'
+                );
+                foreach ($sql as $row) {
+                ?>
+                    <li class="list-group-item ps-0 pe-3">
+                        <div class="d-flex align-items-start">
+                            <div class="flex-grow-1 pt-0 ms-0">
+                                <a href="<?= $url; ?>berkas/penawaran/<?= $row['file']; ?>" target="_blank"><?= $row['nama_file']; ?></a> - <?= $row['ukuran_file']; ?>Kb - (Tanggal <?= tgl_indo5($row['timestamp']); ?>)
+                            </div>
+                            <div class="flex-shrink-0 ms-0">
+                                <span id="hapus" data-id="<?= $row['id']; ?>" data-menu="penawaran" data-act="hapus" data-nama="<?= $row['nama_file']; ?>" class="text-danger cursor-pointer"><i class="ri-delete-bin-line fs-16"></i></span>
+                            </div>
+                        </div>
+                    </li>
+                <?php } ?>
+            </ul>
+            <div class="card-text"><span class="btn btn-success btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id_kirim="NULL" data-id="<?= $_POST['id']; ?>" data-text="Upload Surat Penawaran" data-menu="penawaran" data-act="form_penawaran"><i class="ri-upload-2-line"></i> Upload</span></div>
+        </div>
+    </div>
+<?php } else if (@$_POST['judul'] == 'upload_teknis') {
+?>
+    <?php
+    $sql = $proses->tampil_data_select(
+        '*',
+        'dokumen_persiapan',
+        '1=1 AND kode_paket = "' . $_POST['id'] . '"
+        AND jenis = "Penawaran" AND menu = "Teknis"'
+    );
+    if (empty($sql)) {
+        echo '<div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-1">Tidak Ada Data</h5>
+                </div>
+            </div>';
+    } else {
+        foreach ($sql as $row) {
+            $deskripsi = $row['deskripsi'];
+    ?>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-2 fs-14"><?= $deskripsi; ?></h5>
+                    <ul class="list-group list-group-flush border-dashed px-0 pe-0">
+                        <?php
+                        $sqld = $proses->tampil_data_select(
+                            '*',
+                            'kirim_penawaran',
+                            '1=1 AND id_kirim = "' . $row['id'] . '"
+                            AND id_profil = "' . $_SESSION['kode_user'] . '"
+                            AND kode_paket = "' . $_POST['id'] . '"
+                            AND act = "teknis"'
+                        );
+                        foreach ($sqld as $rows) {
+                        ?>
+                            <li class="list-group-item ps-0 pe-3">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-grow-1 pt-0 ms-0">
+                                        <a href="<?= $url; ?>berkas/penawaran/<?= $rows['file']; ?>" target="_blank"><?= $rows['nama_file']; ?></a> - <?= $rows['ukuran_file']; ?>Kb - (Tanggal <?= tgl_indo5($rows['timestamp']); ?>)
+                                    </div>
+                                    <div class="flex-shrink-0 ms-0">
+                                        <span id="hapus" data-id="<?= $rows['id']; ?>" data-menu="teknis" data-act="hapus" data-nama="<?= $rows['nama_file']; ?>" class="text-danger cursor-pointer"><i class="ri-delete-bin-line fs-16"></i></span>
+                                    </div>
+                                </div>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                    <div class="card-text"><span class="btn btn-success btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id_kirim="<?= $row['id']; ?>" data-id="<?= $_POST['id']; ?>" data-text="Upload <?= $deskripsi; ?>" data-menu="teknis" data-act="form_penawaran"><i class="ri-upload-2-line"></i> Upload</span></div>
+                </div>
+            </div>
+    <?php }
+    } ?>
+<?php } else if (@$_POST['judul'] == 'upload_harga') {
+    $s = $proses->tampil_data_saja('nilai_pagu', 'paket_pekerjaan', '1=1 AND kode_paket = "' . $_POST['id'] . '"');
+?>
+    <?php
+    $sql = $proses->tampil_data_select(
+        '*',
+        'dokumen_persiapan',
+        '1=1 AND kode_paket = "' . $_POST['id'] . '"
+                                 AND jenis = "Penawaran" AND menu = "Biaya"'
+    );
+    if (empty($sql)) {
+        echo '<div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-1">Tidak Ada Data</h5>
+                </div>
+            </div>';
+    } else {
+        foreach ($sql as $row) {
+            $deskripsi = $row['deskripsi'];
+    ?>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-2 fs-14"><?= $deskripsi; ?></h5>
+                    <ul class="list-group list-group-flush border-dashed px-0 pe-0">
+                        <?php
+                        $sqld = $proses->tampil_data_select(
+                            '*',
+                            'kirim_penawaran',
+                            '1=1 AND id_kirim = "' . $row['id'] . '"
+                            AND id_profil = "' . $_SESSION['kode_user'] . '"
+                            AND kode_paket = "' . $_POST['id'] . '"
+                            AND act = "harga"'
+                        );
+                        foreach ($sqld as $rows) {
+                        ?>
+                            <li class="list-group-item ps-0 pe-3">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-grow-1 pt-0 ms-0">
+                                        <a href="<?= $url; ?>berkas/penawaran/<?= $rows['file']; ?>" target="_blank"><?= $rows['nama_file']; ?></a> - <?= $rows['ukuran_file']; ?>Kb - (Tanggal <?= tgl_indo5($rows['timestamp']); ?>)
+                                    </div>
+                                    <div class="flex-shrink-0 ms-0">
+                                        <span id="hapus" data-id="<?= $rows['id']; ?>" data-menu="harga" data-act="hapus" data-nama="<?= $rows['nama_file']; ?>" class="text-danger cursor-pointer"><i class="ri-delete-bin-line fs-16"></i></span>
+                                    </div>
+                                </div>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                    <div class="card-text"><span class="btn btn-success btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#DetailModal" data-id_kirim="<?= $row['id']; ?>" data-id="<?= $_POST['id']; ?>" data-text="Upload <?= $deskripsi; ?>" data-menu="harga" data-act="form_penawaran"><i class="ri-upload-2-line"></i> Upload</span></div>
+                </div>
+            </div>
+    <?php }
+    } ?>
+    <h5>Total Pagu : Rp. <?= number_format($s['nilai_pagu'], 0, ',', '.'); ?></h5>
+    <table class="table table-sm table-bordered fs-12">
+        <thead>
+            <tr class="table-light">
+                <th class="p-2 text-center" style="width:3%;">No.</th>
+                <th class="p-2">Jenis Barang Jasa/Keluaran</th>
+                <th class="p-2 text-center">Satuan</th>
+                <th class="p-2 text-center" style="width:5%;">Volume</th>
+                <th class="p-2 text-center">Harga/Biaya</th>
+                <th class="p-2 text-center" style="width:5%;">Pajak(%)</th>
+                <th class="p-2 text-center">Total</th>
+                <th class="p-2">Keterangan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $sql = $proses->tampil_data_select(
+                '*',
+                'hps',
+                '1=1 AND kode_paket = "' . $_POST['id'] . '" AND oleh = "PPK"'
+            );
+            $no = 1;
+            $totalharga = 0;
+
+            if (empty($sql)) {
+                echo '<tr><td class="p-2" colspan="8">Belum ada Data</td></tr>';
+            } else {
+                foreach ($sql as $row) {
+                    $totalharga += $row['total'];
+                    if ($row['kunci_baris'] == 'KUNCI') {
+                        $no_display = '';
+                        $jenis_barang = '<b>' . $row['jenis_barang'] . '</b>';
+                        $satuan = '';
+                        $volume = '';
+                        $harga = '';
+                        $pajak = '';
+                        $total = '';
+                    } else {
+                        $no_display = $no;
+                        $jenis_barang = $row['jenis_barang'];
+                        $satuan = $row['satuan'];
+                        $volume = $row['volume'];
+                        $harga = number_format($row['harga'], 2, ',', '.');
+                        $pajak = $row['pajak'];
+                        $total = number_format($row['total'], 2, ',', '.');
+                    }
+            ?>
+                    <tr>
+                        <td class="p-2 text-center"><?= $no_display; ?></td>
+                        <td class="p-2"><?= $jenis_barang; ?></td>
+                        <td class="p-2 text-center"><?= $satuan; ?></td>
+                        <td class="p-2 text-center"><?= $volume; ?></td>
+                        <td class="p-2 text-end"><?= $harga; ?></td>
+                        <td class="p-2 text-center"><?= $pajak; ?></td>
+                        <td class="p-2 text-end"><?= $total; ?></td>
+                        <td class="p-2"><?= $row['keterangan']; ?></td>
+                    </tr>
+            <?php
+                    if ($row['kunci_baris'] != 'KUNCI') {
+                        $no++;  // Melanjutkan nomor urut setiap iterasi, kecuali untuk baris dengan kunci_baris = 'KUNCI'
+                    }
+                }
+            } ?>
+        </tbody>
+    </table>
+    <div class="col-xl-12">
+        <div class="float-end">
+            <table class="fs-14 mb-3">
+                <tr>
+                    <td><b>Total Nilai</b> <small class="fs-10">(Sebelum)</small></td>
+                    <td><b>Rp. <?= number_format($totalharga, 2, ',', '.'); ?></b></td>
+                </tr>
+                <tr>
+                    <td><b>Total Nilai</b> <small class="me-3 fs-10">(Pembulatan)</small></td>
+                    <td><b>Rp. <?= number_format($totalharga, 2, ',', '.'); ?></b></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+<?php } else if (@$_POST['act'] == 'form_penawaran') {
+?>
+    <div class="modal-header">
+        <h5 class="modal-title"><?= $_POST['text']; ?></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <form id="form" enctype="multipart/form-data">
+        <?php
+        echo '<input type="hidden" name="aksi" value="dokumen_penawaran">';
+        echo '<input type="hidden" name="id_kirim" value="' . $_POST['id_kirim'] . '">';
+        echo '<input type="hidden" name="kode_paket" value="' . $_POST['id'] . '">';
+        echo '<input type="hidden" name="act"  value="' . $_POST['menu'] . '">';
+        ?>
+        <input type="hidden" id="id" value="upload_<?= $_POST['menu']; ?>">
+        <div class="modal-body pt-3">
+            <div class="col-xxl-12 col-md-12 pt-2">
+                <label for="basiInput" class="form-label">Upload File</label>
+                <input type="file" onchange="return validasiFile()" name="fupload" id="file" class="form-control" required>
+                <div id="passwordHelpBlock" class="form-text">
+                    *Max file size 10Mb
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-light fw-medium" data-bs-dismiss="modal">Batal</a>
+            <button id="simpan" class="btn btn-success" type="submit"><i class="ri-save-2-fill"></i> Simpan</button>
+        </div>
+    </form>
+    <script>
+        function validasiFile() {
+            var inputFile = document.getElementById('file');
+            var pathFile = inputFile.value;
+            var allowedExtensions = /(\.doc|\.docx|\.xls|\.xlsx|\.pdf|\.jpg|\.jpeg|\.png|\.zip|\.rar)$/i;
+
+            if (!allowedExtensions.exec(pathFile)) {
+                alert('Silakan upload file dengan ekstensi *.doc, *.docx, *.xls, *.xlsx, *.pdf, *.jpg, *.jpeg, *.png, *.zip, atau *.rar');
+                inputFile.value = '';
+                return false;
+            }
+
+            if (inputFile.files[0].size > 10 * 1024 * 1024) { // 10 MB in bytes
+                alert('Ukuran file harus kurang dari 10MB');
+                inputFile.value = '';
+                return false;
+            }
+            return true;
+        }
+    </script>
 <?php } ?>

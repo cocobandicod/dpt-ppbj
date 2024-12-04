@@ -19,7 +19,7 @@ foreach ($sql as $row) {
                         <i class="ri-more-fill align-middle"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a href="' . $url . 'operator/news/update/edit/' . $row['id'] . '" data-id="' . $row['id'] . '" class="dropdown-item edit-item-btn"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a></li>
+                        <li><a href="' . $url . 'operator/news-update/edit/' . $row['id'] . '" data-id="' . $row['id'] . '" class="dropdown-item edit-item-btn"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a></li>
                         <li>
                             <a href="#" id="del" data-id="' . $row['id'] . '" data-nama="' . $row['judul'] . '" data-act="del" class="dropdown-item remove-item-btn">
                                 <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete

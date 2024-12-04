@@ -186,10 +186,10 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                                                 </div>
                                                 <div class="col-lg-12 pt-5">
                                                     <div class="text-start">
-                                                        <a href="#" class="btn btn-light" onclick="back()"><i class=" ri-arrow-go-back-line"></i> Kembali</a>
+                                                        <span class="btn btn-light cursor-pointer" onclick="back()"><i class=" ri-arrow-go-back-line"></i> Kembali</span>
                                                         <?php if ($a + $b + $c == 3) {
                                                         } else { ?>
-                                                            <button type="submit" class="btn btn-primary" id="simpan"><i class="ri-save-2-fill"></i> Simpan</button>
+                                                            <button type="submit" class="btn btn-success" id="simpan"><i class="ri-save-2-fill"></i> Simpan</button>
                                                         <?php } ?>
                                                     </div>
                                                 </div>
@@ -218,7 +218,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <!-- end layout wrapper -->
 
     <!-- Default Modals -->
-    <div id="modalview" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div id="modalview" class="modal zoomIn" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -311,6 +311,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     Toastify({
                         text: "Data Gagal Dimasukan!",
+                        className: "bg-danger",
                         gravity: "top",
                         position: "center",
                         duration: 3000

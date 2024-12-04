@@ -38,7 +38,7 @@ if (@$_POST['act'] == 'add') {
             $data[] = array(
                 'id_profil'         => $_SESSION['kode_profil'],
                 'jenis_izin'        => strip_tags($_POST['jenis_izin']),
-                'nomor'             => strip_tags($_POST['nomor']),
+                'nomor'             => strip_tags(str_replace(' ', '', $_POST['nomor'])),
                 'tanggal'           => strip_tags($_POST['tanggal']),
                 'masa_berlaku'      => strip_tags($_POST['masa_berlaku']),
                 'instansi_pemberi'  => strip_tags($_POST['instansi_pemberi']),
@@ -88,7 +88,7 @@ if (@$_POST['act'] == 'add') {
             move_uploaded_file($myFile1['tmp_name'], UPLOAD_DIR . $name1);
             $data = array(
                 'jenis_izin'        => strip_tags($_POST['jenis_izin']),
-                'nomor'             => strip_tags($_POST['nomor']),
+                'nomor'             => strip_tags(str_replace(' ', '', $_POST['nomor'])),
                 'tanggal'           => strip_tags($_POST['tanggal']),
                 'masa_berlaku'      => strip_tags($_POST['masa_berlaku']),
                 'instansi_pemberi'  => strip_tags($_POST['instansi_pemberi']),
@@ -100,7 +100,7 @@ if (@$_POST['act'] == 'add') {
     } else {
         $data = array(
             'jenis_izin'        => strip_tags($_POST['jenis_izin']),
-            'nomor'             => strip_tags($_POST['nomor']),
+            'nomor'             => strip_tags(str_replace(' ', '', $_POST['nomor'])),
             'tanggal'           => strip_tags($_POST['tanggal']),
             'masa_berlaku'      => strip_tags($_POST['masa_berlaku']),
             'instansi_pemberi'  => strip_tags($_POST['instansi_pemberi']),
@@ -108,12 +108,24 @@ if (@$_POST['act'] == 'add') {
         );
         $result = $proses->edit_data('izin_usaha', $data, 'id', $_POST['id']); // SIMPAN KE DATABASE
     }
-} else if ($_POST['act'] == 'del') {
+} else if (@$_POST['act'] == 'kbli') {
+    $data[] = array(
+        'id_profil'        => $_SESSION['kode_profil'],
+        'nomor_nib'        => strip_tags($_POST['nomor']),
+        'kode_kbli'        => strip_tags($_POST['kode']),
+        'klasifikasi'      => strip_tags($_POST['klas'])
+    );
+    $result = $proses->tambah_data('kode_kbli', $data);
+} else if (@$_POST['act'] == 'del') {
     $id = $_POST['del'];
     $file = $proses->cek_fetch('izin_usaha', 'id = "' . $id . '"');
     if (!empty($file['file'])) {
         unlink('../../berkas/' . $file['file']);
     }
     $result = $proses->hapus_data('izin_usaha', 'id', $id);
+    exit();
+} else if (@$_POST['act'] == 'delkbli') {
+    $id = $_POST['del'];
+    $result = $proses->hapus_data2('kode_kbli', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND id = "' . $id . '"');
     exit();
 }

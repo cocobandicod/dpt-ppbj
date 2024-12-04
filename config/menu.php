@@ -39,59 +39,517 @@ function navbar($url)
     </nav>
 <?php
 }
-function navbar2($url)
+function logo($url)
 {
 ?>
-    <nav class="navbar navbar-expand-lg navbar-landing fixed-top" id="navbar">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <img src="<?= $url; ?>assets/images/logo-dark.png" class="card-logo card-logo-dark" alt="logo dark" height="30">
-                <img src="<?= $url; ?>assets/images/logo-light.png" class="card-logo card-logo-light" alt="logo light" height="20">
+    <div class="d-flex">
+        <div class="navbar-brand-box horizontal-logo">
+            <a href="#" class="logo logo-dark">
+                <span class="logo-sm">
+                    <img src="<?= $url; ?>assets/images/logo-sm.png" alt="" height="22">
+                </span>
+                <span class="logo-lg">
+                    <img src="<?= $url; ?>assets/images/logo-dark.png" alt="" height="30">
+                </span>
             </a>
-            <button class="navbar-toggler py-2 fs-20 text-body" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="mdi mdi-menu"></i>
-            </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mx-auto mt-2 mt-lg-0" id="navbar-example">
-                    <li class="nav-item">
-                        <a class="nav-link fs-14 <?= @$_GET['aktif_1'] ?>" href="<?= $url; ?>beranda">Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fs-14 <?= @$_GET['aktif_2'] ?>" href="<?= $url; ?>pengumuman">Pengumuman</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fs-14 <?= @$_GET['aktif_4'] ?>" href="<?= $url; ?>daftar/penyedia/terpilih">Daftar Penyedia Terpilih</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fs-14 <?= @$_GET['aktif_7'] ?>" href="<?= $url; ?>hasil">Evaluasi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fs-14 <?= @$_GET['aktif_3'] ?>" href="<?= $url; ?>info/penting">Info Penting</a>
-                    </li>
-                    <!--
-                    <li class="nav-item">
-                        <a class="nav-link fs-14 <?= @$_GET['aktif_5'] ?>" href="<?= $url; ?>panduan">Panduan</a>
-                    </li>
-                    -->
-                    <li class="nav-item">
-                        <a class="nav-link fs-14 <?= @$_GET['aktif_6'] ?>" href="<?= $url; ?>contact">Contact</a>
-                    </li>
-                </ul>
-                <div class="">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-map-pin-user-fill"></i> <?= $_SESSION['nama']; ?></button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item small" href="<?= $url; ?>ganti/password"><i class="ri-lock-2-line"></i> Ganti Password</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item small" href="<?= $url; ?>logout"><i class="ri-logout-box-line"></i> Logout</a>
+            <a href="#" class="logo logo-light">
+                <span class="logo-sm">
+                    <img src="<?= $url; ?>assets/images/logo-sm.png" alt="" height="25">
+                </span>
+                <span class="logo-lg">
+                    <img src="<?= $url; ?>assets/images/logo-light.png" alt="" height="30">
+                </span>
+            </a>
+        </div>
+        <button type="button" class="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger" id="topnav-hamburger-icon">
+            <span class="hamburger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
+    </div>
+<?php
+}
+function notif($proses, $url)
+{
+    $notif1 = $proses->cek_row('catatan', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND status = "Waiting"');
+    if ($notif1) {
+        $notif_1 = $notif1;
+    } else {
+        $notif_1 = '0';
+    }
+?>
+    <div class="dropdown topbar-head-dropdown ms-1 header-item" id="notificationDropdown">
+        <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
+            <i class='bx bx-bell fs-22'></i>
+            <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger"><?= $notif_1; ?><span class="visually-hidden">unread messages</span></span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
+
+            <div class="dropdown-head bg-primary bg-pattern rounded-top">
+                <div class="p-3">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h6 class="m-0 fs-16 fw-semibold text-white"> Notifikasi </h6>
                         </div>
-                    </div><!-- /btn-group -->
+                        <div class="col-auto dropdown-tabs">
+                            <span class="badge bg-light-subtle text-body fs-13"> <?= $notif_1; ?> New</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <div class="tab-content position-relative" id="notificationItemsTabContent">
+                <div class="tab-pane fade show active py-2 ps-2" id="all-noti-tab" role="tabpanel">
+                    <div data-simplebar style="max-height: 300px;" class="pe-2">
+                        <div class="text-reset notification-item d-block dropdown-item position-relative">
+                            <div class="d-flex">
+                                <?php
+                                $sql = $proses->tampil_data_select('*', 'catatan', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND status = "Waiting" ORDER BY id_catatan LIMIT 5');
+                                foreach ($sql as $row) {
+                                ?>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mt-0 mb-2 lh-base"><?= str_replace('_', ' ', $row['menu']) . ' ' . $row['catatan']; ?>
+                                        </h6>
+                                        <p class="mb-0 fs-10 fw-medium text-muted">
+                                            <span><i class="mdi mdi-clock-outline"></i> <?= waktu_lalu($row['timestamp']); ?></span>
+                                        </p>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        <div class="my-3 text-center view-all">
+                            <a href="<?= $url; ?>status-catatan" class="btn btn-sm btn-soft-success waves-effect waves-light">Lihat Semua <i class="ri-arrow-right-line align-middle"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </nav>
+    </div>
+<?php
+}
+function profil($proses, $url)
+{
+    $notif2 = $proses->cek_row('profil_badan_usaha', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND status = "Terverifikasi"');
+    if ($notif2) {
+        $notif_2 = '<i class="ri-checkbox-circle-fill text-success"></i>';
+    } else {
+        $notif_2 = '<i class="ri-close-circle-fill text-danger"></i>';
+    }
+?>
+    <div class="dropdown ms-sm-3 header-item topbar-user">
+        <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="d-flex align-items-center">
+                <img class="rounded-circle header-profile-user" src="<?= $url; ?>assets/images/avatar-1.jpg">
+                <span class="text-start ms-xl-2">
+                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?= $_SESSION['nama']; ?><?= $notif_2; ?></span>
+                    <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Penyedia</span>
+                </span>
+            </span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-end">
+            <!-- item-->
+            <h6 class="dropdown-header">Selamat Datang!</h6>
+            <a class="dropdown-item" href="<?= $url; ?>ganti-password"><i class="ri-lock-2-line text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Ubah Password</span></a>
+            <a class="dropdown-item" href="<?= $url; ?>logout"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
+        </div>
+    </div>
+<?php
+}
+function profil_operator($link, $url)
+{
+?>
+    <div class="dropdown ms-sm-3 header-item topbar-user">
+        <button type="button" class="btn" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="d-flex align-items-center">
+                <img class="rounded-circle header-profile-user" src="<?= $url; ?>assets/images/avatar-1.jpg">
+                <span class="text-start ms-xl-2">
+                    <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?= $_SESSION['nama']; ?></span>
+                    <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text"><?= $_SESSION['level']; ?></span>
+                </span>
+            </span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-end">
+            <!-- item-->
+            <h6 class="dropdown-header">Selamat Datang!</h6>
+            <a class="dropdown-item" href="<?= $url . $link; ?>/profil"><i class="ri-account-box-line text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profil</span></a>
+            <a class="dropdown-item" href="<?= $url; ?>logout"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span></a>
+        </div>
+    </div>
+<?php
+}
+function menu_penyedia($url)
+{
+?>
+    <div class="app-menu navbar-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box">
+            <!-- Dark Logo-->
+            <a href="#" class="logo logo-dark">
+                <span class="logo-sm">
+                    <img src="<?= $url; ?>assets/images/logo-sm.png" alt="" height="22">
+                </span>
+                <span class="logo-lg">
+                    <img src="<?= $url; ?>assets/images/logo-dark.png" alt="" height="17">
+                </span>
+            </a>
+            <!-- Light Logo-->
+            <a href="#" class="logo logo-light">
+                <span class="logo-sm">
+                    <img src="<?= $url; ?>assets/images/logo-sm.png" alt="" height="22">
+                </span>
+                <span class="logo-lg">
+                    <img src="<?= $url; ?>assets/images/logo-light.png" alt="" height="17">
+                </span>
+            </a>
+            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
+            </button>
+        </div>
+        <div id="scrollbar">
+            <div class="container-fluid">
+                <div id="two-column-menu"></div>
+                <ul class="navbar-nav" id="navbar-nav">
+                    <li class="menu-title"><span>Menu</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_1']; ?>" href="<?= $url; ?>beranda">
+                            <i class="ri-home-3-line"></i> <span>Beranda</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_3']; ?>" href="<?= $url; ?>paket-baru">
+                            <i class="ri-truck-line"></i> <span>Paket Baru</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_2']; ?>" href="<?= $url; ?>ubah-profil">
+                            <i class="ri-profile-line"></i> <span>Profil</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link <?= @$_GET['aktif_4']; ?>" href="#sidebarDokumen" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDokumen">
+                            <i class="ri-question-line"></i> <span>Dokumen Perusahaan</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarDokumen">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="<?= $url; ?>syarat-izin-usaha" class="nav-link <?= @$_GET['aktif_41']; ?>"> Izin Usaha </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= $url; ?>syarat-npwp" class="nav-link <?= @$_GET['aktif_42']; ?>"> NPWP </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= $url; ?>syarat-sertifikat" class="nav-link <?= @$_GET['aktif_44']; ?>"> Sertifikat Standar </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= $url; ?>syarat-akta" class="nav-link <?= @$_GET['aktif_45']; ?>"> Akta </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= $url; ?>syarat-pengurus" class="nav-link <?= @$_GET['aktif_46']; ?>"> Pengurus</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= $url; ?>syarat-pemilik-saham" class="nav-link <?= @$_GET['aktif_47']; ?>">Pemilik Saham</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= $url; ?>syarat-kswp" class="nav-link <?= @$_GET['aktif_49']; ?>">KSWP</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= $url; ?>syarat-pengalaman" class="nav-link <?= @$_GET['aktif_412']; ?>">Pengalaman</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= $url; ?>syarat-pekerjaan-berjalan" class="nav-link <?= @$_GET['aktif_413']; ?>">Pekerjaan Sedang Berjalan</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li> <!-- end Dashboard Menu -->
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_6']; ?>" href="<?= $url; ?>status-verifikasi">
+                            <i class="ri-checkbox-circle-line"></i> <span>Status Verifikasi</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+    </div>
+<?php
+}
+function menu_ppk($url)
+{
+?>
+    <div class="app-menu navbar-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box">
+            <!-- Dark Logo-->
+            <a href="#" class="logo logo-dark">
+                <span class="logo-sm">
+                    <img src="<?= $url; ?>assets/images/logo-sm.png" alt="" height="22">
+                </span>
+                <span class="logo-lg">
+                    <img src="<?= $url; ?>assets/images/logo-dark.png" alt="" height="17">
+                </span>
+            </a>
+            <!-- Light Logo-->
+            <a href="#" class="logo logo-light">
+                <span class="logo-sm">
+                    <img src="<?= $url; ?>assets/images/logo-sm.png" alt="" height="22">
+                </span>
+                <span class="logo-lg">
+                    <img src="<?= $url; ?>assets/images/logo-light.png" alt="" height="17">
+                </span>
+            </a>
+            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
+            </button>
+        </div>
+        <div id="scrollbar">
+            <div class="container-fluid">
+                <div id="two-column-menu"></div>
+                <ul class="navbar-nav" id="navbar-nav">
+                    <li class="menu-title"><span>Menu</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_1']; ?>" href="<?= $url; ?>ppk/beranda">
+                            <i class="ri-home-3-line"></i> <span>Beranda</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_2']; ?>" href="<?= $url; ?>ppk/daftar-paket">
+                            <i class="ri-truck-line"></i> <span>Daftar Paket</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_3']; ?>" href="<?= $url; ?>ppk/inbox">
+                            <i class="ri-mail-unread-line"></i> <span>Inbox</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_4']; ?>" href="<?= $url; ?>ppk/ganti-password">
+                            <i class="ri-lock-2-line"></i> <span>Ganti Password</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+    </div>
+<?php
+}
+function menu_ukpbj($url)
+{
+?>
+    <div class="app-menu navbar-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box">
+            <!-- Dark Logo-->
+            <a href="#" class="logo logo-dark">
+                <span class="logo-sm">
+                    <img src="<?= $url; ?>assets/images/logo-sm.png" alt="" height="22">
+                </span>
+                <span class="logo-lg">
+                    <img src="<?= $url; ?>assets/images/logo-dark.png" alt="" height="17">
+                </span>
+            </a>
+            <!-- Light Logo-->
+            <a href="#" class="logo logo-light">
+                <span class="logo-sm">
+                    <img src="<?= $url; ?>assets/images/logo-sm.png" alt="" height="22">
+                </span>
+                <span class="logo-lg">
+                    <img src="<?= $url; ?>assets/images/logo-light.png" alt="" height="17">
+                </span>
+            </a>
+            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
+            </button>
+        </div>
+        <div id="scrollbar">
+            <div class="container-fluid">
+                <div id="two-column-menu"></div>
+                <ul class="navbar-nav" id="navbar-nav">
+                    <li class="menu-title"><span>Menu</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_1']; ?>" href="<?= $url; ?>ukpbj/beranda">
+                            <i class="ri-home-3-line"></i> <span>Beranda</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_2']; ?>" href="<?= $url; ?>ukpbj/daftar-paket">
+                            <i class="ri-truck-line"></i> <span>Daftar Paket</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_3']; ?>" href="<?= $url; ?>ukpbj/pegawai">
+                            <i class="mdi mdi-account-box-multiple"></i> <span>Pegawai</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_5']; ?>" href="<?= $url; ?>ukpbj/inbox">
+                            <i class="ri-mail-unread-line"></i> <span>Inbox</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_4']; ?>" href="<?= $url; ?>ukpbj/ganti-password">
+                            <i class="ri-lock-2-line"></i> <span>Ganti Password</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+    </div>
+<?php
+}
+function menu_pokja($url)
+{
+?>
+    <div class="app-menu navbar-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box">
+            <!-- Dark Logo-->
+            <a href="#" class="logo logo-dark">
+                <span class="logo-sm">
+                    <img src="<?= $url; ?>assets/images/logo-sm.png" alt="" height="22">
+                </span>
+                <span class="logo-lg">
+                    <img src="<?= $url; ?>assets/images/logo-dark.png" alt="" height="17">
+                </span>
+            </a>
+            <!-- Light Logo-->
+            <a href="#" class="logo logo-light">
+                <span class="logo-sm">
+                    <img src="<?= $url; ?>assets/images/logo-sm.png" alt="" height="22">
+                </span>
+                <span class="logo-lg">
+                    <img src="<?= $url; ?>assets/images/logo-light.png" alt="" height="17">
+                </span>
+            </a>
+            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
+            </button>
+        </div>
+        <div id="scrollbar">
+            <div class="container-fluid">
+                <div id="two-column-menu"></div>
+                <ul class="navbar-nav" id="navbar-nav">
+                    <li class="menu-title"><span>Menu</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_1']; ?>" href="<?= $url; ?>pokja/beranda">
+                            <i class="ri-home-3-line"></i> <span>Beranda</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_2']; ?>" href="<?= $url; ?>pokja/daftar-paket">
+                            <i class="ri-truck-line"></i> <span>Daftar Paket</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_5']; ?>" href="<?= $url; ?>pokja/penyedia">
+                            <i class="mdi mdi-account-box-multiple"></i> <span>Penyedia</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link <?= @$_GET['aktif_6']; ?>" href="#sidebarInformasi" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarInformasi">
+                            <i class="ri-information-line"></i> <span>Informasi</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarInformasi">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="<?= $url; ?>pokja/news-update" class="nav-link <?= @$_GET['aktif_61']; ?>"> News & Update </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= $url; ?>pokja/info-penting" class="nav-link <?= @$_GET['aktif_62']; ?>"> Info Penting </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= $url; ?>pokja/panduan" class="nav-link <?= @$_GET['aktif_63']; ?>"> Panduan </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= $url; ?>pokja/contact" class="nav-link <?= @$_GET['aktif_64']; ?>"> Contact </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_3']; ?>" href="<?= $url; ?>pokja/inbox">
+                            <i class="ri-mail-unread-line"></i> <span>Inbox</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_4']; ?>" href="<?= $url; ?>pokja/ganti-password">
+                            <i class="ri-lock-2-line"></i> <span>Ganti Password</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+    </div>
+<?php
+}
+function menu_verifikator($url)
+{
+?>
+    <div class="app-menu navbar-menu">
+        <!-- LOGO -->
+        <div class="navbar-brand-box">
+            <!-- Dark Logo-->
+            <a href="#" class="logo logo-dark">
+                <span class="logo-sm">
+                    <img src="<?= $url; ?>assets/images/logo-sm.png" alt="" height="22">
+                </span>
+                <span class="logo-lg">
+                    <img src="<?= $url; ?>assets/images/logo-dark.png" alt="" height="17">
+                </span>
+            </a>
+            <!-- Light Logo-->
+            <a href="#" class="logo logo-light">
+                <span class="logo-sm">
+                    <img src="<?= $url; ?>assets/images/logo-sm.png" alt="" height="22">
+                </span>
+                <span class="logo-lg">
+                    <img src="<?= $url; ?>assets/images/logo-light.png" alt="" height="17">
+                </span>
+            </a>
+            <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
+            </button>
+        </div>
+        <div id="scrollbar">
+            <div class="container-fluid">
+                <div id="two-column-menu"></div>
+                <ul class="navbar-nav" id="navbar-nav">
+                    <li class="menu-title"><span>Menu</span></li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_1']; ?>" href="<?= $url; ?>verifikator/beranda">
+                            <i class="ri-home-3-line"></i> <span>Beranda</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_2']; ?>" href="<?= $url; ?>verifikator/penyedia">
+                            <i class="mdi mdi-account-box-multiple"></i> <span>Daftar Penyedia</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_3']; ?>" href="<?= $url; ?>verifikator/inbox">
+                            <i class="ri-mail-unread-line"></i> <span>Inbox</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link menu-link pe-1 <?= @$_GET['aktif_4']; ?>" href="<?= $url; ?>verifikator/ganti-password">
+                            <i class="ri-lock-2-line"></i> <span>Ganti Password</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Sidebar -->
+        </div>
+        <div class="sidebar-background"></div>
+    </div>
 <?php
 }
 function navbar3($url)
@@ -105,169 +563,21 @@ function navbar3($url)
             </a>
         </div>
     </nav>
-<?php
-}
-function kiri($url, $proses)
-{
-    $notif1 = $proses->cek_row('catatan', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND status = "Waiting"');
-    $notif2 = $proses->cek_row('profil_badan_usaha', 'id_profil = "' . $_SESSION['kode_profil'] . '" AND status = "Terverifikasi"');
-    $notif3 = $proses->cek_row(
-        'daftar_penyedia_terpilih a
-        LEFT JOIN paket_pekerjaan b
-        ON a.id_paket = b.id_paket
-        LEFT JOIN tender c
-        ON a.id_paket = c.id_paket',
-        '1=1 AND a.id_profil = "' . $_SESSION['kode_profil'] . '"
-        AND b.status = "Berlangsung"
-        GROUP BY a.id_paket'
-    );
-
-    if ($notif2) {
-        $notif_2 = '<i class="ri-checkbox-circle-fill text-success"></i>';
-    } else {
-        $notif_2 = '<i class="ri-close-circle-fill text-danger"></i>';
-    }
-    if ($notif1) {
-        $notif_1 = '<span class="badge rounded-pill bg-danger">' . $notif1 . '</span>';
-    } else {
-        $notif_1 = '';
-    }
-    if ($notif3) {
-        $notif_3 = '<span class="badge rounded-pill bg-success">' . $notif3 . '</span>';
-    } else {
-        $notif_3 = '';
-    }
-?>
-    <div class="mt-0 mx-n4 px-4 file-menu-sidebar-scroll" data-simplebar>
-        <ul class="list-unstyled file-manager-menu">
-            <li>
-                <a href="<?= $url; ?>ubah/profil" class="<?= @$_GET['aktif1']; ?>"><i class="ri-file-list-2-line align-bottom me-2"></i><span class="file-list-link">Ubah Profil</span></a>
-            </li>
-            <li>
-                <a href="<?= $url; ?>dokumen/verifikasi" class="<?= @$_GET['aktif6']; ?>"><i class="ri-file-list-2-line align-bottom me-2"></i><span class="file-list-link">Dokumen Verifikasi</span></a>
-            </li>
-            <li>
-                <a data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample" class="<?= @$_GET['aktif2']; ?>">
-                    <i class="ri-folder-2-line align-bottom me-2"></i><span class="file-list-link">Syarat Pendaftaran</span>
-                </a>
-                <div class="collapse buka1" id="collapseExample1">
-                    <ul class="sub-menu list-unstyled">
-                        <li class="pt-2">
-                            <a href="<?= $url; ?>syarat/izin/usaha" class="<?= @$_GET['aktif21']; ?>">Copy Surat Izin Usaha</a>
-                        </li>
-                        <li>
-                            <a href="<?= $url; ?>syarat/npwp" class="<?= @$_GET['aktif22']; ?>">Copy NPWP</a>
-                        </li>
-                        <li>
-                            <a href="<?= $url; ?>syarat/domisili" class="<?= @$_GET['aktif23']; ?>">Copy Surat Domisili</a>
-                        </li>
-                        <li>
-                            <a href="<?= $url; ?>syarat/tdp" class="<?= @$_GET['aktif24']; ?>">Copy TDP</a>
-                        </li>
-                        <li>
-                            <a href="<?= $url; ?>syarat/akta" class="<?= @$_GET['aktif25']; ?>">Copy Akta</a>
-                        </li>
-                        <li>
-                            <a href="<?= $url; ?>syarat/pengurus" class="<?= @$_GET['aktif26']; ?>">Copy Pengurus</a>
-                        </li>
-                        <li>
-                            <a href="<?= $url; ?>syarat/pemilik/saham" class="<?= @$_GET['aktif27']; ?>">Copy Pemilik Saham</a>
-                        </li>
-                        <li>
-                            <a href="<?= $url; ?>syarat/pajak" class="<?= @$_GET['aktif28']; ?>">Copy Pajak</a>
-                        </li>
-                        <li>
-                            <a href="<?= $url; ?>syarat/kswp" class="<?= @$_GET['aktif210']; ?>">KSWP</a>
-                        </li>
-                        <!--
-                        <li class="pt-2">
-                            <a href="<?= $url; ?>syarat/nib" class="<?= @$_GET['aktif21']; ?>">Nomor Induk Berusaha (NIB)</a>
-                        </li>
-                        <li>
-                            <a href="<?= $url; ?>syarat/sbu" class="<?= @$_GET['aktif29']; ?>">Sertifikat Badan Usaha (SBU)</a>
-                        </li>
-                        <li>
-                            <a href="<?= $url; ?>syarat/kswp" class="<?= @$_GET['aktif210']; ?>">KSWP</a>
-                        </li>
-                        -->
-                    </ul>
-                </div>
-            </li>
-            <li>
-                <a data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample" class="<?= @$_GET['aktif3']; ?>">
-                    <i class="ri-folder-2-line align-bottom me-2"></i><span class="file-list-link">Syarat Kualifikasi Lainnya</span>
-                </a>
-                <div class="collapse buka2" id="collapseExample2">
-                    <ul class="sub-menu list-unstyled">
-                        <li class="pt-2">
-                            <a href="<?= $url; ?>syarat/tenaga/ahli" class="<?= @$_GET['aktif31']; ?>">Tenaga Ahli</a>
-                        </li>
-                        <li>
-                            <a href="<?= $url; ?>syarat/peralatan" class="<?= @$_GET['aktif32']; ?>">Peralatan</a>
-                        </li>
-                        <li>
-                            <a href="<?= $url; ?>syarat/pengalaman" class="<?= @$_GET['aktif33']; ?>">Pengalaman</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <!--
-            <li>
-                <a href="<?= $url; ?>company/profile" class="<?= @$_GET['aktif4']; ?>"><i class="ri-image-2-line align-bottom me-2"></i> <span class="file-list-link">Company Profile / CV</span></a>
-            </li>
-            -->
-            <li>
-                <a href="<?= $url; ?>status/catatan" class="<?= @$_GET['aktif10']; ?>"><i class="ri-file-unknow-line align-bottom me-2"></i><span class="file-list-link">Catatan </span>
-                    <?= $notif_1; ?>
-                </a>
-            </li>
-            <li>
-                <a href="<?= $url; ?>status/verifikasi" class="<?= @$_GET['aktif5']; ?>"><i class="ri-file-unknow-line align-bottom me-2"></i><span class="file-list-link">Status Verifikasi </span>
-                    <?= $notif_2; ?>
-                </a>
-            </li>
-            <?php
-            if ($notif_3) {
-            ?>
-                <li>
-                    <a href="<?= $url; ?>paket/pekerjaan" class="<?= @$_GET['aktif9']; ?>"><i class="ri-file-list-2-line align-bottom me-2"></i><span class="file-list-link">Paket Pekerjaan</span>
-                        <?= $notif_3; ?>
-                    </a>
-                </li>
-            <?php
-            } else {
-            }
-            ?>
-        </ul>
-    </div>
 <?php }
 function footer($url)
 {
 ?>
-    <footer class="custom-footer bg-dark py-5 position-relative">
-        <div class="container">
+    <footer class="footer">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-12 mt-12">
-                    <div>
-                        <div>
-                            <img src="<?= $url; ?>assets/images/logo-light.png" alt="logo light" height="30">
-                        </div>
-                        <div class="mt-4">
-                            <p>Daftar Penyedia Terpilih Pengelola Pengadaan Barang dan Jasa Universitas Negeri Gorontalo<br>
-                                Alamat: Jl. Jend. Sudirman No.6, Dulalowo Tim., Kec. Kota Tengah, Kota Gorontalo, Gorontalo 96128</p>
-                        </div>
-                    </div>
+                <div class="col-sm-6">
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script> UPPBJ Badan Layanan Umum
                 </div>
-            </div>
-
-            <div class="row text-center text-sm-start align-items-center mt-0">
-                <div class="col-sm-12">
-                    <div>
-                        <p class="copy-rights mb-0">
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script> © Universitas Negeri Gorontalo
-                        </p>
+                <div class="col-sm-6">
+                    <div class="text-sm-end d-none d-sm-block">
+                        © Universitas Negeri Gorontalo
                     </div>
                 </div>
             </div>

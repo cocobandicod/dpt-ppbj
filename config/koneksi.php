@@ -12,7 +12,7 @@ $proses = new prosesCrud($koneksi);
 // panggil session ID
 //$id = $_SESSION['USER']['id_pengguna'];
 //$sesi = $proses->tampil_data_id('pengguna', 'id_pengguna', @$id);
-$url = 'http://localhost/dpt-ppbj/';
+$url = 'https://localhost/dpt-ppbj/';
 
 function token()
 {

@@ -10,7 +10,7 @@ if (empty($_SESSION['csrf_token'])) {
 cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
 ?>
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="light" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+<html lang="en" data-layout="horizontal" data-layout-style="" data-layout-position="fixed" data-topbar="light">
 
 <head>
     <meta charset="utf-8" />
@@ -22,9 +22,6 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?= $url; ?>assets/images/icon.png">
 
-    <!--Swiper slider css-->
-    <link href="<?= $url; ?>assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
-
     <!--datatable css-->
     <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/1.11.5/css/dataTables.bootstrap5.min.css" />
     <!--datatable responsive css-->
@@ -33,15 +30,15 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <link rel="stylesheet" href="<?= $url; ?>assets/css/datatables/buttons/2.2.2/css/buttons.dataTables.min.css">
 
     <!-- Layout config Js -->
-    <script src="<?= $url; ?>assets/js/layout.js"></script>
+    <script src="assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
-    <link href="<?= $url; ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
-    <link href="<?= $url; ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
-    <link href="<?= $url; ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
-    <link href="<?= $url; ?>assets/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/custom.min.css" rel="stylesheet" type="text/css" />
     <!-- Sweet Alert css-->
     <link href="<?= $url; ?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
     <style>
@@ -53,69 +50,90 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
 
 </head>
 
-<body data-bs-spy="scroll" data-bs-target="#navbar-example">
+<body>
 
     <!-- Begin page -->
-    <div class="layout-wrapper landing">
-        <?= navbar2($url); ?>
-        <!-- end navbar -->
+    <div id="layout-wrapper">
 
-        <!-- start hero section -->
-        <section class="section pb-0 hero-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 mt-12">
-                        <div class="row">
-                            <div class="col-lg-3 mt-3">
-                                <div class="card">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1">Menu</h4>
-                                    </div><!-- end card header -->
-                                    <div class="card-body small">
-                                        <?= kiri($url, $proses); ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-9 mt-3">
-                                <div class="card">
-                                    <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
-                                        <a href="<?= $url; ?>syarat/pengalaman/add" class="btn btn-primary btn-sm"><i class="ri-add-line align-bottom me-1"></i> Data</a>
-                                    </div><!-- end card header -->
-                                    <div class="card-body small">
-                                        <table id="DTable" class="table table-bordered dt-responsive table-striped align-middle fs-12" style="width:100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Nama Pekerjaan</th>
-                                                    <th>Bidang Pekerjaan</th>
-                                                    <th>Lokasi</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <header id="page-topbar">
+            <div class="layout-width">
+                <div class="navbar-header">
+                    <!-- LOGO -->
+                    <?= logo($url); ?>
+
+                    <div class="d-flex align-items-center">
+                        <?= notif($proses, $url); ?>
+                        <?= profil($proses, $url); ?>
                     </div>
                 </div>
-            </div><!-- end container -->
-        </section><!-- end hero section -->
+            </div>
+        </header>
 
-        <!-- Start footer -->
-        <?= footer($url); ?>
-        <!-- end footer -->
+        <!-- ========== App Menu ========== -->
+        <?= menu_penyedia($url); ?>
+        <!-- Left Sidebar End -->
+        <!-- Vertical Overlay-->
+        <div class="vertical-overlay"></div>
 
-        <!--start back-to-top-->
-        <button onclick="topFunction()" class="btn btn-danger btn-icon landing-back-top" id="back-to-top">
-            <i class="ri-arrow-up-line"></i>
-        </button>
-        <!--end back-to-top-->
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <div class="col-xl-12">
+                        <div class="card card-height-100">
+                            <div class="card-header align-items-center d-flex">
+                                <h4 class="card-title mb-0 flex-grow-1"><?= str_replace('-', ' ', $_GET['judul']); ?></h4>
+                                <a href="<?= $url; ?>syarat-pengalaman/add" class="btn btn-primary btn-sm"><i class="ri-add-line align-bottom me-1"></i> Data</a>
+                            </div><!-- end card header -->
+                            <!-- card body -->
+                            <div class="card-body">
+                                <table id="DTable" class="table table-bordered dt-responsive table-striped align-middle fs-13" style="width:100%">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Pekerjaan</th>
+                                            <th>Bidang Pekerjaan</th>
+                                            <th>Lokasi</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <!-- end card body -->
+                        </div><!-- end card -->
+                    </div>
+
+                </div>
+                <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+            <?= footer($url); ?>
+
+        </div>
+        <!-- end main content-->
 
     </div>
-    <!-- end layout wrapper -->
+    <!-- END layout-wrapper -->
 
+    <!-- Default Modals -->
+    <div id="modalview" class="modal zoomIn" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalview"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div id="viewfile"></div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <!-- JAVASCRIPT -->
     <script src="<?= $url; ?>assets/js/jquery-3.6.0.min.js"></script>
@@ -131,19 +149,29 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
     <script src="<?= $url; ?>assets/css/datatables/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script src="<?= $url; ?>assets/css/datatables/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
     <script src="<?= $url; ?>assets/js/toastify-js.js"></script>
-
-    <!--Swiper slider js-->
-    <script src="<?= $url; ?>assets/libs/swiper/swiper-bundle.min.js"></script>
-    <!-- cleave.js -->
-    <script src="<?= $url; ?>assets/libs/cleave.js/cleave.min.js"></script>
-
-    <script src="<?= $url; ?>assets/js/pages/form-masks.init.js"></script>
     <script src="<?= $url; ?>assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
-    <script src="<?= $url; ?>assets/js/pages/nft-landing.init.js"></script>
+    <!-- App js -->
     <script src="<?= $url; ?>assets/js/ajax.js"></script>
+
     <script>
-        $('.buka2').addClass('show');
+        $(document).ready(function() {
+            $('.buka1').addClass('show');
+            $('#modalview').on('show.bs.modal', function(e) {
+                var id = $(e.relatedTarget).data('id');
+                var act = $(e.relatedTarget).data('act');
+                $('#myModalview').text('View');
+                if (act === 'pdf') {
+                    $('#viewfile').html('<iframe src="<?= $url; ?>berkas/' + id + '" style="width: 100%; height: 700px; border: none;"></iframe>');
+                } else {
+                    $('#viewfile').html('<img src="<?= $url; ?>berkas/' + id + '" class="gallery-img img-fluid mx-auto">');
+                }
+            });
+
+            $('#modalview').on('hidden.bs.modal', function() {
+                $('#viewfile').empty();
+            });
+        });
 
         var dataTable
         $(document).ready(function() {
@@ -155,7 +183,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                 responsive: true,
                 columnDefs: [{
                         className: 'text-center p-2',
-                        width: '5%',
+                        width: '3%',
                         targets: [0]
                     },
                     {

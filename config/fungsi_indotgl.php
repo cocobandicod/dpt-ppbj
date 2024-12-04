@@ -196,10 +196,10 @@ function saham($var, $terpilih)
 
 function level($var, $terpilih)
 {
-	$jk = array(1 => "Admin", "Operator");
+	$jk = array(1 => "Operator", "Verifikator", "PPK", "UKPBJ", "Pokja");
 	echo "<select name='$var' id='$var' class='form-select' required>";
 	echo '<option value="" selected>Pilih --</option>';
-	for ($i = 1; $i <= 2; $i++) {
+	for ($i = 1; $i <= 5; $i++) {
 		if ($jk[$i] == $terpilih) {
 			echo '<option value="' . $jk[$i] . '" selected>' . str_replace('-', ' ', $jk[$i]) . '</option>';
 		} else {
@@ -256,10 +256,10 @@ function pajak($var, $terpilih)
 
 function izin_usaha($var, $terpilih)
 {
-	$jk = array(1 => 'Surat-Ijin-Usaha-Perdagangan-(SIUP)', 'Sertifikat-Badan-Usaha-(SBU)', 'Surat-Izin-Usaha-Jasa-Konstruksi-(SIUJK)', 'Tanda-Daftar-Usaha-Pariwisata-(TDUP)', 'Surat-Izin-Tempat-Usaha-(SITU)', 'Izin-Kantor-Akuntan-Publik-(KAP)', 'Nomor-Induk-Berusaha-(NIB)', 'Izin-Akuntan-Publik', 'Kantor-Jasa-Surveyor-Kadaster-Berlisensi-(KJSKB)', 'Izin-Usaha-Farmasi', 'Izin-Usaha-Perfilman', 'Izin-Usaha-Lainnya');
+	$jk = array(1 => 'Sertifikat-Badan-Usaha-(SBU)', 'Nomor-Induk-Berusaha-(NIB)');
 	echo "<select name='$var' id='$var' class='form-select' required>";
 	//echo '<option value="" selected>Pilih --</option>';
-	for ($i = 1; $i <= 12; $i++) {
+	for ($i = 1; $i <= 2; $i++) {
 		if ($jk[$i] == $terpilih) {
 			echo '<option value="' . $jk[$i] . '" selected>' . str_replace('-', ' ', $jk[$i]) . '</option>';
 		} else {
@@ -271,10 +271,25 @@ function izin_usaha($var, $terpilih)
 
 function grade($var, $terpilih)
 {
-	$jk = array(1 => '1', '2', '3', 'Perusahaan-Kecil', 'Perusahaan-Besar');
+	$jk = array(1 => 'Kecil', 'Non-Kecil');
 	echo "<select name='$var' id='$var' class='form-select' required>";
 	echo '<option value="" selected>Pilih --</option>';
-	for ($i = 1; $i <= 5; $i++) {
+	for ($i = 1; $i <= 2; $i++) {
+		if ($jk[$i] == $terpilih) {
+			echo '<option value="' . $jk[$i] . '" selected>' . str_replace('-', ' ', $jk[$i]) . '</option>';
+		} else {
+			echo '<option value="' . $jk[$i] . '">' . str_replace('-', ' ', $jk[$i]) . '</option>';
+		}
+	}
+	echo "</select> ";
+}
+
+function bentuk_usaha($var, $terpilih)
+{
+	$jk = array(1 => 'Perorangan', 'Badan-Usaha');
+	echo "<select name='$var' id='$var' class='form-select' required>";
+	echo '<option value="" selected>Pilih --</option>';
+	for ($i = 1; $i <= 2; $i++) {
 		if ($jk[$i] == $terpilih) {
 			echo '<option value="' . $jk[$i] . '" selected>' . str_replace('-', ' ', $jk[$i]) . '</option>';
 		} else {
@@ -451,7 +466,7 @@ function ubah_tgl_edit($tgl)
 	$tanggal = substr($tgl, 8, 2);
 	$bulan = substr($tgl, 5, 2);
 	$tahun = substr($tgl, 0, 4);
-	return $tanggal . '/' . $bulan . '/' . $tahun;
+	return $bulan . '/' . $tanggal . '/' . $tahun;
 }
 
 function ubah_tgl_edit2($tgl)
@@ -543,7 +558,7 @@ function tgl_indo7($tgl)
 function tgl_indo8($tgl)
 {
 	$tanggal = substr($tgl, 8, 2);
-	$bulan = getBulan2(substr($tgl, 5, 2));
+	$bulan = getBulan(substr($tgl, 5, 2));
 	$tahun = substr($tgl, 0, 4);
 	$jam = substr($tgl, 10, 9);
 	return $tanggal . ' ' . $bulan . ' ' . $tahun . '<small>' . $jam . '</small>';
@@ -802,6 +817,41 @@ function sisa_waktu($tanggal)
 		@$ket = "<div class='text-danger fs-10'>(" . $masa_berlaku / (24 * 60 * 60) . " hari lagi)</div>";
 	}
 	return tgl_indo($tanggal) . @$ket;
+}
+
+function hitungDurasi($tgl_awal, $tgl_selesai)
+{
+	// Mengubah string tanggal menjadi objek DateTime
+	$awal = new DateTime($tgl_awal);
+	$selesai = new DateTime($tgl_selesai);
+
+	// Menghitung selisih waktu
+	$interval = $awal->diff($selesai);
+
+	// Menyusun hasil dalam format yang diinginkan
+	$hasil = [];
+	if ($interval->d > 0) {
+		$hasil[] = $interval->d . ' Hari';
+	}
+	if ($interval->h > 0) {
+		$hasil[] = $interval->h . ' Jam';
+	}
+	if ($interval->i > 0) {
+		$hasil[] = $interval->i . ' Menit';
+	}
+
+	// Menggabungkan hasil menjadi string
+	return implode(' ', $hasil);
+}
+
+function formatNumber($number)
+{
+	// Remove thousand separators (periods), but not the decimal separator
+	$number = preg_replace('/\,(?=\d{3})/', '', $number);
+
+	// Replace comma with dot for decimal point
+
+	return $number;
 }
 
 function jumlah_tanggal($tanggal, $jumlah)

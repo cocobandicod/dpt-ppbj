@@ -113,8 +113,8 @@ cek_url($url, $proses, $_GET['act'], 'company_profile', 'id_profil ="' . @$_SESS
                                             </div>
                                             <div class="col-lg-12 pt-5">
                                                 <div class="text-start">
-                                                    <a href="#" class="btn btn-light" onclick="back()"><i class=" ri-arrow-go-back-line"></i> Kembali</a>
-                                                    <button type="submit" class="btn btn-primary" id="simpan"><i class="ri-save-2-fill"></i> Simpan</button>
+                                                    <span class="btn btn-light cursor-pointer" onclick="back()"><i class=" ri-arrow-go-back-line"></i> Kembali</span>
+                                                    <button type="submit" class="btn btn-success" id="simpan"><i class="ri-save-2-fill"></i> Simpan</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -207,6 +207,7 @@ cek_url($url, $proses, $_GET['act'], 'company_profile', 'id_profil ="' . @$_SESS
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     Toastify({
                         text: "Data Gagal Dimasukan!",
+                        className: "bg-danger",
                         gravity: "top",
                         position: "center",
                         duration: 3000

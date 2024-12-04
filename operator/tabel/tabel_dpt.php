@@ -7,7 +7,7 @@ $sql = $proses->tampil_data_select(
     'a.*,COUNT(b.id_profil) AS jum',
     'paket_pekerjaan a LEFT JOIN daftar_penyedia_terpilih b 
     ON a.id_paket = b.id_paket',
-    '1=1 GROUP BY a.id_paket DESC'
+    '1=1 AND a.status != "Draf" GROUP BY a.id_paket DESC'
 );
 
 $data = array();

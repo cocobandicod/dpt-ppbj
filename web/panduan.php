@@ -78,7 +78,7 @@ cek_akses_pengguna($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                                         $no = 1;
                                         foreach ($sql as $row) {
                                         ?>
-                                            <div class="d-flex">
+                                            <div>
                                                 <div class="flex-shrink-0">
                                                     <i class="ri-checkbox-circle-fill text-success"></i>
                                                 </div>

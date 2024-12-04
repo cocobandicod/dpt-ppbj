@@ -166,7 +166,7 @@ cek_login_akses($proses, $url, @$_SESSION['kode_user'], @$_SESSION['token']);
                 responsive: true,
                 columnDefs: [{
                         className: 'text-center p-2',
-                        width: '5%',
+                        width: '3%',
                         targets: [0]
                     },
                     {
